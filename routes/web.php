@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\{
+    UserController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -37,28 +40,38 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('home-page-management')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('home-page-management');
+Route::prefix('system-admin')->middleware(['auth', 'verified'])->group(function () {
+
+    Route::prefix('home-page-management')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Dashboard');
+        })->name('home-page-management');
+    });
+
+    Route::prefix('user-management')->group(function () {
+        // Route::get('/', function () {
+        //     return Inertia::render('Dashboard');
+        // })->name('user-management');
+
+        Route::get('/', [UserController::class, 'index'])->name('user-management');
+    });
+
+    Route::prefix('archive')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Dashboard');
+        })->name('archive');
+    });
+
+    Route::prefix('backup-and-restore')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Dashboard');
+        })->name('backup-and-restore');
+    });
 });
 
-Route::prefix('user-management')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('user-management');
-});
 
-Route::prefix('archive')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('archive');
-});
-
-Route::prefix('backup-and-restore')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('backup-and-restore');
+Route::get('/keep-alive', function () {
+    return response()->json(['message' => 'Keep Alive'], 200);
 });
 
 require __DIR__.'/auth.php';
