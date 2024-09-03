@@ -23,9 +23,9 @@ const logoUrl = getLogo('images/logo1.png')
         <!-- Collapsible Sidebar -->
         <div
             :class="{'w-64': sidebarOpen, 'w-14': !sidebarOpen}"
-            class="transition-all duration-300 ease-in-out bg-white border-r border-gray-200"
+            class="transition-all duration-300 ease-in-out bg-[#2C3C4C] border-r border-gray-200"
         >
-            <div class="flex items-center justify-between p-4 bg-gray-800">
+            <div class="flex items-center justify-between p-4 bg-[#04549C]">
                 <!-- <ApplicationLogo class="block h-9 w-auto fill-current text-white" /> -->
                 <img :src="logoUrl" alt="Logo" class="logo w-[50px] h-[50px]" v-if="sidebarOpen"
                 >
@@ -66,23 +66,34 @@ const logoUrl = getLogo('images/logo1.png')
                 </button>
             </div>
 
-            <nav class="px-2 mt-4" :class="{'flex': !sidebarOpen, 'items-center': !sidebarOpen, 'justify-center': !sidebarOpen}">
-                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                    <span v-if="sidebarOpen" class="text-xl">Dashboard</span>
-                    <i class="fa fa-gear text-black text-2xl" v-else></i>
-
-
-
+            <nav class="flex flex-col" :class="{'flex': !sidebarOpen, 'items-center': !sidebarOpen, 'justify-center': !sidebarOpen}">
+                <NavLink :href="route('home-page-management')" :active="route().current('home-page-management')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Homepage Management</span>
                 </NavLink>
-                <!-- Add more NavLinks here -->
+
+                <NavLink :href="route('user-management')" :active="route().current('user-management')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">User Management</span>
+                </NavLink>
+
+                <NavLink :href="route('archive')" :active="route().current('archive')">
+                    <i class="fa fa-file text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Archive</span>
+                </NavLink>
+
+                <NavLink :href="route('backup-and-restore')" :active="route().current('backup-and-restore')">
+                    <i class="fa fa-gear text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Backup and Restore</span>
+                </NavLink>
             </nav>
         </div>
 
         <!-- Main Content -->
         <div class="flex flex-col flex-1 w-full">
             <!-- Top Navbar -->
-            <nav class="bg-white border-b border-gray-100">
-                <div class="flex justify-between h-16 px-4 sm:px-6 lg:px-8">
+            <nav class="bg-[#04549C]">
+                <div class="flex justify-between px-4 sm:px-6 lg:px-8" :class="{'h-[5.74vw]': sidebarOpen, 'h-[3.95vw]': !sidebarOpen}">
                     <div class="flex items-center">
                         <!-- <button
                             @click="sidebarOpen = !sidebarOpen"
@@ -111,7 +122,7 @@ const logoUrl = getLogo('images/logo1.png')
                         </Link> -->
                     </div>
 
-                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <div class="hidden sm:flex sm:items-center sm:ms-6 ">
                         <!-- Settings Dropdown -->
                         <div class="ms-3 relative">
                             <Dropdown align="right" width="48">
@@ -119,7 +130,7 @@ const logoUrl = getLogo('images/logo1.png')
                                     <span class="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-[#04549C focus:outline-none transition ease-in-out duration-150"
                                         >
                                             {{ $page.props.auth.user.name }}
 
@@ -187,7 +198,7 @@ const logoUrl = getLogo('images/logo1.png')
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('home-page-management')" :active="route().current('home-page-management')">
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
