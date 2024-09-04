@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 
 defineProps({
     canResetPassword: {
@@ -20,11 +21,36 @@ const form = useForm({
     email: '',
     password: '',
     remember: false,
+    code: ''
 });
 
+var message = false;
+var otpmessage = false
+
+const getOtp = () => {
+    message = false;
+
+    form.post(route('send-otp'), {
+        onSuccess: (page) => {
+            if(page.props.flash.success == 1) {
+                var modal = document.getElementById("defaultModal");
+
+                modal.style.display = "block";
+            } else {
+                message = true
+            }
+        }
+    });
+}
+
 const submit = () => {
+    otpmessage = false
     form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+        onSuccess: (page) => {
+            if(page.props.flash.success == 0) {
+                otpmessage = true
+            }
+        }
     });
 };
 
@@ -33,6 +59,13 @@ const getLogo = (imagePath) => {
 }
 
 const logoUrl = getLogo('images/logo1.png')
+
+const closeOtpModal = () => {
+    var modal = document.getElementById("defaultModal");
+
+    modal.style.display = "none";
+};
+
 </script>
 
 <template>
@@ -43,59 +76,78 @@ const logoUrl = getLogo('images/logo1.png')
             {{ status }}
         </div> -->
 
-        <!-- <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <div
+            id="defaultModal"
+            tabindex="-1"
+            aria-hidden="true"
+            style="background-color: rgba(0, 0, 0, 0.7)"
+            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+            <div class="h-screen flex justify-center items-center">
+                <div class="relative w-[20%] max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow">
+                        <!-- Modal header -->
+                        <div
+                            class="flex items-start justify-between p-4 border-b rounded-t"
+                        >
+                            <h3
+                                class="text-xl font-semibold text-black"
+                            >
+                                OTP Verification
+                            </h3>
+                            <button
+                                type="button"
+                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                @click="closeOtpModal()"
+                            >
+                                <svg
+                                    class="w-3 h-3"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 14 14"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                    />
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+                        <!-- Modal body -->
+                        <div class="p-6 space-y-6">
+                            <form @submit.prevent="submit">
+                                <div class="w-full">
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                                    <input type="text" v-model="form.code"
+                                        class="rounded-md w-full text-center"
+                                    />
+                                </div>
+
+                                <div class="w-full mt-5">
+                                    <button class="w-full text-center bg-blue-500 text-white rounded-md py-2">
+                                        Submit
+                                    </button>
+                                </div>
+
+                                <div v-if="otpmessage" class="my-1 text-xs text-red-600"
+                                    style="text-align: left"
+                                >
+                                    Incorrect One-time Password Code
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form> -->
+        </div>
 
         <div class="">
             <div id="book-container" class="book-container">
@@ -105,7 +157,7 @@ const logoUrl = getLogo('images/logo1.png')
                         <p class="yearbook-text">Online Digital Yearbook</p>
                     </div>
                     <div class="right-page">
-                        <form @submit.prevent="submit">
+                        <form @submit.prevent="getOtp">
                             <h2>Login</h2>
                             <InputLabel for="email" value="Email" />
 
@@ -135,64 +187,17 @@ const logoUrl = getLogo('images/logo1.png')
 
                             <button type="submit">Login</button>
 
+                            <div v-if="message" class="my-1 text-xs text-red-600"
+                                style="text-align: left"
+                            >
+                                Email not found.
+                            </div>
+
+
                             <div class="forgot-password-container">
                                 <a :href="route('password.request')" class="forgot-password">Forgot Password?</a>
                             </div>
                         </form>
-
-                        <!-- <form @submit.prevent="submit">
-                        <div>
-                            <InputLabel for="email" value="Email" />
-
-                            <TextInput
-                                id="email"
-                                type="email"
-                                class="mt-1 block w-full"
-                                v-model="form.email"
-                                required
-                                autofocus
-                                autocomplete="username"
-                            />
-
-                            <InputError class="mt-2" :message="form.errors.email" />
-                        </div>
-
-                        <div class="mt-4">
-                            <InputLabel for="password" value="Password" />
-
-                            <TextInput
-                                id="password"
-                                type="password"
-                                class="mt-1 block w-full"
-                                v-model="form.password"
-                                required
-                                autocomplete="current-password"
-                            />
-
-                            <InputError class="mt-2" :message="form.errors.password" />
-                        </div>
-
-                        <div class="block mt-4">
-                            <label class="flex items-center">
-                                <Checkbox name="remember" v-model:checked="form.remember" />
-                                <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                            </label>
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <Link
-                                v-if="canResetPassword"
-                                :href="route('password.request')"
-                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Forgot your password?
-                            </Link>
-
-                            <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                Log in
-                            </PrimaryButton>
-                        </div>
-                    </form> -->
                     </div>
                 </div>
             </div>
@@ -202,20 +207,9 @@ const logoUrl = getLogo('images/logo1.png')
 </template>
 
 <style>
-/* Apply Rubik font globally */
-/* body {
-    font-family: 'Rubik', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to right, #00c6ff, #0072ff);
-    margin: 0;
-} */
-
 .book-container {
     width: 50vw;
-    height: 400px;
+    height: 450px;
     position: relative;
     perspective: 1000px; /* Add perspective for 3D effect */
     font-family: 'Rubik', sans-serif;
@@ -369,5 +363,6 @@ const logoUrl = getLogo('images/logo1.png')
     transition: transform 0.6s;
     transform-style: preserve-3d;
 }
+
 
 </style>

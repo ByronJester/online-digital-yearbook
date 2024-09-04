@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\{ User, OtpMessage };
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,8 +29,16 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
+        $otp = OtpMessage::where('email', $request->email)->where('code', $request->code)->first();
+
+        if(!$otp) {
+            session()->flash('success', 0);
+
+            return redirect()->back();
+        }
+
         $request->authenticate();
 
         $request->session()->regenerate();

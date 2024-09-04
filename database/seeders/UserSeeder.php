@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
+use App\Models\{ User, OtpMessage };
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -23,6 +23,11 @@ class UserSeeder extends Seeder
             'contact' => '09771259259'
         ]);
 
+        OtpMessage::create([
+            'email' => 'admin@gmail.com',
+            'code' => '4431'
+        ]);
+
         User::create([
             'first_name' => 'School',
             'last_name' => 'Staff',
@@ -32,6 +37,11 @@ class UserSeeder extends Seeder
             'contact' => '09771259259'
         ]);
 
+        OtpMessage::create([
+            'email' => 'staff@gmail.com',
+            'code' => '4432'
+        ]);
+
         User::create([
             'first_name' => 'School',
             'last_name' => 'Alumni',
@@ -39,6 +49,11 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'user_type' => 'school_alumni',
             'contact' => '09771259259'
+        ]);
+
+        OtpMessage::create([
+            'email' => 'alumni@gmail.com',
+            'code' => '4433'
         ]);
     }
 }
