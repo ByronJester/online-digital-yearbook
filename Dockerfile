@@ -33,7 +33,7 @@ WORKDIR /var/www/html
 COPY composer* ./
 
 ENV COMPOSER_MEMORY_LIMIT=-1
-RUN composer clear-cache
+
 RUN composer install \
   --no-dev \
   --no-interaction \
