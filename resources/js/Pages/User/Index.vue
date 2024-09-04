@@ -73,7 +73,7 @@ const triggerFileUpload = () => {
 </script>
 
 <template>
-    <!-- <Head title="User Management" /> -->
+    <Head title="User Management" />
 
     <AuthenticatedLayout>
         <div class="w-full p-5 ">

@@ -31,6 +31,9 @@ RUN npm run build
 FROM composer:${COMPOSER_VERSION} AS vendor
 WORKDIR /var/www/html
 COPY composer* ./
+
+ENV COMPOSER_MEMORY_LIMIT=-1
+RUN composer clear-cache
 RUN composer install \
   --no-dev \
   --no-interaction \
