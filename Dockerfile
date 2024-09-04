@@ -34,16 +34,17 @@ COPY composer* ./
 
 ENV COMPOSER_MEMORY_LIMIT=-1
 
-RUN composer install \
-  --no-dev \
-  --no-interaction \
-  --prefer-dist \
-  --ignore-platform-reqs \
-  --optimize-autoloader \
-  --apcu-autoloader \
-  --ansi \
-  --no-scripts \
-  --audit
+# RUN composer install \
+#   --no-dev \
+#   --no-interaction \
+#   --prefer-dist \
+#   --ignore-platform-reqs \
+#   --optimize-autoloader \
+#   --apcu-autoloader \
+#   --ansi \
+#   --no-scripts \
+#   --audit
+RUN composer install -vvv
 
 ###########################################
 
