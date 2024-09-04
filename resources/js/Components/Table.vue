@@ -26,6 +26,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showCopy: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -35,14 +39,16 @@ export default {
   },
   computed: {
     filteredData() {
-      if (this.searchQuery) {
-        return this.rows.filter(row =>
-          Object.values(row).some(value =>
-            value.toString().toLowerCase().includes(this.searchQuery.toLowerCase())
-          )
-        );
-      }
-      return this.rows;
+        if (this.searchQuery) {
+            return this.rows.filter(row =>
+                this.headers.some(header => {
+                    const key = header.toLowerCase().replace(/ /g, '_'); // Convert header to corresponding key
+                    const value = row[key];
+                    return value && value.toString().toLowerCase().includes(this.searchQuery.toLowerCase());
+                })
+            );
+        }
+        return this.rows;
     },
     paginatedData() {
       const start = (this.currentPage - 1) * this.rowsPerPage;
@@ -84,26 +90,31 @@ export default {
         <thead>
           <tr>
             <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-            <th v-if="showView || showEdit || showDelete">Actions</th>
+            <th v-if="showView || showEdit || showDelete || showCopy">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(row, index) in paginatedData" :key="index">
-            <td v-for="(value, key) in row" :key="key" :data-label="headers[key]">
-              {{ value }}
+            <!-- Filter the row's keys to match the headers -->
+            <td v-for="header in headers" :key="header" :data-label="header">
+                {{ row[header.toLowerCase().replace(/ /g, '_')] }}
             </td>
-            <td v-if="showView || showEdit || showDelete">
-                <button v-if="showView" @click="handleAction(row, 'view')" class="btn-view">
-                    View
-                </button>
+            <td v-if="showView || showEdit || showDelete || showCopy">
+              <button v-if="showView" @click="handleAction(row, 'view')" class="btn-view">
+                View
+              </button>
 
-                <button v-if="showEdit" @click="handleAction(row, 'edit')" class="btn-edit">
-                    Edit
-                </button>
+              <button v-if="showEdit" @click="handleAction(row, 'edit')" class="btn-edit">
+                Edit
+              </button>
 
-                <button v-if="showDelete" @click="handleAction(row, 'delete')" class="btn-delete">
-                    Delete
-                </button>
+              <button v-if="showDelete" @click="handleAction(row, 'delete')" class="btn-delete">
+                Delete
+              </button>
+
+              <button v-if="showCopy" @click="handleAction(row, 'copy')" class="btn-copy">
+                Copy Password
+              </button>
             </td>
           </tr>
         </tbody>
@@ -117,7 +128,8 @@ export default {
         </button>
       </div>
     </div>
-</template>
+  </template>
+
 
 
 <style scoped>
@@ -214,7 +226,7 @@ button:disabled {
     color: black;
 }
 
-.btn-edit {
+.btn-edit, .btn-copy {
     font-size: 12px;
     margin-right: 2px;
     background-color: #33E88D;

@@ -19,7 +19,7 @@ const logoUrl = getLogo('images/logo1.png')
 </script>
 
 <template>
-    <div class="flex h-screen bg-gray-100">
+    <div class="flex h-full bg-gray-100">
         <!-- Collapsible Sidebar -->
         <div
             :class="{'w-64': sidebarOpen, 'w-14': !sidebarOpen}"
@@ -90,7 +90,7 @@ const logoUrl = getLogo('images/logo1.png')
         </div>
 
         <!-- Main Content -->
-        <div class="flex flex-col flex-1 w-full">
+        <div class="flex flex-col flex-1 w-full min-h-screen h-full">
             <!-- Top Navbar -->
             <nav class="bg-[#04549C]">
                 <div class="flex justify-between px-4 sm:px-6 lg:px-8" :class="{'h-[5.74vw]': sidebarOpen, 'h-[3.95vw]': !sidebarOpen}">
@@ -223,11 +223,11 @@ const logoUrl = getLogo('images/logo1.png')
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
+            <!-- <header class="bg-white shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
-            </header>
+            </header> -->
 
             <!-- Page Content -->
             <main class="flex-1 p-4 sm:p-6 lg:p-8">

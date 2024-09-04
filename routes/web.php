@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('system-admin')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('home-page-management')->group(function () {
         Route::get('/', function () {
@@ -54,6 +54,7 @@ Route::prefix('system-admin')->middleware(['auth', 'verified'])->group(function 
         // })->name('user-management');
 
         Route::get('/', [UserController::class, 'index'])->name('user-management');
+        Route::post('/bulk-upload', [UserController::class, 'uploadUsers'])->name('upload-users');
     });
 
     Route::prefix('archive')->group(function () {
