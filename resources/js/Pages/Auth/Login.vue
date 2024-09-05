@@ -32,14 +32,20 @@ const getOtp = () => {
 
     form.post(route('send-otp'), {
         onSuccess: (page) => {
-            console.log(page)
-            if(page.props.flash.success == 1) {
-                var modal = document.getElementById("defaultModal");
+            // console.log(page)
+            // if(page.props.flash.success == 1) {
+            //     var modal = document.getElementById("defaultModal");
 
-                modal.style.display = "block";
-            } else {
-                message = true
-            }
+            //     modal.style.display = "block";
+            // } else {
+            //     message = true
+            // }
+            var modal = document.getElementById("defaultModal");
+
+            modal.style.display = "block";
+        },
+        onError: (errors) => {
+            message = true
         }
     });
 }
@@ -48,10 +54,13 @@ const submit = () => {
     otpmessage = false
     form.post(route('login'), {
         onSuccess: (page) => {
-            console.log(page)
-            if(page.props.flash.success == 0) {
-                otpmessage = true
-            }
+            // console.log(page)
+            // if(page.props.flash.success == 0) {
+            //     otpmessage = true
+            // }
+        },
+        onError: (errors) => {
+            otpmessage = true
         }
     });
 };

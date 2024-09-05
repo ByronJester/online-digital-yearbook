@@ -34,9 +34,7 @@ class AuthenticatedSessionController extends Controller
         $otp = OtpMessage::where('email', $request->email)->where('code', $request->code)->first();
 
         if(!$otp) {
-            session()->flash('success', 0);
-
-            return redirect()->back();
+            return redirect()->back()->withErrors(['error' => 'An error occurred.']);
         }
 
         $request->authenticate();

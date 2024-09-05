@@ -52,7 +52,7 @@ class UserController extends Controller
             //     ]
             // );
 
-            session()->flash('success', 1);
+            // session()->flash('success', 1);
 
             // Send OTP
             // $this->sendSMS('09453917972', $message);
@@ -60,9 +60,9 @@ class UserController extends Controller
 
             return redirect()->back();
         } else {
-            session()->flash('success', 0);
+            // session()->flash('success', 0);
 
-            return redirect()->back();
+            return redirect()->back()->withErrors(['error' => 'An error occurred.']);;
         }
 
 
