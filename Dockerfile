@@ -313,7 +313,8 @@ RUN mkdir -p \
   && chown -R octane:octane \
   storage \
   bootstrap/cache \
-  && chmod -R ug+rwx storage bootstrap/cache
+  && chmod -R ug+rwx storage bootstrap/cache \
+  && chmod -R 775 storage/framework/sessions
 
 COPY deployment/octane/supervisord* /etc/supervisor/conf.d/
 COPY deployment/octane/php.ini /usr/local/etc/php/conf.d/octane.ini
