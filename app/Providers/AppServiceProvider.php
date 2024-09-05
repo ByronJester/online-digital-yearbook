@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
             'user' => function () {
                 return auth()->user();
             },
-            'flash' => function () {
+            'res' => function () {
                 return [
                     'success' => session('success'),
                     'error' => session('error'),
