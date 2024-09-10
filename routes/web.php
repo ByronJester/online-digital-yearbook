@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     UserController,
     HomepageController
 };
+use App\Models\{ Logo, SuccessStory, History };
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,10 @@ use App\Http\Controllers\{
 // });
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    return Inertia::render('Welcome', [
+        'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
+        'histories' => History::orderBy('created_at', 'desc')->get()
+    ]);
 })->name('landing-page');
 
 Route::post('/send-otp', [UserController::class, 'sendOTP'])->name('send-otp');

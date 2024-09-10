@@ -2,6 +2,15 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
+defineProps({
+    stories: {
+        type: Array,
+    },
+    histories: {
+        type: Array,
+    },
+});
+
 const navItems = [
     { name: 'Home' },
     { name: 'Alumni Success Stories' },
@@ -104,12 +113,16 @@ console.log(logoUrl)
         </div>
 
         <div v-else-if="activeNavItem === 'Alumni Success Stories'">
-            <div class="w-full">
-
+            <div class="w-full mb-10">
+                <p class="text-2xl">
+                    Alumni Success Story
+                </p>
             </div>
 
             <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div v-for="story in $page?.props?.success_stories" :key="story.id"
+
+
+                <div v-for="story in stories" :key="story.id"
                     class="flex flex-col mt-10 md:mt-0"
                 >
                     <div class="w-full h-[300px] border-2 border-gray-600" v-if="!!story.file">
@@ -135,30 +148,32 @@ console.log(logoUrl)
         </div>
 
         <div v-else-if="activeNavItem === 'History'">
-            <div class="w-full">
+            <div class="w-full mb-10">
+                <p class="text-2xl">
+                   History
+                </p>
+            </div>
 
-</div>
-
-<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div v-for="history in $page?.props?.histories" :key="history.id"
-        class="flex flex-col mt-10 md:mt-0"
-    >
-        <div class="w-full h-[300px] border-2 border-gray-600" v-if="!!history.file">
-            <img class="w-full h-full" :src="history.file" />
-        </div>
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div v-for="history in histories" :key="history.id"
+                    class="flex flex-col mt-10 md:mt-0"
+                >
+                    <div class="w-full h-[300px] border-2 border-gray-600" v-if="!!history.file">
+                        <img class="w-full h-full" :src="history.file" />
+                    </div>
 
 
-        <div class="w-full h-[300px] border-2 border-gray-600" v-else>
-            <img :src="logoUrl" class="w-full h-full"/>
-        </div>
+                    <div class="w-full h-[300px] border-2 border-gray-600" v-else>
+                        <img :src="logoUrl" class="w-full h-full"/>
+                    </div>
 
-        <div class="w-full">
-            <p class="text-[12px] text-justify mt-2">
-                {{ history.content }}
-            </p>
-        </div>
-    </div>
-</div>
+                    <div class="w-full">
+                        <p class="text-[12px] text-justify mt-2">
+                            {{ history.content }}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div v-else-if="activeNavItem === 'Hymn'">

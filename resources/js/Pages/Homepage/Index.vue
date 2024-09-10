@@ -88,7 +88,7 @@ const handleFileChange = (e, type) => {
 const saveLogo = () => {
     formLogo.post(route('home-page-management-logo'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -99,7 +99,7 @@ const saveLogo = () => {
 const saveGreeting = () => {
     formGreeting.post(route('home-page-management-greeting'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -110,7 +110,7 @@ const saveGreeting = () => {
 const saveStory = () => {
     formStory.post(route('home-page-management-story'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -121,7 +121,7 @@ const saveStory = () => {
 const saveHistory = () => {
     formHistory.post(route('home-page-management-history'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -132,7 +132,7 @@ const saveHistory = () => {
 const saveHymn = () => {
     formHymn.post(route('home-page-management-hymn'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -143,7 +143,7 @@ const saveHymn = () => {
 const saveMission = () => {
     formMission.post(route('home-page-management-mission'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -154,7 +154,7 @@ const saveMission = () => {
 const saveVision = () => {
     formVision.post(route('home-page-management-vision'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -165,7 +165,7 @@ const saveVision = () => {
 const saveProgram = () => {
     formProgram.post(route('home-page-management-program'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 
@@ -176,7 +176,7 @@ const saveProgram = () => {
 const saveFaq = () => {
     formFaq.post(route('home-page-management-faq'), {
         onSuccess: (page) => {
-            location.reload()
+            // location.reload()
         },
         onError: (errors) => {
 

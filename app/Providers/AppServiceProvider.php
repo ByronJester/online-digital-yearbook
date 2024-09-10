@@ -28,12 +28,12 @@ class AppServiceProvider extends ServiceProvider
             'logo' => function() {
                 return Logo::latest()->first();
             },
-            'success_stories' => function() {
-                return SuccessStory::orderBy('created_at', 'desc')->get();
-            },
-            'histories' => function() {
-                return History::orderBy('created_at', 'desc')->get();
-            },
+            // 'success_stories' => function() {
+            //     return SuccessStory::orderBy('created_at', 'desc')->get();
+            // },
+            // 'histories' => function() {
+            //     return History::orderBy('created_at', 'desc')->get();
+            // },
             'res' => function () {
                 return [
                     'success' => session('success'),
