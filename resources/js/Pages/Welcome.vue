@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 defineProps({
     stories: {
@@ -38,7 +38,57 @@ const getLogo = (imagePath) => {
 
 const logoUrl = getLogo('images/logo1.png')
 
-console.log(logoUrl)
+const carouseImage = [
+    `${window.location.origin}/carousel/c1.jpg`,
+    `${window.location.origin}/carousel/c2.jpg`,
+    `${window.location.origin}/carousel/c3.jpg`,
+    `${window.location.origin}/carousel/c4.jpg`
+]
+
+const carouselRef = ref(null);
+let intervalId = null;
+
+const startAutoplay = () => {
+  if (carouselRef.value) {
+    intervalId = setInterval(() => {
+      if (carouselRef.value.next) {
+        carouselRef.value.next();
+      }
+    }, 3000); // 3000ms = 3 seconds
+  }
+};
+
+const stopAutoplay = () => {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+};
+
+onMounted(() => {
+  startAutoplay();
+});
+
+onUnmounted(() => {
+  stopAutoplay();
+});
+
+
+</script>
+
+<script>
+     // If you are using PurgeCSS, make sure to whitelist the carousel CSS classes
+    import 'vue3-carousel/dist/carousel.css'
+    import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
+    export default {
+        name: 'App',
+        components: {
+            Carousel,
+            Slide,
+            Pagination,
+            Navigation,
+        },
+    }
 </script>
 
 <template>
@@ -107,9 +157,25 @@ console.log(logoUrl)
 
     <!-- Dynamic UI based on the selected nav item -->
     <div class="p-6">
-        <div v-if="activeNavItem === 'Home'">
-            <h2>Welcome to Home</h2>
-            <p>This is the home page content.</p>
+        <div v-if="activeNavItem === 'Home'" class="mt-5">
+            <!-- <div class="w-full mb-10">
+                <p class="text-2xl">
+                    Alumni Success Story
+                </p>
+            </div> -->
+
+            <div class="w-full carousel-container h-[400px]">
+                <carousel :items-to-show="1" ref="carouselRef">
+                    <slide v-for="i in carouseImage" :key="i">
+                        <img :src="i" class="w-full h-full"/>
+                    </slide>
+
+                    <template #addons>
+                        <navigation />
+                        <pagination />
+                    </template>
+                </carousel>
+             </div>
         </div>
 
         <div v-else-if="activeNavItem === 'Alumni Success Stories'">
@@ -212,5 +278,11 @@ console.log(logoUrl)
     .lg\\:flex {
         display: none;
     }
+}
+
+.carousel-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 </style>
