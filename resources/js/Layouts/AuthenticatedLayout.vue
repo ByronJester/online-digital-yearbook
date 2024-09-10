@@ -27,7 +27,7 @@ const logoUrl = getLogo('images/logo1.png')
         >
             <div class="flex items-center justify-between p-4 bg-[#04549C]">
                 <!-- <ApplicationLogo class="block h-9 w-auto fill-current text-white" /> -->
-                <img :src="logoUrl" alt="Logo" class="logo w-[50px] h-[50px]" v-if="sidebarOpen"
+                <img :src="!$page.props.logo ? logoUrl : $page.props.logo.file" alt="Logo" class="logo w-[50px] h-[50px]" v-if="sidebarOpen"
                 >
                 <button
                     @click="sidebarOpen = !sidebarOpen"

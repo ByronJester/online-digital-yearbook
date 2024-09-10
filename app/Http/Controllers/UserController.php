@@ -16,6 +16,7 @@ class UserController extends Controller
             'users' => User::orderBy('updated_at', 'desc')->get()
         ]);
     }
+    // Upload user csv
 
     public function uploadUsers(Request $request)
     {
@@ -62,7 +63,7 @@ class UserController extends Controller
         } else {
             // session()->flash('success', 0);
 
-            return redirect()->back()->withErrors(['error' => 'An error occurred.']);;
+            return redirect()->back()->withErrors(['error' => 'An error occurred.']);
         }
 
 

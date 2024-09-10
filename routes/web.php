@@ -5,7 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\{
-    UserController
+    UserController,
+    HomepageController
 };
 
 /*
@@ -19,9 +20,13 @@ use App\Http\Controllers\{
 |
 */
 
+// Route::get('/', function () {
+//     return redirect()->route('login');
+// });
+
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return Inertia::render('Welcome');
+})->name('landing-page');
 
 Route::post('/send-otp', [UserController::class, 'sendOTP'])->name('send-otp');
 
@@ -34,9 +39,16 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('home-page-management')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('Dashboard');
-        })->name('home-page-management');
+        Route::get('/', [HomepageController::class, 'index'])->name('home-page-management');
+        Route::post('/save-logo', [HomepageController::class, 'saveLogo'])->name('home-page-management-logo');
+        Route::post('/save-greeting', [HomepageController::class, 'saveGreetingMessage'])->name('home-page-management-greeting');
+        Route::post('/save-story', [HomepageController::class, 'saveSuccessStory'])->name('home-page-management-story');
+        Route::post('/save-history', [HomepageController::class, 'saveHistory'])->name('home-page-management-history');
+        Route::post('/save-hymn', [HomepageController::class, 'saveHymn'])->name('home-page-management-hymn');
+        Route::post('/save-mission', [HomepageController::class, 'saveMission'])->name('home-page-management-mission');
+        Route::post('/save-vision', [HomepageController::class, 'saveVision'])->name('home-page-management-vision');
+        Route::post('/save-program', [HomepageController::class, 'saveProgram'])->name('home-page-management-program');
+        Route::post('/save-faq', [HomepageController::class, 'saveFaq'])->name('home-page-management-faq');
     });
 
     Route::prefix('user-management')->group(function () {

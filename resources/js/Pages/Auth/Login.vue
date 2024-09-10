@@ -153,7 +153,7 @@ const closeOtpModal = () => {
             <div id="book-container" class="book-container">
                 <div id="book-content" class="book-content">
                     <div id="book-cover" class="left-page">
-                        <img :src="logoUrl" alt="Logo" class="logo">
+                        <img :src="!$page.props.logo ? logoUrl : $page.props.logo.file" alt="Logo" class="logo">
                         <p class="yearbook-text">Online Digital Yearbook</p>
                     </div>
                     <div class="right-page">
@@ -213,6 +213,7 @@ const closeOtpModal = () => {
     position: relative;
     perspective: 1000px; /* Add perspective for 3D effect */
     font-family: 'Rubik', sans-serif;
+    margin: auto; /* Center container on smaller screens */
 }
 
 .book-content {
@@ -222,6 +223,7 @@ const closeOtpModal = () => {
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.6s;
+    flex-direction: row;
 }
 
 .left-page, .right-page {
@@ -354,15 +356,88 @@ const closeOtpModal = () => {
     text-decoration: underline;
 }
 
-/* Add transitions for smooth animation */
-.book-content {
-    transition: transform 0.6s;
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .book-container {
+        width: 90vw;
+        height: auto;
+    }
+
+    .book-content {
+        flex-direction: column; /* Stack pages vertically on small screens */
+    }
+
+    .left-page, .right-page {
+        width: 100%;
+        padding: 5px; /* Reduce padding */
+    }
+
+    .left-page .logo {
+        max-width: 70%; /* Adjust logo size */
+    }
+
+    .left-page .yearbook-text {
+        font-size: 20px; /* Adjust font size */
+    }
+
+    .right-page form {
+        padding: 10px;
+    }
+
+    .right-page form h2 {
+        font-size: 24px; /* Adjust font size */
+    }
+
+    .right-page form input {
+        padding: 12px; /* Adjust padding */
+    }
+
+    .right-page form button {
+        padding: 12px;
+        font-size: 14px; /* Adjust button text size */
+    }
+
+    .right-page .forgot-password {
+        font-size: 12px; /* Adjust font size */
+    }
 }
 
-.left-page, .right-page {
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
+@media (max-width: 480px) {
+    .book-container {
+        width: 100vw;
+    }
+
+    .left-page, .right-page {
+        padding: 5px; /* Further reduce padding */
+    }
+
+    .left-page .logo {
+        max-width: 80%; /* Adjust logo size */
+    }
+
+    .left-page .yearbook-text {
+        font-size: 18px; /* Adjust font size */
+    }
+
+    .right-page form {
+        padding: 5px;
+    }
+
+    .right-page form h2 {
+        font-size: 20px; /* Adjust font size */
+    }
+
+    .right-page form input {
+        padding: 10px; /* Adjust padding */
+    }
+
+    .right-page form button {
+        padding: 10px;
+        font-size: 12px; /* Adjust button text size */
+    }
+
+    .right-page .forgot-password {
+        font-size: 10px; /* Adjust font size */
+    }
 }
-
-
 </style>

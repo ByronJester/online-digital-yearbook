@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+// use Cloudinary\Api\Upload\UploadApi;
+// use Cloudinary\Configuration\Configuration;
+// use Cloudinary\Cloudinary;
+// use Cloudinary\Laravel\Facades\Cloudinary as CloudinaryFacade;
+// use Cloudinary\CloudinaryBuilder;
+use Cloudinary\Cloudinary;
 
 class Controller extends BaseController
 {
@@ -34,31 +40,21 @@ class Controller extends BaseController
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         $output = curl_exec( $ch );
         curl_close ($ch);
+    }
 
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/priority');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        //     'Content-Type: application/x-www-form-urlencoded',
-        // ]);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, "apikey=$apiKey&number=$number&message=$message");
+    public function uploadFile($file, $identifier)
+    {
+        $options = [
 
-        // $response = curl_exec($ch);
+        ];
 
-        // curl_close($ch);
+        $tags = [
 
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/otp');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        //     'Content-Type: application/x-www-form-urlencoded',
-        // ]);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, "apikey=$apiKey&number=$number&message=$message");
+        ];
 
-        // $response = curl_exec($ch);
+        \LaravelCloudinary::upload($file, $identifier, $options, $tags);
 
-        // curl_close($ch);
+        return $identifier;
+
     }
 }

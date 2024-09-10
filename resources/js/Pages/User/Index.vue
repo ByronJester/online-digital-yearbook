@@ -110,7 +110,7 @@ const triggerFileUpload = () => {
     </AuthenticatedLayout>
 </template>
 
-<style>
+<style scoped>
 .download-btn {
     background: #04549C;
     color: white;
