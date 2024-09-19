@@ -158,11 +158,6 @@ onUnmounted(() => {
     <!-- Dynamic UI based on the selected nav item -->
     <div class="p-6">
         <div v-if="activeNavItem === 'Home'" class="mt-5">
-            <!-- <div class="w-full mb-10">
-                <p class="text-2xl">
-                    Alumni Success Story
-                </p>
-            </div> -->
 
             <div class="w-full carousel-container h-[400px]">
                 <carousel :items-to-show="1" ref="carouselRef">

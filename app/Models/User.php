@@ -55,7 +55,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'role'
+        'role', 'fullname'
     ];
 
     public function getRoleAttribute()
@@ -64,5 +64,10 @@ class User extends Authenticatable
 
         // Convert to title case (capitalize the first letter of each word)
         return ucwords($string);
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

@@ -185,7 +185,7 @@ const saveFaq = () => {
 }
 
 
-
+const activeTab = ref('logo');
 
 
 </script>
@@ -195,8 +195,20 @@ const saveFaq = () => {
 
     <AuthenticatedLayout>
         <div class="w-full p-3 ">
-            <div class="flex flex-row">
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div class="tabs bg-white">
+                <button @click="activeTab = 'logo'" :class="{ 'active': activeTab === 'logo' }">Logo</button>
+                <button @click="activeTab = 'greeting'" :class="{ 'active': activeTab === 'greeting' }">Greeting</button>
+                <button @click="activeTab = 'story'" :class="{ 'active': activeTab === 'story' }">Alumni Success Stories</button>
+                <button @click="activeTab = 'history'" :class="{ 'active': activeTab === 'history' }">History</button>
+                <button @click="activeTab = 'hymn'" :class="{ 'active': activeTab === 'hymn' }">Hymn</button>
+                <button @click="activeTab = 'mission'" :class="{ 'active': activeTab === 'mission' }">Mission</button>
+                <button @click="activeTab = 'vision'" :class="{ 'active': activeTab === 'vision' }">Vision</button>
+                <button @click="activeTab = 'program'" :class="{ 'active': activeTab === 'program' }">Programs</button>
+                <button @click="activeTab = 'faq'" :class="{ 'active': activeTab === 'faq' }">FAQ</button>
+            </div>
+
+            <div v-if="activeTab === 'logo'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Logo
                     </p>
@@ -210,8 +222,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
+            </div>
 
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'greeting'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Greeting Message
                     </p>
@@ -229,8 +243,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
+            </div>
 
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'story'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Alumni Success Stories
                     </p>
@@ -252,11 +268,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
-
             </div>
 
-            <div class="flex flex-row">
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'history'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Brief History
                     </p>
@@ -275,8 +290,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
+            </div>
 
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'hymn'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         School Hymn
                     </p>
@@ -294,8 +311,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
+            </div>
 
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'mission'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Mission Statement
                     </p>
@@ -315,8 +334,8 @@ const saveFaq = () => {
                 </div>
             </div>
 
-            <div class="flex flex-row">
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'vision'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Vision Statement
                     </p>
@@ -334,8 +353,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
+            </div>
 
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'program'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         Programs
                     </p>
@@ -357,8 +378,10 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
+            </div>
 
-                <div class="w-full mx-1 border-b-2 border-black">
+            <div v-if="activeTab === 'faq'" class="tab-content">
+                <div class="w-full">
                     <p class="mb-5 text-2xl">
                         FAQ
                     </p>
@@ -374,8 +397,6 @@ const saveFaq = () => {
                         Save
                     </button>
                 </div>
-
-
             </div>
         </div>
 
@@ -384,5 +405,22 @@ const saveFaq = () => {
 
 <style>
 
-
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.tabs button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+.tabs button.active {
+    background-color: #04549C;
+    color: #fff;
+}
+.tab-content {
+    border: 1px solid #ddd;
+    padding: 20px;
+}
 </style>

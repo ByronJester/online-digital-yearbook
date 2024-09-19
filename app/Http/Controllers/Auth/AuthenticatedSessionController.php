@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\{ User, OtpMessage };
+use Carbon\Carbon;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -41,7 +42,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::ADMIN);
+        $auth = auth()->user();
+
+        $route = null;
+
+        if($auth->user_type == 'system_admin') {
+            $route = RouteServiceProvider::ADMIN;
+        }
+
+        if($auth->user_type == 'school_staff') {
+            $route = RouteServiceProvider::STAFF;
+        }
+
+        if($auth->user_type == 'school_alumni') {
+            $route = RouteServiceProvider::ALUMNI;
+        }
+
+        User::where('id', $auth->id)->update([
+            'last_logged_in' => Carbon::now()
+        ]);
+
+        return redirect()->intended($route);
     }
 
     /**

@@ -8,7 +8,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
-const sidebarOpen = ref(false);
+const sidebarOpen = ref(true);
 
 const getLogo = (imagePath) => {
     return `${window.location.origin}/${imagePath}`;
@@ -66,12 +66,9 @@ const logoUrl = getLogo('images/logo1.png')
                 </button>
             </div>
 
-            <nav class="flex flex-col" :class="{'flex': !sidebarOpen, 'items-center': !sidebarOpen, 'justify-center': !sidebarOpen}">
-                <NavLink :href="route('home-page-management')" :active="route().current('home-page-management')">
-                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
-                    <span v-if="sidebarOpen" class="text-md pl-5">Homepage Management</span>
-                </NavLink>
-
+            <nav class="flex flex-col" :class="{'flex': !sidebarOpen, 'items-center': !sidebarOpen, 'justify-center': !sidebarOpen}"
+                v-if="$page.props.auth.user.user_type == 'system_admin'"
+            >
                 <NavLink :href="route('user-management')" :active="route().current('user-management')">
                     <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">User Management</span>
@@ -85,6 +82,35 @@ const logoUrl = getLogo('images/logo1.png')
                 <NavLink :href="route('backup-and-restore')" :active="route().current('backup-and-restore')">
                     <i class="fa fa-gear text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Backup and Restore</span>
+                </NavLink>
+            </nav>
+
+            <nav class="flex flex-col" :class="{'flex': !sidebarOpen, 'items-center': !sidebarOpen, 'justify-center': !sidebarOpen}"
+                v-if="$page.props.auth.user.user_type == 'school_staff'"
+            >
+                <NavLink :href="route('home-page-management')" :active="route().current('home-page-management')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Homepage Management</span>
+                </NavLink>
+
+                <NavLink :href="route('staff-alumni-records')" :active="route().current('staff-alumni-records')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">School Alumni Records</span>
+                </NavLink>
+
+                <NavLink :href="route('staff-achievements-and-recogniations')" :active="route().current('staff-achievements-and-recogniations')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Achievments & Recognition</span>
+                </NavLink>
+
+                <NavLink :href="route('staff-school-album')" :active="route().current('staff-school-album')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">School Album</span>
+                </NavLink>
+
+                <NavLink :href="route('staff-class-batches')" :active="route().current('staff-class-batches')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Class Batches</span>
                 </NavLink>
             </nav>
         </div>

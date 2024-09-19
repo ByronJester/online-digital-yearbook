@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('program')->nullable();
             $table->string('section')->nullable();
             $table->string('position')->nullable();
+            $table->timestamp('last_logged_in')->nullable();
+
             $table->rememberToken();
 
             $table->softDeletes();
