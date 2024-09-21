@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
+            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->text('content');
             $table->string('image')->nullable();
             $table->string('video')->nullable();

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('album_likes', function (Blueprint $table) {
             $table->id();
-            $table->string('album_id');
-            $table->string('user_id');
+            $table->bigInteger('album_id')->unsigned()->comment('Foreign key from table albums');
+            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
 
             $table->timestamps();
         });

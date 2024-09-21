@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('achievement_likes', function (Blueprint $table) {
             $table->id();
-            $table->string('achievement_id');
-            $table->string('user_id');
+            $table->bigInteger('achievement_id')->unsigned()->comment('Foreign key from table achievements');
+            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
 
             $table->timestamps();
         });
