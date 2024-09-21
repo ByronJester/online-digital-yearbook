@@ -12,7 +12,7 @@ class AchievementController extends Controller
     public function index()
     {
         return Inertia::render('Achievement/Index', [
-            'posts' => Achievement::with(['likes', 'comments', 'user'])->get()
+            'posts' => Achievement::orderBy('created_at', 'desc')->with(['likes', 'comments', 'user'])->get()
         ]);
     }
 

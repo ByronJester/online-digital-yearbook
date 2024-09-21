@@ -15,12 +15,12 @@ class Achievement extends Model
 
     public function likes()
     {
-        return $this->hasMany(AchievementLike::class);
+        return $this->hasMany(AchievementLike::class, 'achievement_id', 'id');
     }
 
     public function comments()
     {
-        return $this->hasMany(AchievementComment::class);
+        return $this->hasMany(AchievementComment::class, 'achievement_id', 'id');
     }
 
     public function user()
