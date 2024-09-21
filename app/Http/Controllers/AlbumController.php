@@ -63,7 +63,7 @@ class AlbumController extends Controller
         $status = $request->status;
 
         if($status == 'Unlike') {
-            AlbumLike::where('achievement_id', $request->post_id)->where('user_id', auth()->user()->id)->delete();
+            AlbumLike::where('album_id', $request->post_id)->where('user_id', auth()->user()->id)->delete();
         } else {
             AlbumLike::create([
                 'album_id' => $request->post_id,

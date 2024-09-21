@@ -6,7 +6,6 @@ import { ref, computed } from 'vue';
 const props = defineProps({
     users: {
         type: Array,
-        required: true,
     },
 });
 
@@ -37,7 +36,7 @@ const formatDate = (date) => {
     <Head title="Alumni Records" />
 
     <AuthenticatedLayout>
-        <div class="w-full p-5 ">
+        <div class="w-full p-5">
             <!-- Search input field -->
             <div class="mb-5">
                 <input
@@ -58,17 +57,20 @@ const formatDate = (date) => {
                 </div>
             </div>
 
-            <div class="w-full flex flex-row student mt-2" v-for="user in filteredUsers" :key="user.id">
-                <div class="w-full">
-                    <p class="ml-2 p-2">
-                        {{ user?.fullname }}
-                    </p>
-                </div>
+            <div class="w-full">
+                <div class="w-full flex flex-row student mt-2" v-for="user in filteredUsers" :key="user.id">
+                    <div class="w-full">
+                        <p class="ml-2 p-2">
+                            {{ user?.fullname }}
+                        </p>
+                    </div>
 
-                <div class="w-full text-right mr-2 p-2">
-                    {{ !!user?.last_logged_in ? formatDate(user?.last_logged_in)  : 'N/A' }}
+                    <div class="w-full text-right mr-2 p-2">
+                        {{ !!user?.last_logged_in ? formatDate(user?.last_logged_in)  : 'N/A' }}
+                    </div>
                 </div>
             </div>
+
         </div>
     </AuthenticatedLayout>
 </template>
@@ -77,5 +79,17 @@ const formatDate = (date) => {
 .student {
     border-radius: 10px;
     border: 1px solid black;
+}
+
+.scroll-container {
+    overflow: hidden; /* Hides the scrollbar */
+    overflow-y: auto; /* Enables vertical scrolling */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For IE and Edge */
+}
+
+/* Hides the scrollbar in WebKit-based browsers (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+    display: none;
 }
 </style>

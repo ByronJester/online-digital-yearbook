@@ -13,7 +13,7 @@ class AlumniController extends Controller
     public function records()
     {
         return Inertia::render('Alumni/Records', [
-            'users' => User::orderBy('created_at')->where('user_type', 'school_alumni')->get()
+            'users' => User::orderBy('created_at', 'desc')->where('user_type', 'school_alumni')->get()
         ]);
     }
 }

@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     HomepageController,
     AlumniController,
     AchievementController,
-    AlbumController
+    AlbumController,
+    BatchController
 };
 use App\Models\{ Logo, SuccessStory, History };
 
@@ -103,7 +104,8 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('class-batches')->group(function () {
-        Route::get('/', [HomepageController::class, 'index'])->name('staff-class-batches');
+        Route::get('/', [BatchController::class, 'index'])->name('staff-class-batches');
+        Route::post('/save-batch', [BatchController::class, 'saveBatch'])->name('staff-save-batch');
 
     });
 });

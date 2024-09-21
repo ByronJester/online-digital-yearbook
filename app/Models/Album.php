@@ -16,12 +16,12 @@ class Album extends Model
 
     public function likes()
     {
-        return $this->hasMany(AlbumLike::class, 'album_id');
+        return $this->hasMany(AlbumLike::class);
     }
 
     public function comments()
     {
-        return $this->hasMany(AlbumComment::class, 'album_id');
+        return $this->hasMany(AlbumComment::class);
     }
 
     public function user()

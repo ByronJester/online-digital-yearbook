@@ -155,14 +155,17 @@ onUnmounted(() => {
                 <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" />
             </div>
 
-            <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
+            <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
         </div>
 
         <!-- News feed posts -->
         <div class="space-y-6">
             <div v-for="post in posts" :key="post.id" class="border rounded-lg p-4 bg-white h-[100%]">
-                <div class="font-bold">{{ post.user.fullname }}</div>
-                <p>{{ post.content }}</p>
+                <!-- <div class="font-bold">{{ post.user.fullname }}</div> -->
+
+                <div class="w-full text-center border border-black rounded-md mt-3">
+                    <p class="text-2xl p-3">{{ post.content }}</p>
+                </div>
 
                 <!-- Display multiple images if available -->
                 <div v-if="post.image.length > 0" class="my-4">

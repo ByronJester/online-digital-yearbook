@@ -107,17 +107,17 @@ const addComment = async(post, commentText) => {
 
         <!-- News feed posts -->
         <div class="space-y-6">
-            <div v-for="post in posts" :key="post.id" class="border rounded-lg p-4 bg-white">
+            <div v-for="post in posts" :key="post.id" class="border rounded-lg p-4 bg-white h-full">
                 <div class="font-bold">{{ post.user.fullname }}</div>
                 <p>{{ post.content }}</p>
 
                 <!-- Display image or video if available -->
 
                 <div v-if="post.image" class="my-4">
-                    <img :src="post.image" alt="Post Image" class="w-full h-[200px]">
+                    <img :src="post.image" alt="Post Image" class="w-full h-[250px]">
                 </div>
                 <div v-if="post.video" class="my-4">
-                    <video controls class="w-full h-[200px]">
+                    <video controls class="w-full h-[250px]">
                         <source :src="post.video" type="video/mp4" />
                     </video>
                 </div>
@@ -163,5 +163,17 @@ const addComment = async(post, commentText) => {
 <style scoped>
 textarea {
     resize: none;
+}
+
+.scroll-container {
+    overflow: hidden; /* Hides the scrollbar */
+    overflow-y: auto; /* Enables vertical scrolling */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For IE and Edge */
+}
+
+/* Hides the scrollbar in WebKit-based browsers (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+    display: none;
 }
 </style>
