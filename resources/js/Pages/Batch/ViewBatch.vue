@@ -9,35 +9,35 @@ defineProps({
     batch: {
         type: Object,
     },
+    students: {
+        type: Array
+    }
 });
 
 // Form data for new post
-const course = ref('');
-const section = ref('');
-const school_year = ref('');
-const logo = ref('');
+const student_name = ref('');
+const award = ref('');
+const image = ref('');
 
-// File input refs to trigger from buttons
-const imageInput = ref(null);
-const videoInput = ref(null);
-const createPost = async() => {
-        const formData = new FormData();
-        formData.append('course', course.value);
-        formData.append('section', section.value);
-        formData.append('school_year', school_year.value);
-        formData.append('logo', logo.value);
+const saveStudent = async(id) => {
+    const formData = new FormData();
 
-        await Inertia.post(route('staff-save-batch'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            onSuccess: (page) => {
-                // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-            },
-            onError: (errors) => {
-                // alert('There was an error uploading the file.');
-            },
-        });
+    formData.append('batch_id', id);
+    formData.append('image', image.value);
+    formData.append('student_name', student_name.value);
+    formData.append('award', award.value);
+
+    await Inertia.post(route('staff-save-batch-student'), formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        onSuccess: (page) => {
+            // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+        },
+        onError: (errors) => {
+            // alert('There was an error uploading the file.');
+        },
+    });
 };
 
 const getLogo = (imagePath) => {
@@ -46,9 +46,6 @@ const getLogo = (imagePath) => {
 
 const logoUrl = getLogo('images/logo1.png')
 
-const viewBatch = (id) => {
-    Inertia.get(route('staff-view-batch', id))
-}
 </script>
 
 <template>
@@ -65,20 +62,35 @@ const viewBatch = (id) => {
                         <div class="w-full md:mr-1">
                             <label>Student Name</label>
                             <br>
-                            <input type="text" class="w-full rounded-md"/>
+                            <input type="text" class="w-full rounded-md" v-model="student_name"/>
                         </div>
 
                         <div class="w-full md:mr-1">
                             <label>Student Award</label>
                             <br>
-                            <input type="text" class="w-full rounded-md"/>
+                            <input type="text" class="w-full rounded-md" v-model="award"/>
+                        </div>
+
+                        <div class="w-full md:mr-1">
+                            <label>Student Picture</label>
+                            <br>
+                            <input type="file" class="w-full rounded-md" @change="(e) => image = e.target.files[0]"/>
                         </div>
                     </div>
 
-                    <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+                    <button @click="saveStudent(batch.id)" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+                    <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="student in students">
+                        <img :src="student.image || logoUrl" class="w-full h-[200px]"/>
+                        <p class="text-center font-bold">{{ student.student_name }}</p>
+                        <p class="text-center text-xs">{{ student.award }}</p>
+                    </div>
+                </div>
             </div>
+
+
         </div>
 
 

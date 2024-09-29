@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ Batch };
+use App\Models\{ Batch, BatchStudent };
 
 class BatchController extends Controller
 {
@@ -44,7 +44,33 @@ class BatchController extends Controller
     public function viewBatch($id)
     {
         return Inertia::render('Batch/ViewBatch', [
-            'batch' => Batch::where('id', $id)->first()
+            'batch' => Batch::where('id', $id)->first(),
+            'students' => BatchStudent::orderBy('student_name')->where('batch_id', $id)->get()
         ]);
+    }
+
+    public function saveBatchStudent(Request $request)
+    {
+        $request->validate([
+            'batch_id' => 'required',
+            'student_name' => 'required',
+            'image' => 'required'
+        ]);
+
+        $imageUpload = null;
+
+        if ($request->hasFile('image')) {
+            $studentImage = Str::random(10) . '_batch_student';
+            $imageUpload = $this->uploadFile($request->file('image'), $studentImage);
+        }
+
+        BatchStudent::create([
+            'batch_id' => $request->batch_id,
+            'student_name' => $request->student_name,
+            'award' => $request->award,
+            'image' => $imageUpload
+        ]);
+
+        return redirect()->back();
     }
 }
