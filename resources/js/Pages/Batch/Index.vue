@@ -46,7 +46,9 @@ const getLogo = (imagePath) => {
 
 const logoUrl = getLogo('images/logo1.png')
 
-
+const viewBatch = (id) => {
+    Inertia.get(route('staff-view-batch', id))
+}
 </script>
 
 <template>
@@ -93,7 +95,7 @@ const logoUrl = getLogo('images/logo1.png')
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in batches">
+                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in batches" @click="viewBatch(batch.id)">
                     <img :src="batch.logo || logoUrl" class="w-full h-[225px]"/>
                     <p class="text-center font-bold">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
                 </div>

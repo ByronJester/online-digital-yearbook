@@ -40,4 +40,11 @@ class BatchController extends Controller
 
         return redirect()->back();
     }
+
+    public function viewBatch($id)
+    {
+        return Inertia::render('Batch/ViewBatch', [
+            'batch' => Batch::where('id', $id)->first()
+        ]);
+    }
 }

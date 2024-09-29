@@ -105,6 +105,7 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('class-batches')->group(function () {
         Route::get('/', [BatchController::class, 'index'])->name('staff-class-batches');
+        Route::get('/{id}', [BatchController::class, 'viewBatch'])->name('staff-view-batch');
         Route::post('/save-batch', [BatchController::class, 'saveBatch'])->name('staff-save-batch');
 
     });
