@@ -10,10 +10,10 @@ class Batch extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content', 'image'
+        'course', 'section', 'school_year', 'logo'
     ];
 
-    public function getImageAttribute($value)
+    public function getLogoAttribute($value)
     {
         if(!$value) return $value;
         // return \LaravelCloudinary::show($value, []);

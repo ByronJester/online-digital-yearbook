@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
-            $table->string('school_year');
-            $table->string('section');
             $table->string('course');
-            $table->string('student_name');
-            $table->string('award')->nullable();
-            $table->string('iamge')->nullable();
+            $table->string('section');
+            $table->string('school_year');
+            $table->string('logo')->nullable();
 
             $table->timestamps();
         });

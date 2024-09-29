@@ -12,16 +12,20 @@ defineProps({
 });
 
 // Form data for new post
-const postContent = ref('');
-const postImage = ref(null);
+const course = ref('');
+const section = ref('');
+const school_year = ref('');
+const logo = ref('');
 
 // File input refs to trigger from buttons
 const imageInput = ref(null);
 const videoInput = ref(null);
 const createPost = async() => {
         const formData = new FormData();
-        formData.append('content', postContent.value);
-        formData.append('image', postImage.value);
+        formData.append('course', course.value);
+        formData.append('section', section.value);
+        formData.append('school_year', school_year.value);
+        formData.append('logo', logo.value);
 
         await Inertia.post(route('staff-save-batch'), formData, {
             headers: {
@@ -34,7 +38,6 @@ const createPost = async() => {
                 // alert('There was an error uploading the file.');
             },
         });
-    // }
 };
 
 const getLogo = (imagePath) => {
@@ -52,73 +55,49 @@ const logoUrl = getLogo('images/logo1.png')
     <AuthenticatedLayout>
         <div class="w-full h-[80vh] ">
             <div class="mb-10 border-2 border-black rounded-md p-5">
-                <div class="w-full flex flex-row py-3">
-                    <div class="w-full mr-1">
-                        <label for="cars">Course</label>
+                <div class="w-full flex flex-col md:flex-row py-3">
+                    <div class="w-full md:mr-1">
+                        <label>Course</label>
                         <br>
-                        <select class="rounded-md w-full">
+                        <select class="rounded-md w-full" v-model="course">
                             <option value="BSIT">BSIT</option>
                         </select>
                     </div>
 
-                    <div class="w-full mr-1">
-                        <label for="cars">Section</label>
+                    <div class="w-full md:mr-1">
+                        <label>Section</label>
                         <br>
-                        <select class="rounded-md w-full">
+                        <select class="rounded-md w-full" v-model="section">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                         </select>
                     </div>
 
-                    <div class="w-full mr-1">
-                        <label for="cars">School Year</label>
+                    <div class="w-full md:mr-1">
+                        <label>School Year</label>
                         <br>
-                        <select class="rounded-md w-full">
+                        <select class="rounded-md w-full" v-model="school_year">
                             <option value="2024">2024</option>
                         </select>
                     </div>
 
-                    <div class="w-full mr-1">
-                        <label for="cars">Batch Logo</label>
+                    <div class="w-full md:mr-1">
+                        <label>Batch Logo</label>
                         <br>
-                        <input type="file" class="w-full rounded-md"/>
+                        <input type="file" class="w-full rounded-md" @change="(e) => logo = e.target.files[0]"/>
                     </div>
                 </div>
-
-                <!-- <div class="w-full flex flex-row py-3">
-                    <div class="w-full mr-1">
-                        <label for="cars">Student Name</label>
-                        <br>
-                        <input type="text" class="w-full rounded-md"/>
-                    </div>
-
-                    <div class="w-full mr-1">
-                        <label for="cars">Award</label>
-                        <br>
-                        <input type="text" class="w-full rounded-md"/>
-                    </div>
-
-
-                </div> -->
-
 
                 <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
             </div>
 
-            <!-- <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 border-2 border-black rounded-md">
-                <div class="w-full p-5 flex justify-center items-center" v-for="batch in batches" :key="batch.id">
-                    <div class="flex flex-col p-5 border border-black rounded-md">
-                        <div class="w-full">
-                            <p class="text-xl text-center">{{ batch.content }}</p>
-                        </div>
-
-                        <div class="w-full mt-3">
-                            <img :src="batch.image || logoUrl" class="h-[180px] w-full"/>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
+                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in batches">
+                    <img :src="batch.logo || logoUrl" class="w-full h-[225px]"/>
+                    <p class="text-center font-bold">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
                 </div>
-            </div> -->
+            </div>
         </div>
 
 

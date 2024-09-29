@@ -19,20 +19,23 @@ class BatchController extends Controller
     public function saveBatch(Request $request)
     {
         $request->validate([
-            'content' => 'required',
+            'course' => 'required',
+            'section' => 'required',
+            'school_year' => 'required'
         ]);
 
         $imageUpload = null;
 
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('logo')) {
             $batchImage = Str::random(10) . '_batch';
-            $imageUpload = $this->uploadFile($request->file('image'), $batchImage);
+            $imageUpload = $this->uploadFile($request->file('logo'), $batchImage);
         }
 
-
         Batch::create([
-            'content' => $request->content,
-            'image' => $imageUpload
+            'course' => $request->course,
+            'section' => $request->section,
+            'school_year' => $request->school_year,
+            'logo' => $imageUpload
         ]);
 
         return redirect()->back();

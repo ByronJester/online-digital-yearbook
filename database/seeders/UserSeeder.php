@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'user_type' => 'system_admin',
-            'contact' => '09771259259'
+            'contact' => '09453917972'
         ]);
 
         OtpMessage::create([
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'email' => 'staff@gmail.com',
             'password' => Hash::make('password'),
             'user_type' => 'school_staff',
-            'contact' => '09771259259'
+            'contact' => '09453917972'
         ]);
 
         OtpMessage::create([
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
             'email' => 'alumni@gmail.com',
             'password' => Hash::make('password'),
             'user_type' => 'school_alumni',
-            'contact' => '09771259259'
+            'contact' => '09453917972'
         ]);
 
         OtpMessage::create([
