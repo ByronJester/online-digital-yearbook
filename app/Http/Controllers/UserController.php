@@ -45,19 +45,19 @@ class UserController extends Controller
             $email = $user->email;
             $message = "Your otp code is $code.";
 
-            // OtpMessage::updateOrCreate(
-            //     ['email' => $email],
-            //     [
-            //         'code' => $code,
-            //         'email' => $email
-            //     ]
-            // );
+            OtpMessage::updateOrCreate(
+                ['email' => $email],
+                [
+                    'code' => $code,
+                    'email' => $email
+                ]
+            );
 
-            // session()->flash('success', 1);
+            session()->flash('success', 1);
 
             // Send OTP
             // $this->sendSMS('09453917972', $message);
-            // $this->sendSMS($contact, $message);
+            $this->sendSMS($contact, $message);
 
             return redirect()->back();
         } else {

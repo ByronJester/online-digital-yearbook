@@ -52,20 +52,61 @@ const logoUrl = getLogo('images/logo1.png')
     <AuthenticatedLayout>
         <div class="w-full h-[80vh] ">
             <div class="mb-10 border-2 border-black rounded-md p-5">
-                <h2 class="text-xl font-bold mb-2">New Batch</h2>
-                <textarea v-model="postContent" placeholder="Enter Batch..." class="w-full p-2 border mb-4 rounded-lg" rows="1"></textarea>
+                <div class="w-full flex flex-row py-3">
+                    <div class="w-full mr-1">
+                        <label for="cars">Course</label>
+                        <br>
+                        <select class="rounded-md w-full">
+                            <option value="BSIT">BSIT</option>
+                        </select>
+                    </div>
 
-                <!-- Upload Buttons with Hidden Inputs -->
-                <div class="flex gap-4 mb-4">
-                    <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
+                    <div class="w-full mr-1">
+                        <label for="cars">Section</label>
+                        <br>
+                        <select class="rounded-md w-full">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
 
-                    <input ref="imageInput" type="file" @change="(e) => postImage = e.target.files[0]" accept="image/*" class="hidden" />
+                    <div class="w-full mr-1">
+                        <label for="cars">School Year</label>
+                        <br>
+                        <select class="rounded-md w-full">
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+
+                    <div class="w-full mr-1">
+                        <label for="cars">Batch Logo</label>
+                        <br>
+                        <input type="file" class="w-full rounded-md"/>
+                    </div>
                 </div>
+
+                <!-- <div class="w-full flex flex-row py-3">
+                    <div class="w-full mr-1">
+                        <label for="cars">Student Name</label>
+                        <br>
+                        <input type="text" class="w-full rounded-md"/>
+                    </div>
+
+                    <div class="w-full mr-1">
+                        <label for="cars">Award</label>
+                        <br>
+                        <input type="text" class="w-full rounded-md"/>
+                    </div>
+
+
+                </div> -->
+
 
                 <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 border-2 border-black rounded-md">
+            <!-- <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-1 border-2 border-black rounded-md">
                 <div class="w-full p-5 flex justify-center items-center" v-for="batch in batches" :key="batch.id">
                     <div class="flex flex-col p-5 border border-black rounded-md">
                         <div class="w-full">
@@ -77,7 +118,7 @@ const logoUrl = getLogo('images/logo1.png')
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
 

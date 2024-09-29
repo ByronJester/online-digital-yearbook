@@ -44,6 +44,7 @@ class AuthenticatedSessionController extends Controller
 
         $auth = auth()->user();
 
+
         $route = null;
 
         if($auth->user_type == 'system_admin') {
@@ -61,6 +62,8 @@ class AuthenticatedSessionController extends Controller
         User::where('id', $auth->id)->update([
             'last_logged_in' => Carbon::now()
         ]);
+
+        OtpMessage::where('email', $auth->email)->delete();
 
         return redirect()->intended($route);
     }

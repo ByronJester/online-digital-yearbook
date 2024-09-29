@@ -27,7 +27,7 @@ class Controller extends BaseController
             'apikey' =>  $apiKey,
             'number' => $number,
             'message' => $message,
-            'sendername' => 'SEMAPHORE'
+            'sendername' => 'ODY'
         );
 
         curl_setopt( $ch, CURLOPT_URL,'https://semaphore.co/api/v4/messages' );
@@ -40,6 +40,19 @@ class Controller extends BaseController
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         $output = curl_exec( $ch );
         curl_close ($ch);
+
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/priority');
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        //     'Content-Type: application/x-www-form-urlencoded',
+        // ]);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, "apikey=$apiKey&number=$number&message=$message");
+
+        // $response = curl_exec($ch);
+
+        // curl_close($ch);
     }
 
     public function uploadFile($file, $identifier)
