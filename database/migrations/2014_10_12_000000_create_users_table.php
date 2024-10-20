@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('program')->nullable();
             $table->string('section')->nullable();
             $table->string('position')->nullable();
+            $table->string('profile_picture')->nullable();
             $table->timestamp('last_logged_in')->nullable();
             $table->boolean('is_deactivated')->default(false);
 

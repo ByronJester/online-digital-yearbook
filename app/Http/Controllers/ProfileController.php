@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -27,17 +29,35 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'contact' => 'required',
+            'email' => 'required',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = User::where('id', auth()->user()->id)->first();
+
+        $user->first_name = $request->first_name;
+        $user->middle_name = $request->middle_name;
+        $user->last_name = $request->last_name;
+        $user->contact = $request->contact;
+        $user->email = $request->email;
+
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $filename = Str::random(10) . '_profile_picture';
+
+            $result = $this->uploadFile($file, $filename);
+            $user->profile_picture = $filename;
+
         }
 
-        $request->user()->save();
+        $user->save();
 
-        return Redirect::route('profile.edit');
+        return redirect()->back();
     }
 
     /**

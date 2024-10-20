@@ -70,4 +70,11 @@ class User extends Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    public function getProfilePictureAttribute($value)
+    {
+        if(!$value) return $value;
+        // return \LaravelCloudinary::show($value, []);
+        return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+    }
 }
