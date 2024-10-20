@@ -19,25 +19,39 @@ const student_name = ref('');
 const award = ref('');
 const image = ref('');
 
-const saveStudent = async(id) => {
-    const formData = new FormData();
+const saveStudent = (id) => {
+    swal({
+        title: "Are you sure to add this student to this batch?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const formData = new FormData();
 
-    formData.append('batch_id', id);
-    formData.append('image', image.value);
-    formData.append('student_name', student_name.value);
-    formData.append('award', award.value);
+            formData.append('batch_id', id);
+            formData.append('image', image.value);
+            formData.append('student_name', student_name.value);
+            formData.append('award', award.value);
 
-    await Inertia.post(route('staff-save-batch-student'), formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-        onSuccess: (page) => {
-            // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-        },
-        onError: (errors) => {
-            // alert('There was an error uploading the file.');
-        },
+            Inertia.post(route('staff-save-batch-student'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    location.reload()
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+
+        }
     });
+
 };
 
 const getLogo = (imagePath) => {

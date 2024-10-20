@@ -7,6 +7,7 @@ use App\Models\{ User, OtpMessage };
 use Inertia\Inertia;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -65,7 +66,12 @@ class UserController extends Controller
 
             return redirect()->back()->withErrors(['error' => 'An error occurred.']);
         }
+    }
 
+    public function deleteUser(Request $request)
+    {
+        User::where('id', $request->id)->delete();
 
+        return redirect()->back();
     }
 }

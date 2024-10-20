@@ -14,15 +14,37 @@ defineProps({
 // console.log(users)
 
 const handleTableAction = ({ action, row }) => {
-    console.log(action)
-    console.log(row)
-
     if (action == 'view') {
         console.log('view')
     } else if (action == 'edit') {
         console.log('edit')
     } else if (action == 'delete') {
-        console.log('delete')
+        swal({
+            title: "Are you sure to delete this user?",
+            text: "",
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((proceed) => {
+            if (proceed) {
+
+                try {
+                    Inertia.post(route('delete-user'), {id: row.id}, {
+                        onSuccess: (page) => {
+                            // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                            location.reload()
+                        },
+                        onError: (errors) => {
+                            // alert('There was an error uploading the file.');
+                        },
+                    });
+                } catch (error) {
+                    alert('There was an error uploading the file.');
+                }
+
+            }
+        });
     } else if (action == 'copy') {
         const password = row.password_text;
         console.log(password)
@@ -43,27 +65,40 @@ const downloadFile = (filename) => {
 
 const fileInput = ref(null);
 
-const handleFileUpload  = async(event) => {
-    const file = event.target.files[0];
+const handleFileUpload  = (event) => {
+    swal({
+        title: "Are you sure to add this users?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const file = event.target.files[0];
 
-    const formData = new FormData();
-    formData.append('file', file);
+            const formData = new FormData();
+            formData.append('file', file);
 
-    try {
-        await Inertia.post(route('upload-users'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            onSuccess: (page) => {
-                alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-            },
-            onError: (errors) => {
+            try {
+                Inertia.post(route('upload-users'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    },
+                    onError: (errors) => {
+                        alert('There was an error uploading the file.');
+                    },
+                });
+            } catch (error) {
                 alert('There was an error uploading the file.');
-            },
-        });
-    } catch (error) {
-        alert('There was an error uploading the file.');
-    }
+            }
+
+        }
+    });
+
 
 };
 
@@ -100,7 +135,7 @@ const triggerFileUpload = () => {
                     :rows-per-page="10"
                     :showView="false"
                     :showEdit="false"
-                    :showDelete="false"
+                    :showDelete="true"
                     :showCopy="true"
                     @action-event="handleTableAction"
                 />

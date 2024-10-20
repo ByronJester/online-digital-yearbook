@@ -52,6 +52,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/', [UserController::class, 'index'])->name('user-management');
         Route::post('/bulk-upload', [UserController::class, 'uploadUsers'])->name('upload-users');
+        Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('delete-user');
     });
 
     Route::prefix('archive')->group(function () {
@@ -79,6 +80,10 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
         Route::post('/save-vision', [HomepageController::class, 'saveVision'])->name('home-page-management-vision');
         Route::post('/save-program', [HomepageController::class, 'saveProgram'])->name('home-page-management-program');
         Route::post('/save-faq', [HomepageController::class, 'saveFaq'])->name('home-page-management-faq');
+
+        // Dynamic Endpoint
+        Route::post('/delete-data', [HomepageController::class, 'deleteData'])->name('hpm-delete-data');
+        Route::post('/use-data', [HomepageController::class, 'useData'])->name('hpm-use-data');
     });
 
     Route::prefix('dashboard')->group(function () {

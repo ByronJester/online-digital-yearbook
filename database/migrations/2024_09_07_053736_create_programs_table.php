@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('program_name');
             $table->text('content');
             $table->string('file')->nullable();
+            $table->boolean('is_used')->default(false);
 
             $table->timestamps();
         });

@@ -28,37 +28,51 @@ const handleVideoUpload = (e) => {
 };
 
 // Function to create a new post
-const createPost = async () => {
-    const formData = new FormData();
-    formData.append('content', postContent.value);
+const createPost = () => {
+    swal({
+        title: "Are you sure to save this album?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const formData = new FormData();
+            formData.append('content', postContent.value);
 
-    // Append all images to FormData
-    postImages.value.forEach((image, index) => {
-        console.log(image)
-        formData.append(`images[${index}]`, image);
+            // Append all images to FormData
+            postImages.value.forEach((image, index) => {
+                console.log(image)
+                formData.append(`images[${index}]`, image);
+            });
+
+            // Append all videos to FormData
+            postVideos.value.forEach((video, index) => {
+                formData.append(`videos[${index}]`, video);
+            });
+
+            Inertia.post(route('staff-album-save-post'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // Handle success
+                },
+                onError: (errors) => {
+                    // Handle error
+                },
+            });
+
+            // Reset form
+            postContent.value = '';
+            postImages.value = [];
+            postVideos.value = [];
+
+        }
     });
 
-    // Append all videos to FormData
-    postVideos.value.forEach((video, index) => {
-        formData.append(`videos[${index}]`, video);
-    });
 
-    await Inertia.post(route('staff-album-save-post'), formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-        onSuccess: (page) => {
-            // Handle success
-        },
-        onError: (errors) => {
-            // Handle error
-        },
-    });
-
-    // Reset form
-    postContent.value = '';
-    postImages.value = [];
-    postVideos.value = [];
 };
 
 // Function to handle liking a post
@@ -148,11 +162,11 @@ onUnmounted(() => {
             <!-- Upload Buttons with Hidden Inputs for Multiple Files -->
             <div class="flex gap-4 mb-4">
                 <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photos</button>
-                <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button>
+                <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button> -->
 
                 <!-- Hidden File Inputs -->
                 <input ref="imageInput" type="file" multiple @change="handleImageUpload" accept="image/*" class="hidden" />
-                <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" />
+                <!-- <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" /> -->
             </div>
 
             <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>

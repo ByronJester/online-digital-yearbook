@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
             $table->text('content');
+            $table->boolean('is_used')->default(false);
 
             $table->timestamps();
         });

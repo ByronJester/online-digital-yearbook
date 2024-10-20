@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('logos', function (Blueprint $table) {
             $table->id();
             $table->string('file');
+            $table->boolean('is_used')->default(false);
 
             $table->timestamps();
         });

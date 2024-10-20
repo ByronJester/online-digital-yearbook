@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->string('file')->nullable();
+            $table->boolean('is_used')->default(false);
 
             $table->timestamps();
         });

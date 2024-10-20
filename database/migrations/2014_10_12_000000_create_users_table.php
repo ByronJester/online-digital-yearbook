@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('section')->nullable();
             $table->string('position')->nullable();
             $table->timestamp('last_logged_in')->nullable();
+            $table->boolean('is_deactivated')->default(false);
 
             $table->rememberToken();
 

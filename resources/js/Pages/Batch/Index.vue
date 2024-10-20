@@ -20,24 +20,39 @@ const logo = ref('');
 // File input refs to trigger from buttons
 const imageInput = ref(null);
 const videoInput = ref(null);
-const createPost = async() => {
-        const formData = new FormData();
-        formData.append('course', course.value);
-        formData.append('section', section.value);
-        formData.append('school_year', school_year.value);
-        formData.append('logo', logo.value);
 
-        await Inertia.post(route('staff-save-batch'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            onSuccess: (page) => {
-                // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-            },
-            onError: (errors) => {
-                // alert('There was an error uploading the file.');
-            },
-        });
+const createPost = () => {
+    swal({
+        title: "Are you sure to save this batch?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const formData = new FormData();
+            formData.append('course', course.value);
+            formData.append('section', section.value);
+            formData.append('school_year', school_year.value);
+            formData.append('logo', logo.value);
+
+            Inertia.post(route('staff-save-batch'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    location.reload()
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+
+        }
+    });
+
 };
 
 const getLogo = (imagePath) => {

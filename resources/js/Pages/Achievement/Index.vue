@@ -19,23 +19,36 @@ const postVideo = ref(null);
 // File input refs to trigger from buttons
 const imageInput = ref(null);
 const videoInput = ref(null);
-const createPost = async() => {
-        const formData = new FormData();
-        formData.append('content', postContent.value);
-        formData.append('image', postImage.value);
-        formData.append('value', postVideo.value);
+const createPost = () => {
+    swal({
+        title: "Are you sure to save this achievement?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const formData = new FormData();
+            formData.append('content', postContent.value);
+            formData.append('image', postImage.value);
+            formData.append('value', postVideo.value);
 
-        await Inertia.post(route('staff-aap-save-post'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            onSuccess: (page) => {
-                // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-            },
-            onError: (errors) => {
-                // alert('There was an error uploading the file.');
-            },
-        });
+            Inertia.post(route('staff-aap-save-post'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+
+        }
+    });
+
     // }
 };
 
@@ -96,10 +109,10 @@ const addComment = async(post, commentText) => {
             <!-- Upload Buttons with Hidden Inputs -->
             <div class="flex gap-4 mb-4">
                 <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
-                <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button>
+                <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button> -->
 
                 <input ref="imageInput" type="file" @change="(e) => postImage = e.target.files[0]" accept="image/*" class="hidden" />
-                <input ref="videoInput" type="file" @change="(e) => postVideo = e.target.files[0]" accept="video/*" class="hidden" />
+                <!-- <input ref="videoInput" type="file" @change="(e) => postVideo = e.target.files[0]" accept="video/*" class="hidden" /> -->
             </div>
 
             <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>

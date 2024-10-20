@@ -13,6 +13,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
         <!-- Scripts -->
         @routes

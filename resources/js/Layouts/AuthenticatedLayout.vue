@@ -40,15 +40,15 @@ const logoUrl = getLogo('images/logo1.png');
             <nav class="flex flex-col" v-if="$page.props.auth.user.user_type == 'system_admin'">
                 <!-- System Admin links -->
                 <NavLink :href="route('user-management')" :active="route().current('user-management')">
-                    <i class="fa fa-users text-2xl"></i>
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">User Management</span>
                 </NavLink>
                 <NavLink :href="route('archive')" :active="route().current('archive')">
-                    <i class="fa fa-file text-2xl"></i>
+                    <i class="fa fa-file text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Archive</span>
                 </NavLink>
                 <NavLink :href="route('backup-and-restore')" :active="route().current('backup-and-restore')">
-                    <i class="fa fa-gear text-2xl"></i>
+                    <i class="fa fa-gear text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Backup and Restore</span>
                 </NavLink>
             </nav>
@@ -61,7 +61,7 @@ const logoUrl = getLogo('images/logo1.png');
 
                 <NavLink :href="route('staff-alumni-records')" :active="route().current('staff-alumni-records')">
                     <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
-                    <span v-if="sidebarOpen" class="text-md pl-5">School Alumni Records</span>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Alumni Status Reports</span>
                 </NavLink>
 
                 <NavLink :href="route('staff-achievements-and-recogniations')" :active="route().current('staff-achievements-and-recogniations')">
