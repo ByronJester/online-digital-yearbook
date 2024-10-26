@@ -155,7 +155,7 @@ onUnmounted(() => {
 
     <AuthenticatedLayout>
         <!-- Create new post form -->
-        <div class="mb-10 border-2 border-black rounded-md p-5">
+        <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
             <h2 class="text-xl font-bold mb-2">New Albums</h2>
             <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 

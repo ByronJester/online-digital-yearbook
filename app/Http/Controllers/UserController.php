@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{ User, OtpMessage };
+use App\Models\{ User, OtpMessage, SelfMessage };
 use Inertia\Inertia;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -73,5 +74,52 @@ class UserController extends Controller
         User::where('id', $request->id)->delete();
 
         return redirect()->back();
+    }
+
+    public function messageToFutureSelfIndex()
+    {
+        $messages = SelfMessage::where('user_id', auth()->user()->id)->get();
+
+        return Inertia::render('MessageToFutureSelf/Index', [
+            'messages' => $messages
+        ]);
+    }
+
+    public function saveMessageToSelf(Request $request)
+    {
+        $request->validate([
+            'date' => 'required',
+            'message' => 'required',
+        ]);
+
+        $user_id = auth()->user()->id;
+        $date = $request->date;
+        $message = $request->message;
+
+        SelfMessage::create([
+            'user_id' => $user_id,
+            'date' => $date,
+            'message' => $message
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function mtfs()
+    {
+        $messages = SelfMessage::where('is_sent', false)->get();
+        $now = Carbon::now();
+
+        foreach($messages as $message) {
+            $messageDate = Carbon::parse($message->date);
+            $alumni = User::where('id', $message->user_id)->first();
+
+            if ($messageDate->isSameDay($now)) {
+                $this->sendSMS($alumni->contact, $message->message);
+            }
+        }
+
+
+        return response()->json(['message' => 'Message to future self....'], 200);
     }
 }

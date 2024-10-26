@@ -79,6 +79,33 @@ const logoUrl = getLogo('images/logo1.png');
                     <span v-if="sidebarOpen" class="text-md pl-5">Class Batches</span>
                 </NavLink>
             </nav>
+
+            <nav class="flex flex-col" v-if="$page.props.auth.user.user_type == 'school_alumni'">
+                <NavLink :href="route('home-page-management')" :active="route().current('home-page-management')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Dashboard</span>
+                </NavLink>
+
+                <NavLink :href="route('alumni-mtfs-index')" :active="route().current('alumni-mtfs-index')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Message To Future Self</span>
+                </NavLink>
+
+                <NavLink :href="route('alumni-achievements-and-recogniations')" :active="route().current('alumni-achievements-and-recogniations')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Achievements & Recognition</span>
+                </NavLink>
+
+                <NavLink :href="route('alumni-school-album')" :active="route().current('alumni-school-album')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">School Album</span>
+                </NavLink>
+
+                <NavLink :href="route('alumni-class-batches')" :active="route().current('alumni-class-batches')">
+                    <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Class Batches</span>
+                </NavLink>
+            </nav>
         </div>
 
         <!-- Main Content -->

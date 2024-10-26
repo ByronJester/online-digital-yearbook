@@ -60,6 +60,10 @@ const getLogo = (imagePath) => {
 
 const logoUrl = getLogo('images/logo1.png')
 
+const back = () => {
+    Inertia.get(route('alumni-class-batches'))
+}
+
 </script>
 
 <template>
@@ -68,10 +72,13 @@ const logoUrl = getLogo('images/logo1.png')
     <AuthenticatedLayout>
         <div class="w-full">
             <div class="w-full mb-5">
+                <button class="rounded-md bg-blue-500 px-5 py-1 text-white text-xl" @click="back"> Back</button>
+            </div>
+            <div class="w-full mb-5">
                 <p class="text-2xl font-bold">{{batch.course}} - {{batch.school_year}} (Section {{ batch.section }})</p>
             </div>
             <div class="w-full h-[80vh] ">
-                <div class="mb-10 border-2 border-black rounded-md p-5">
+                <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
                     <div class="w-full flex flex-col md:flex-row py-3">
                         <div class="w-full md:mr-1">
                             <label>Student Name</label>

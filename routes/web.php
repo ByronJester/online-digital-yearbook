@@ -12,7 +12,8 @@ use App\Http\Controllers\{
     AlbumController,
     BatchController
 };
-use App\Models\{ Logo, SuccessStory, History };
+use App\Models\{ Logo, SuccessStory, History, SelfMessage };
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,9 +118,46 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+Route::prefix('alumni')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [AchievementController::class, 'index'])->name('aaaa');
+    });
+
+    Route::prefix('message-to-future-self')->group(function () {
+        Route::get('/', [UserController::class, 'messageToFutureSelfIndex'])->name('alumni-mtfs-index');
+        Route::post('/save-message', [UserController::class, 'saveMessageToSelf'])->name('alumni-mtfs-save-message');
+    });
+
+    Route::prefix('achievements-and-recogniations')->group(function () {
+        Route::get('/', [AchievementController::class, 'index'])->name('alumni-achievements-and-recogniations');
+        Route::post('/save-post', [AchievementController::class, 'savePost'])->name('alumni-aap-save-post');
+        Route::post('/save-like', [AchievementController::class, 'saveLike'])->name('alumni-aap-save-like');
+        Route::post('/save-comment', [AchievementController::class, 'saveComment'])->name('alumni-aap-save-comment');
+    });
+
+    Route::prefix('school-album')->group(function () {
+        Route::get('/', [AlbumController::class, 'index'])->name('alumni-school-album');
+        Route::post('/save-post', [AlbumController::class, 'savePost'])->name('alumni-album-save-post');
+        Route::post('/save-like', [AlbumController::class, 'saveLike'])->name('alumni-album-save-like');
+        Route::post('/save-comment', [AlbumController::class, 'saveComment'])->name('alumni-album-save-comment');
+    });
+
+    Route::prefix('class-batches')->group(function () {
+        Route::get('/', [BatchController::class, 'index'])->name('alumni-class-batches');
+        Route::get('/{id}', [BatchController::class, 'viewBatch'])->name('alumni-view-batch');
+        Route::post('/save-batch', [BatchController::class, 'saveBatch'])->name('alumni-save-batch');
+        Route::post('/save-batch-student', [BatchController::class, 'saveBatchStudent'])->name('alumni-save-batch-student');
+
+    });
+});
+
 
 Route::get('/keep-alive', function () {
     return response()->json(['message' => 'Keep Alive'], 200);
 });
+
+Route::get('/mtfs', [UserController::class, 'mtfs']);
+
+
 
 require __DIR__.'/auth.php';

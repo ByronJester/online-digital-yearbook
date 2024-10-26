@@ -71,7 +71,7 @@ const viewBatch = (id) => {
 
     <AuthenticatedLayout>
         <div class="w-full h-[80vh] ">
-            <div class="mb-10 border-2 border-black rounded-md p-5">
+            <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
                 <div class="w-full flex flex-col md:flex-row py-3">
                     <div class="w-full md:mr-1">
                         <label>Course</label>
