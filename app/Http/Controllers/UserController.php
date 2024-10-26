@@ -116,6 +116,8 @@ class UserController extends Controller
 
             if ($messageDate->isSameDay($now)) {
                 $this->sendSMS($alumni->contact, $message->message);
+                $message->is_sent = true;
+                $message->save();
             }
         }
 
