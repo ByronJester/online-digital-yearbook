@@ -4,6 +4,9 @@ import { Head } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import { VueSpinner } from 'vue3-spinners';
+
+const loading = ref(false)
 
 defineProps({
     users: {
@@ -75,25 +78,35 @@ const handleFileUpload  = (event) => {
     })
     .then((proceed) => {
         if (proceed) {
+            loading.value = true
+
             const file = event.target.files[0];
 
             const formData = new FormData();
             formData.append('file', file);
 
             try {
-                Inertia.post(route('upload-users'), formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    onSuccess: (page) => {
-                        alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                    },
-                    onError: (errors) => {
-                        alert('There was an error uploading the file.');
-                    },
-                });
+                setTimeout(() => {
+                    Inertia.post(route('upload-users'), formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        onSuccess: (page) => {
+                            // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                            loading.value = false
+                        },
+                        onError: (errors) => {
+                            // alert('There was an error uploading the file.');
+                            loading.value = false
+                        },
+                    });
+
+                    }, 1000);
+
+
             } catch (error) {
                 alert('There was an error uploading the file.');
+                loading.value = false
             }
 
         }
@@ -129,16 +142,23 @@ const triggerFileUpload = () => {
             </div>
 
             <div class="w-full">
-                <Table
-                    :headers="['First Name', 'Middle Name', 'Last Name', 'Email', 'Role']"
-                    :rows="users"
-                    :rows-per-page="10"
-                    :showView="false"
-                    :showEdit="false"
-                    :showDelete="true"
-                    :showCopy="true"
-                    @action-event="handleTableAction"
-                />
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                </div>
+
+                <div class="w-full" v-else>
+                    <Table
+                        :headers="['First Name', 'Middle Name', 'Last Name', 'Email', 'Role']"
+                        :rows="users"
+                        :rows-per-page="10"
+                        :showView="false"
+                        :showEdit="false"
+                        :showDelete="true"
+                        :showCopy="true"
+                        @action-event="handleTableAction"
+                    />
+                </div>
+
             </div>
         </div>
 

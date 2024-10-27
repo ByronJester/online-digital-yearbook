@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import { VueSpinner } from 'vue3-spinners';
 
 defineProps({
     posts: {
@@ -27,6 +28,8 @@ const handleVideoUpload = (e) => {
     postVideos.value = Array.from(e.target.files); // Store all selected videos
 };
 
+const loading = ref(false)
+
 // Function to create a new post
 const createPost = () => {
     swal({
@@ -38,6 +41,8 @@ const createPost = () => {
     })
     .then((proceed) => {
         if (proceed) {
+            loading.value = true
+
             const formData = new FormData();
             formData.append('content', postContent.value);
 
@@ -52,17 +57,24 @@ const createPost = () => {
                 formData.append(`videos[${index}]`, video);
             });
 
-            Inertia.post(route('staff-album-save-post'), formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                onSuccess: (page) => {
-                    // Handle success
-                },
-                onError: (errors) => {
-                    // Handle error
-                },
-            });
+
+
+            setTimeout(() => {
+                Inertia.post(route('staff-album-save-post'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        loading.value = false
+                        // Handle success
+                    },
+                    onError: (errors) => {
+                        // Handle error
+                        loading.value = false
+                    },
+                });
+
+            }, 1000);
 
             // Reset form
             postContent.value = '';
@@ -156,20 +168,28 @@ onUnmounted(() => {
     <AuthenticatedLayout>
         <!-- Create new post form -->
         <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
-            <h2 class="text-xl font-bold mb-2">New Albums</h2>
-            <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
-
-            <!-- Upload Buttons with Hidden Inputs for Multiple Files -->
-            <div class="flex gap-4 mb-4">
-                <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photos</button>
-                <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button> -->
-
-                <!-- Hidden File Inputs -->
-                <input ref="imageInput" type="file" multiple @change="handleImageUpload" accept="image/*" class="hidden" />
-                <!-- <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" /> -->
+            <div class="w-full flex justify-center items-center" v-if="loading">
+                <VueSpinner size="50" color="red" />
             </div>
 
-            <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+            <div leave-class="w-full" v-else>
+                <h2 class="text-xl font-bold mb-2">New Albums</h2>
+                <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+
+                <!-- Upload Buttons with Hidden Inputs for Multiple Files -->
+                <div class="flex gap-4 mb-4">
+                    <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photos</button>
+                    <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button> -->
+
+                    <!-- Hidden File Inputs -->
+                    <input ref="imageInput" type="file" multiple @change="handleImageUpload" accept="image/*" class="hidden" />
+                    <!-- <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" /> -->
+                </div>
+
+                <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+            </div>
+
+
         </div>
 
         <!-- News feed posts -->

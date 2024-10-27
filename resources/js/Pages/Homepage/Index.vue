@@ -4,6 +4,7 @@ import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { VueSpinner } from 'vue3-spinners';
 
 defineProps({
     logos: {
@@ -120,6 +121,8 @@ const handleFileChange = (e, type) => {
     }
 }
 
+const loading = ref(false)
+
 const saveLogo = () => {
     swal({
         title: "Are you sure to save this logo?",
@@ -130,18 +133,24 @@ const saveLogo = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formLogo.post(route('home-page-management-logo'), {
-                onSuccess: (page) => {
-                    swal("Successfully save.", {
-                        icon: "success",
-                    });
-                    location.reload()
-                },
-                onError: (errors) => {
-                    swal("Error saving.");
-                }
-            });
+            loading.value = true
 
+            setTimeout(() => {
+                formLogo.post(route('home-page-management-logo'), {
+                    onSuccess: (page) => {
+                        swal("Successfully save.", {
+                            icon: "success",
+                        });
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        swal("Error saving.");
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
         }
     });
 
@@ -158,14 +167,22 @@ const saveGreeting = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formGreeting.post(route('home-page-management-greeting'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formGreeting.post(route('home-page-management-greeting'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
+
+
         }
     });
 
@@ -182,14 +199,22 @@ const saveStory = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formStory.post(route('home-page-management-story'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formStory.post(route('home-page-management-story'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
+
+
         }
     });
 }
@@ -204,14 +229,22 @@ const saveHistory = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formHistory.post(route('home-page-management-history'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formHistory.post(route('home-page-management-history'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
+
+
         }
     });
 }
@@ -226,14 +259,22 @@ const saveHymn = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formHymn.post(route('home-page-management-hymn'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formHymn.post(route('home-page-management-hymn'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
+
+
         }
     });
 }
@@ -248,14 +289,22 @@ const saveMission = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formMission.post(route('home-page-management-mission'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formMission.post(route('home-page-management-mission'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
+
+
         }
     });
 }
@@ -270,14 +319,20 @@ const saveVision = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formVision.post(route('home-page-management-vision'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formVision.post(route('home-page-management-vision'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
         }
     });
 
@@ -294,14 +349,20 @@ const saveProgram = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formProgram.post(route('home-page-management-program'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formProgram.post(route('home-page-management-program'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
         }
     });
 
@@ -317,14 +378,20 @@ const saveFaq = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            formFaq.post(route('home-page-management-faq'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
+            loading.value = true
 
-                }
-            });
+            setTimeout(() => {
+                formFaq.post(route('home-page-management-faq'), {
+                    onSuccess: (page) => {
+                        location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                    }
+                });
+
+            }, 2000);
         }
     });
 
@@ -332,7 +399,6 @@ const saveFaq = () => {
 }
 
 const logoAction = ({ action, row }) => {
-
     if (action == 'delete') {
         swal({
             title: "Are you sure to delete this logo?",
@@ -748,8 +814,13 @@ const activeTab = ref('logo');
                 <button @click="activeTab = 'faq'" :class="{ 'active': activeTab === 'faq' }">FAQ</button>
             </div>
 
+
             <div v-if="activeTab === 'logo'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Logo
@@ -785,7 +856,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'greeting'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Greeting Message
@@ -825,7 +900,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'story'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Alumni Success Stories
@@ -870,7 +949,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'history'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Brief History
@@ -911,7 +994,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'hymn'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             School Hymn
@@ -951,7 +1038,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'mission'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Mission Statement
@@ -991,7 +1082,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'vision'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Vision Statement
@@ -1031,7 +1126,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'program'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             Programs
@@ -1075,7 +1174,11 @@ const activeTab = ref('logo');
             </div>
 
             <div v-if="activeTab === 'faq'" class="tab-content">
-                <div class="w-full border border-black">
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
+                 </div>
+
+                <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
                             FAQ

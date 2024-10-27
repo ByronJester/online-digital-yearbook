@@ -4,6 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import { VueSpinner } from 'vue3-spinners';
 
 defineProps({
     posts: {
@@ -19,6 +20,9 @@ const postVideo = ref(null);
 // File input refs to trigger from buttons
 const imageInput = ref(null);
 const videoInput = ref(null);
+
+const loading = ref(false)
+
 const createPost = () => {
     swal({
         title: "Are you sure to save this achievement?",
@@ -29,23 +33,29 @@ const createPost = () => {
     })
     .then((proceed) => {
         if (proceed) {
+            loading.value = true
+
             const formData = new FormData();
             formData.append('content', postContent.value);
             formData.append('image', postImage.value);
             formData.append('value', postVideo.value);
 
-            Inertia.post(route('staff-aap-save-post'), formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                onSuccess: (page) => {
-                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                },
-                onError: (errors) => {
-                    // alert('There was an error uploading the file.');
-                },
-            });
+            setTimeout(() => {
+                Inertia.post(route('staff-aap-save-post'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        // alert('There was an error uploading the file.');
+                        loading.value = false
+                    },
+                });
 
+            }, 1000);
         }
     });
 
@@ -102,20 +112,28 @@ const addComment = async(post, commentText) => {
 
     <AuthenticatedLayout>
         <!-- Create new post form -->
+
         <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
-            <h2 class="text-xl font-bold mb-2">New Post</h2>
-            <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+            <div class="w-full flex justify-center items-center" v-if="loading">
+                <VueSpinner size="50" color="red" />
+             </div>
 
-            <!-- Upload Buttons with Hidden Inputs -->
-            <div class="flex gap-4 mb-4">
-                <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
-                <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button> -->
+             <div class="w-full" v-else>
+                <h2 class="text-xl font-bold mb-2">New Post</h2>
+                <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
-                <input ref="imageInput" type="file" @change="(e) => postImage = e.target.files[0]" accept="image/*" class="hidden" />
-                <!-- <input ref="videoInput" type="file" @change="(e) => postVideo = e.target.files[0]" accept="video/*" class="hidden" /> -->
-            </div>
+                <!-- Upload Buttons with Hidden Inputs -->
+                <div class="flex gap-4 mb-4">
+                    <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
+                    <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button> -->
 
-            <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
+                    <input ref="imageInput" type="file" @change="(e) => postImage = e.target.files[0]" accept="image/*" class="hidden" />
+                    <!-- <input ref="videoInput" type="file" @change="(e) => postVideo = e.target.files[0]" accept="video/*" class="hidden" /> -->
+                </div>
+
+                <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
+             </div>
+
         </div>
 
         <!-- News feed posts -->

@@ -4,6 +4,9 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import { VueSpinner } from 'vue3-spinners';
+
+const loading = ref(false)
 
 defineProps({
     batch: {
@@ -29,6 +32,8 @@ const saveStudent = (id) => {
     })
     .then((proceed) => {
         if (proceed) {
+            loading.value = true
+
             const formData = new FormData();
 
             formData.append('batch_id', id);
@@ -36,18 +41,23 @@ const saveStudent = (id) => {
             formData.append('student_name', student_name.value);
             formData.append('award', award.value);
 
-            Inertia.post(route('staff-save-batch-student'), formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                onSuccess: (page) => {
-                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                    location.reload()
-                },
-                onError: (errors) => {
-                    // alert('There was an error uploading the file.');
-                },
-            });
+            setTimeout(() => {
+                Inertia.post(route('staff-save-batch-student'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                        // location.reload()
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        // alert('There was an error uploading the file.');
+                        loading.value = false
+                    },
+                });
+
+            }, 1000);
 
         }
     });
@@ -79,27 +89,34 @@ const back = () => {
             </div>
             <div class="w-full h-[80vh] ">
                 <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
-                    <div class="w-full flex flex-col md:flex-row py-3">
-                        <div class="w-full md:mr-1">
-                            <label>Student Name</label>
-                            <br>
-                            <input type="text" class="w-full rounded-md" v-model="student_name"/>
-                        </div>
-
-                        <div class="w-full md:mr-1">
-                            <label>Student Award</label>
-                            <br>
-                            <input type="text" class="w-full rounded-md" v-model="award"/>
-                        </div>
-
-                        <div class="w-full md:mr-1">
-                            <label>Student Picture</label>
-                            <br>
-                            <input type="file" class="w-full rounded-md" @change="(e) => image = e.target.files[0]"/>
-                        </div>
+                    <div class="w-full flex justify-center items-center" v-if="loading">
+                        <VueSpinner size="50" color="red" />
                     </div>
 
-                    <button @click="saveStudent(batch.id)" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+                    <div class="w-full" v-else>
+                        <div class="w-full flex flex-col md:flex-row py-3">
+                            <div class="w-full md:mr-1">
+                                <label>Student Name</label>
+                                <br>
+                                <input type="text" class="w-full rounded-md" v-model="student_name"/>
+                            </div>
+
+                            <div class="w-full md:mr-1">
+                                <label>Student Award</label>
+                                <br>
+                                <input type="text" class="w-full rounded-md" v-model="award"/>
+                            </div>
+
+                            <div class="w-full md:mr-1">
+                                <label>Student Picture</label>
+                                <br>
+                                <input type="file" class="w-full rounded-md" @change="(e) => image = e.target.files[0]"/>
+                            </div>
+                        </div>
+
+                        <button @click="saveStudent(batch.id)" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+                    </div>
+
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">

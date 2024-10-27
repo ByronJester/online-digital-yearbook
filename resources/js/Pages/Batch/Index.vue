@@ -4,6 +4,9 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import { VueSpinner } from 'vue3-spinners';
+
+const loading = ref(false)
 
 defineProps({
     batches: {
@@ -31,24 +34,33 @@ const createPost = () => {
     })
     .then((proceed) => {
         if (proceed) {
+            loading.value = true
+
             const formData = new FormData();
             formData.append('course', course.value);
             formData.append('section', section.value);
             formData.append('school_year', school_year.value);
             formData.append('logo', logo.value);
 
-            Inertia.post(route('staff-save-batch'), formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                onSuccess: (page) => {
-                    location.reload()
-                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                },
-                onError: (errors) => {
-                    // alert('There was an error uploading the file.');
-                },
-            });
+
+
+            setTimeout(() => {
+                Inertia.post(route('staff-save-batch'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        // location.reload()
+                        // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        // alert('There was an error uploading the file.');
+                        loading.value = false
+                    },
+                });
+
+            }, 1000);
 
         }
     });
@@ -72,41 +84,48 @@ const viewBatch = (id) => {
     <AuthenticatedLayout>
         <div class="w-full h-[80vh] ">
             <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
-                <div class="w-full flex flex-col md:flex-row py-3">
-                    <div class="w-full md:mr-1">
-                        <label>Course</label>
-                        <br>
-                        <select class="rounded-md w-full" v-model="course">
-                            <option value="BSIT">BSIT</option>
-                        </select>
-                    </div>
-
-                    <div class="w-full md:mr-1">
-                        <label>Section</label>
-                        <br>
-                        <select class="rounded-md w-full" v-model="section">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                    </div>
-
-                    <div class="w-full md:mr-1">
-                        <label>School Year</label>
-                        <br>
-                        <select class="rounded-md w-full" v-model="school_year">
-                            <option value="2024">2024</option>
-                        </select>
-                    </div>
-
-                    <div class="w-full md:mr-1">
-                        <label>Batch Logo</label>
-                        <br>
-                        <input type="file" class="w-full rounded-md" @change="(e) => logo = e.target.files[0]"/>
-                    </div>
+                <div class="w-full flex justify-center items-center" v-if="loading">
+                    <VueSpinner size="50" color="red" />
                 </div>
 
-                <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+                <div class="w-full" v-else>
+                    <div class="w-full flex flex-col md:flex-row py-3">
+                        <div class="w-full md:mr-1">
+                            <label>Course</label>
+                            <br>
+                            <select class="rounded-md w-full" v-model="course">
+                                <option value="BSIT">BSIT</option>
+                            </select>
+                        </div>
+
+                        <div class="w-full md:mr-1">
+                            <label>Section</label>
+                            <br>
+                            <select class="rounded-md w-full" v-model="section">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+
+                        <div class="w-full md:mr-1">
+                            <label>School Year</label>
+                            <br>
+                            <select class="rounded-md w-full" v-model="school_year">
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+
+                        <div class="w-full md:mr-1">
+                            <label>Batch Logo</label>
+                            <br>
+                            <input type="file" class="w-full rounded-md" @change="(e) => logo = e.target.files[0]"/>
+                        </div>
+                    </div>
+
+                    <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+                </div>
+
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
