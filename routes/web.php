@@ -63,9 +63,9 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('backup-and-restore')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('Dashboard');
-        })->name('backup-and-restore');
+        Route::get('/', [UserController::class, 'backupAndRestore'])->name('backup-and-restore');
+        Route::get('/export-table/{table}', [UserController::class, 'backUp'])->name('bar');
+        Route::post('/upload-sql', [UserController::class, 'restore'])->name('bar-upload');
     });
 });
 

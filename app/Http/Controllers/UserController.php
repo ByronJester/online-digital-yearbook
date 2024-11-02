@@ -9,6 +9,8 @@ use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -123,5 +125,107 @@ class UserController extends Controller
 
 
         return response()->json(['message' => 'Message to future self....'], 200);
+    }
+
+    public function backupAndRestore()
+    {
+        $tables = DB::select('SHOW TABLES');
+        $tableNames = array_map('current', $tables);
+
+        $excludedTables = ['migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs'];
+
+        $tableNames = array_filter($tableNames, function ($table) use ($excludedTables) {
+            return !in_array($table, $excludedTables);
+        });
+
+        return Inertia::render('User/Backup', [
+            'tables' => $tableNames
+        ]);
+    }
+
+    public function backUp($table)
+    {
+        // $tableData = DB::table($table)->get();
+
+        // $sqlFile = '';
+        // foreach ($tableData as $row) {
+        //     $columns = implode('`, `', array_keys((array)$row));
+        //     $values = implode("', '", array_values((array)$row));
+        //     $sqlFile .= "INSERT INTO `$table` (`$columns`) VALUES ('$values');\n";
+        // }
+
+        // // Define file name and store it temporarily
+        // $fileName = "$table.sql";
+        // Storage::disk('local')->put("exports/$fileName", $sqlFile);
+
+        // return Storage::disk('local')->download("exports/$fileName");
+
+        $tableData = DB::table($table)->get();
+
+        $sqlFile = '';
+        foreach ($tableData as $row) {
+            $columns = implode('", "', array_keys((array)$row));
+            $values = implode("', '", array_map(function($value) {
+                return str_replace("'", "''", $value); // Escape single quotes for PostgreSQL
+            }, array_values((array)$row)));
+            $sqlFile .= "INSERT INTO \"$table\" (\"$columns\") VALUES ('$values');\n";
+        }
+
+        // Define file name and store it temporarily
+        $fileName = "$table.sql";
+        Storage::disk('local')->put("exports/$fileName", $sqlFile);
+
+        return Storage::disk('local')->download("exports/$fileName");
+    }
+
+    public function restore(Request $request)
+    {
+        // $file = $request->file('file');
+        // $table = $request->table;
+
+        // $sql = file_get_contents($file->getRealPath());
+
+        // $queries = array_filter(array_map('trim', explode(';', $sql)));
+
+        // $existing = DB::table($table)->get();
+
+        // if(count($existing) > 0) {
+        //     DB::table($table)->delete();
+        // }
+
+        // foreach ($queries as $query) {
+        //     if (!empty($query)) {
+        //         try {
+        //             DB::statement($query);
+        //         } catch (\Exception $e) {
+        //             return response()->json(['error' => 'Failed to execute query: ' . $e->getMessage()], 500);
+        //         }
+        //     }
+        // }
+
+        // return $queries;
+
+        $file = $request->file('file');
+        $table = $request->table;
+
+        $sql = file_get_contents($file->getRealPath());
+
+        // Split the SQL into individual statements based on semicolon
+        $queries = array_filter(array_map('trim', explode(';', $sql)));
+
+        // Clear existing records in the table
+        DB::table($table)->truncate(); // safer than delete for restoring
+
+        foreach ($queries as $query) {
+            if (!empty($query)) {
+                try {
+                    DB::statement($query);
+                } catch (\Exception $e) {
+                    return response()->json(['error' => 'Failed to execute query: ' . $e->getMessage()], 500);
+                }
+            }
+        }
+
+        return response()->json(['success' => 'Database restored successfully.']);
     }
 }
