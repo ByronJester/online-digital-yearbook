@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import axios from 'axios';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 defineProps({
     canResetPassword: {
@@ -65,6 +66,12 @@ const closeOtpModal = () => {
 
     modal.style.display = "none";
 };
+
+const view_password = ref(false)
+
+const viewPassword = () => {
+    view_password.value = !view_password.value
+}
 
 </script>
 
@@ -153,7 +160,7 @@ const closeOtpModal = () => {
             <div id="book-container" class="book-container">
                 <div id="book-content" class="book-content">
                     <div id="book-cover" class="left-page">
-                        <img :src="!$page.props.logo ? logoUrl : $page.props.logo.file" alt="Logo" class="logo">
+                        <img :src="!$page.props.logo ? logoUrl : $page.props.logo" alt="Logo" class="logo">
                         <p class="yearbook-text">Online Digital Yearbook</p>
                     </div>
                     <div class="right-page">
@@ -176,12 +183,18 @@ const closeOtpModal = () => {
 
                             <TextInput
                                 id="password"
-                                type="password"
+                                :type="view_password ? 'text' : 'password'"
                                 class="mt-1 block w-full"
                                 v-model="form.password"
                                 required
                                 autocomplete="current-password"
                             />
+
+                            <div class="w-full">
+                                <i class="fa fa-eye-slash float-right mt-[-55px] mr-3" v-if="view_password" @click="viewPassword"></i>
+                                <i class="fa fa-eye float-right mt-[-55px] mr-3" v-else @click="viewPassword"></i>
+                            </div>
+
 
                             <InputError class="mt-2" :message="form.errors.password" />
 
@@ -194,9 +207,9 @@ const closeOtpModal = () => {
                             </div>
 
 
-                            <div class="forgot-password-container">
+                            <!-- <div class="forgot-password-container">
                                 <a :href="route('password.request')" class="forgot-password">Forgot Password?</a>
-                            </div>
+                            </div> -->
                         </form>
                     </div>
                 </div>

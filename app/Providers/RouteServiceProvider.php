@@ -21,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
 
     public const STAFF = '/staff/home-page-management';
 
-    public const ALUMNI = '/alumni/home-page-management';
+    public const ALUMNI = '/alumni/dashboard';
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */

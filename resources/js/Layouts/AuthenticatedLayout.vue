@@ -81,7 +81,7 @@ const logoUrl = getLogo('images/logo1.png');
             </nav>
 
             <nav class="flex flex-col" v-if="$page.props.auth.user.user_type == 'school_alumni'">
-                <NavLink :href="route('home-page-management')" :active="route().current('home-page-management')">
+                <NavLink :href="route('alumni-dashboard')" :active="route().current('alumni-dashboard')">
                     <i class="fa fa-home text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Dashboard</span>
                 </NavLink>

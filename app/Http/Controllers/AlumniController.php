@@ -16,4 +16,11 @@ class AlumniController extends Controller
             'users' => User::orderBy('created_at', 'desc')->where('user_type', 'school_alumni')->get()
         ]);
     }
+
+    public function dashboard()
+    {
+        return Inertia::render('Alumni/Dashboard', [
+
+        ]);
+    }
 }

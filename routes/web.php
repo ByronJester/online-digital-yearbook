@@ -120,7 +120,7 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
 
 Route::prefix('alumni')->middleware(['auth', 'verified'])->group(function () {
     Route::prefix('dashboard')->group(function () {
-        Route::get('/', [AchievementController::class, 'index'])->name('aaaa');
+        Route::get('/', [AlumniController::class, 'dashboard'])->name('alumni-dashboard');
     });
 
     Route::prefix('message-to-future-self')->group(function () {
