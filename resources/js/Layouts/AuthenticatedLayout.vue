@@ -25,7 +25,7 @@ const logoUrl = getLogo('images/logo1.png');
             class="fixed top-0 left-0 h-full transition-all duration-300 ease-in-out bg-[#2C3C4C] border-r border-gray-200 z-20"
         >
             <div class="flex items-center justify-between p-4 bg-[#04549C]">
-                <img :src="!$page.props.logo ? logoUrl : $page.props.logo.file" alt="Logo" class="logo w-[50px] h-[50px]" v-if="sidebarOpen">
+                <img :src="!$page.props.logo ? logoUrl : $page.props.logo" alt="Logo" class="logo w-[50px] h-[50px]" v-if="sidebarOpen">
                 <button @click="sidebarOpen = !sidebarOpen" class="text-gray-400 hover:text-white focus:outline-none">
                     <svg v-if="sidebarOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

@@ -25,9 +25,9 @@ class AppServiceProvider extends ServiceProvider
             'user' => function () {
                 return auth()->user();
             },
-            'logo' => function() {
-                return Logo::latest()->first();
-            },
+            // 'logo' => function() {
+            //     return Logo::latest()->first();
+            // },
             // 'success_stories' => function() {
             //     return SuccessStory::orderBy('created_at', 'desc')->get();
             // },

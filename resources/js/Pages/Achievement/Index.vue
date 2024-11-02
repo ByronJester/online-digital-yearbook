@@ -16,6 +16,7 @@ defineProps({
 const postContent = ref('');
 const postImage = ref(null);
 const postVideo = ref(null);
+const seeComment = ref(false)
 
 // File input refs to trigger from buttons
 const imageInput = ref(null);
@@ -124,14 +125,19 @@ const addComment = async(post, commentText) => {
 
                 <!-- Upload Buttons with Hidden Inputs -->
                 <div class="flex gap-4 mb-4">
-                    <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
+                    <div class="w-full">
+                        <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
+
+                        <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md float-right">Post</button>
+                    </div>
+
                     <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button> -->
 
                     <input ref="imageInput" type="file" @change="(e) => postImage = e.target.files[0]" accept="image/*" class="hidden" />
                     <!-- <input ref="videoInput" type="file" @change="(e) => postVideo = e.target.files[0]" accept="video/*" class="hidden" /> -->
                 </div>
 
-                <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
+                <!-- <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button> -->
              </div>
 
         </div>
@@ -144,8 +150,8 @@ const addComment = async(post, commentText) => {
 
                 <!-- Display image or video if available -->
 
-                <div v-if="post.image" class="my-4">
-                    <img :src="post.image" alt="Post Image" class="w-full h-[250px]">
+                <div v-if="post.image" class="my-4 flex justify-center items-center">
+                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]">
                 </div>
                 <div v-if="post.video" class="my-4">
                     <video controls class="w-full h-[250px]">
@@ -180,7 +186,7 @@ const addComment = async(post, commentText) => {
                 </div>
 
                 <!-- Display comments -->
-                <div v-if="post.comments.length > 0 " class="mt-4 ml-4">
+                <div v-if="post.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
                     <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
                         <p class="font-bold">{{ comment.commentor }}</p>
                         <p class="ml-3">{{ comment.comment }}</p>

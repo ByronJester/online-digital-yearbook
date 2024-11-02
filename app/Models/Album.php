@@ -10,7 +10,7 @@ class Album extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content', 'image', 'video', 'user_id'
+        'content', 'image', 'video', 'user_id', 'description'
     ];
 
 

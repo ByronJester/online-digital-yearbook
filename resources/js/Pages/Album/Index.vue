@@ -13,6 +13,7 @@ defineProps({
 
 // Form data for new post
 const postContent = ref('');
+const postDescription = ref('');
 const postImages = ref([]); // Array to hold multiple images
 const postVideos = ref([]); // Array to hold multiple videos
 
@@ -45,6 +46,7 @@ const createPost = () => {
 
             const formData = new FormData();
             formData.append('content', postContent.value);
+            formData.append('description', postDescription.value)
 
             // Append all images to FormData
             postImages.value.forEach((image, index) => {
@@ -174,19 +176,25 @@ onUnmounted(() => {
 
             <div leave-class="w-full" v-else>
                 <h2 class="text-xl font-bold mb-2">New Albums</h2>
-                <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+                <textarea v-model="postContent" placeholder="Album Name" class="w-full p-2 border mb-4 rounded-lg" rows="1"></textarea>
+
+                <textarea v-model="postDescription" placeholder="Album Description" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
                 <!-- Upload Buttons with Hidden Inputs for Multiple Files -->
                 <div class="flex gap-4 mb-4">
-                    <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photos</button>
+                    <div class="w-full">
+                        <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photos</button>
+                    </div>
+
                     <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button> -->
 
                     <!-- Hidden File Inputs -->
                     <input ref="imageInput" type="file" multiple @change="handleImageUpload" accept="image/*" class="hidden" />
                     <!-- <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" /> -->
+                    <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md float-right">Save</button>
                 </div>
 
-                <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+
             </div>
 
 
@@ -199,6 +207,10 @@ onUnmounted(() => {
 
                 <div class="w-full text-center border border-black rounded-md mt-3">
                     <p class="text-2xl p-3">{{ post.content }}</p>
+                </div>
+
+                <div class="w-full text-center border border-black rounded-md mt-3" v-if="post.description">
+                    <p class="text-md p-3">{{ post.description }}</p>
                 </div>
 
                 <!-- Display multiple images if available -->
@@ -253,7 +265,7 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Display comments -->
-                <div v-if="post.comments.length > 0" class="mt-4 ml-4">
+                <div v-if="post.comments.length > 0 && post.showCommentInput" class="mt-4 ml-4">
                     <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
                         <p class="font-bold">{{ comment.commentor }}</p>
                         <p class="ml-3">{{ comment.comment }}</p>

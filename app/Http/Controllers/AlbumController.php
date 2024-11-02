@@ -20,6 +20,7 @@ class AlbumController extends Controller
     {
         $request->validate([
             'content' => 'required',
+            'description' => 'required'
         ]);
 
         $images = $request->images;
@@ -50,6 +51,7 @@ class AlbumController extends Controller
 
         Album::create([
             'content' => $request->content,
+            'description' => $request->description,
             'image' => json_encode($imagesArr),
             'video' => json_encode($videosArr),
             'user_id' => auth()->user()->id

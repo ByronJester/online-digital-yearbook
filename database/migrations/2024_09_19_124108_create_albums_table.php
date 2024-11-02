@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('albums', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
+            $table->bigInteger('share_user_id')->unsigned()->comment('Foreign key from table users')->nullable();
             $table->text('content');
+            $table->text('description')->nullable();
             $table->json('image')->nullable();
             $table->json('video')->nullable();
 
