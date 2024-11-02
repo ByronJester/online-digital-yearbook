@@ -129,18 +129,38 @@ class UserController extends Controller
 
     public function backupAndRestore()
     {
-        $tables = DB::select('SHOW TABLES');
+        // $tables = DB::select('SHOW TABLES');
+        // $tableNames = array_map('current', $tables);
+
+        // $excludedTables = ['migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs'];
+
+        // $tableNames = array_filter($tableNames, function ($table) use ($excludedTables) {
+        //     return !in_array($table, $excludedTables);
+        // });
+
+        // return Inertia::render('User/Backup', [
+        //     'tables' => $tableNames
+        // ]);
+
+        // Get all table names from PostgreSQL
+        $tables = DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+
+        // Extract table names into an array
         $tableNames = array_map('current', $tables);
 
+        // Define excluded tables
         $excludedTables = ['migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs'];
 
+        // Filter out excluded tables
         $tableNames = array_filter($tableNames, function ($table) use ($excludedTables) {
             return !in_array($table, $excludedTables);
         });
 
+        // Now $tableNames contains only the tables you want
         return Inertia::render('User/Backup', [
             'tables' => $tableNames
         ]);
+
     }
 
     public function backUp($table)

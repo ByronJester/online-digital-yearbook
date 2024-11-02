@@ -138,10 +138,10 @@ const saveLogo = () => {
             setTimeout(() => {
                 formLogo.post(route('home-page-management-logo'), {
                     onSuccess: (page) => {
-                        swal("Successfully save.", {
-                            icon: "success",
-                        });
-                        location.reload()
+                        // swal("Successfully save.", {
+                        //     icon: "success",
+                        // });
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -172,7 +172,7 @@ const saveGreeting = () => {
             setTimeout(() => {
                 formGreeting.post(route('home-page-management-greeting'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -204,7 +204,7 @@ const saveStory = () => {
             setTimeout(() => {
                 formStory.post(route('home-page-management-story'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -234,7 +234,7 @@ const saveHistory = () => {
             setTimeout(() => {
                 formHistory.post(route('home-page-management-history'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -264,7 +264,7 @@ const saveHymn = () => {
             setTimeout(() => {
                 formHymn.post(route('home-page-management-hymn'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -294,7 +294,7 @@ const saveMission = () => {
             setTimeout(() => {
                 formMission.post(route('home-page-management-mission'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -324,7 +324,7 @@ const saveVision = () => {
             setTimeout(() => {
                 formVision.post(route('home-page-management-vision'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -354,7 +354,7 @@ const saveProgram = () => {
             setTimeout(() => {
                 formProgram.post(route('home-page-management-program'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -383,7 +383,7 @@ const saveFaq = () => {
             setTimeout(() => {
                 formFaq.post(route('home-page-management-faq'), {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                         loading.value = false
                     },
                     onError: (errors) => {
@@ -411,7 +411,7 @@ const logoAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'logos'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -432,7 +432,7 @@ const logoAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-use-data'), { id: row.id, table: 'logos'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -459,7 +459,7 @@ const greetingsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'greetings'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -488,7 +488,7 @@ const storiesAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'success_stories'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -518,7 +518,7 @@ const historiesAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'histories'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -548,7 +548,7 @@ const hymnAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'hymn'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -569,7 +569,7 @@ const hymnAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-use-data'), { id: row.id, table: 'hymn'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -600,7 +600,7 @@ const missionsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'mission_statements'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -621,7 +621,7 @@ const missionsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-use-data'), { id: row.id, table: 'mission_statements'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -652,7 +652,7 @@ const visionsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'vision_statements'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -673,7 +673,7 @@ const visionsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-use-data'), { id: row.id, table: 'vision_statements'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -703,7 +703,7 @@ const programsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'programs'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -724,7 +724,7 @@ const programsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-use-data'), { id: row.id, table: 'programs'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -754,7 +754,7 @@ const faqsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-delete-data'), { id: row.id, table: 'faqs'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
@@ -775,7 +775,7 @@ const faqsAction = ({ action, row }) => {
             if (proceed) {
                 Inertia.post(route('hpm-use-data'), { id: row.id, table: 'faqs'}, {
                     onSuccess: (page) => {
-                        location.reload()
+                        // location.reload()
                     },
                     onError: (errors) => {
 
