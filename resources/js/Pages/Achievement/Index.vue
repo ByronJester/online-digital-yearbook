@@ -128,7 +128,7 @@ const addComment = async(post, commentText) => {
                     <div class="w-full">
                         <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photo</button>
 
-                        <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md float-right">Post</button>
+                        <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
                     </div>
 
                     <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button> -->
@@ -160,7 +160,7 @@ const addComment = async(post, commentText) => {
                 </div>
 
                 <!-- Likes and comments -->
-                <div class="flex justify-between items-center mt-4">
+                <div class="flex justify-between items-center mt-4" v-if="$page.props.auth.user.user_type == 'school_staff'">
                     <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
                         ? 'Unlike'
                         : 'Like' )"
