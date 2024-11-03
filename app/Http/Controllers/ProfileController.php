@@ -12,6 +12,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Models\{ UserShare };
 
 class ProfileController extends Controller
 {
@@ -20,9 +21,19 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $shareArr = [];
+        $shares = UserShare::where('user_id', auth()->user()->id)->get();
+
+        foreach($shares as $share) {
+            $s = $share->shared_content;
+            $s['type'] = $share->type;
+            array_push($shareArr, $s);
+        }
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'shares' => $shareArr
         ]);
     }
 

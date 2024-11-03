@@ -218,7 +218,7 @@ onUnmounted(() => {
                     <div class="w-full carousel-container">
                         <carousel :items-to-show="2" ref="carouselRef">
                             <slide v-for="i in post.image" :key="i">
-                                <img :src="i" class="w-full h-[200px] mr-1"/>
+                                <img :src="i" class="w-full h-[300px] mr-1"/>
                             </slide>
 
                             <template #addons>
@@ -235,7 +235,7 @@ onUnmounted(() => {
                         <carousel :items-to-show="2" ref="carouselRef">
                             <slide v-for="i in post.video" :key="i">
                                 <!-- <img :src="i" class="w-full h-[200px] mr-1"/> -->
-                                <video controls class="w-full h-[200px]">
+                                <video controls class="w-full h-[300px]">
                                     <source :src="i" type="video" />
                                 </video>
                             </slide>

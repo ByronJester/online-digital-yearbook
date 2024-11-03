@@ -10,7 +10,7 @@ class Album extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content', 'image', 'video', 'user_id', 'description'
+        'content', 'image', 'video', 'user_id', 'description', 'share_user_names'
     ];
 
 
@@ -58,5 +58,22 @@ class Album extends Model
 
         return $response;
 
+    }
+
+    public function getShareUserNamesAttribute($value)
+    {
+        $response = [];
+
+        if(!$value) return [];
+
+        $names = json_decode($value);
+
+        if(count($names) > 0) {
+            foreach($names as $name) {
+                array_push($response, $name);
+            }
+        }
+
+        return $response;
     }
 }

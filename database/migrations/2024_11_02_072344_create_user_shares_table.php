@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('user_shares', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users')->nullable();
-            $table->bigInteger('achivement_id')->unsigned()->comment('Foreign key from table achivements')->nullable();
-            $table->bigInteger('album_id')->unsigned()->comment('Foreign key from table album')->nullable();
+            $table->bigInteger('shared_id')->nullable();
             $table->string('type');
 
             $table->timestamps();

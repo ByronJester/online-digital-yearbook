@@ -10,7 +10,7 @@ class Achievement extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content', 'image', 'video', 'user_id'
+        'content', 'image', 'video', 'user_id', 'share_user_names'
     ];
 
     public function likes()
@@ -41,5 +41,24 @@ class Achievement extends Model
         // return \LaravelCloudinary::show($value, []);
         return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
     }
+
+    public function getShareUserNamesAttribute($value)
+    {
+        $response = [];
+
+        if(!$value) return [];
+
+        $names = json_decode($value);
+
+        if(count($names) > 0) {
+            foreach($names as $name) {
+                array_push($response, $name);
+            }
+        }
+
+        return $response;
+    }
+
+
 
 }
