@@ -83,6 +83,33 @@ const handleTableAction = ({ action, row }) => {
 
             }
         });
+    } else if(action == 'unarchive') {
+        swal({
+            title: "Are you sure to unarchive this user?",
+            text: "",
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((proceed) => {
+            if (proceed) {
+
+                try {
+                    Inertia.post(route('unarchive-user'), {id: row.id}, {
+                        onSuccess: (page) => {
+                            // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+
+                        },
+                        onError: (errors) => {
+                            // alert('There was an error uploading the file.');
+                        },
+                    });
+                } catch (error) {
+                    alert('There was an error uploading the file.');
+                }
+
+            }
+        });
     }
 }
 
@@ -148,32 +175,18 @@ const triggerFileUpload = () => {
 </script>
 
 <template>
-    <Head title="User Management" />
+    <Head title="Archived Users" />
 
     <AuthenticatedLayout>
         <div class="w-full p-5 ">
-            <div class="w-full" style="margin-bottom: 20px;">
-                <input type="file" ref="fileInput" @change="handleFileUpload" accept=".xlsx" style="display: none;" />
+            <p class="text-xl font-bold">Archived Users</p>
 
-                <button class="upload-btn" @click="triggerFileUpload()">
-                    Upload Users
-                </button>
-
-                <button class="download-btn" @click="downloadFile('alumni_format.xlsx')">
-                    Download Alumni Format
-                </button>
-
-                <button class="download-btn" @click="downloadFile('staff_format.xlsx')">
-                    Download Staff Format
-                </button>
-            </div>
-
-            <div class="w-full">
-                <div class="w-full flex justify-center items-center" v-if="loading">
+            <div class="w-full mt-10">
+                <!-- <div class="w-full flex justify-center items-center" v-if="loading">
                     <VueSpinner size="50" color="red" />
-                </div>
+                </div> -->
 
-                <div class="w-full" v-else>
+                <div class="w-full" v-if="users.length > 0">
                     <Table
                         :headers="['First Name', 'Middle Name', 'Last Name', 'Email', 'Role']"
                         :rows="users"
@@ -182,7 +195,8 @@ const triggerFileUpload = () => {
                         :showEdit="false"
                         :showDelete="false"
                         :showCopy="false"
-                        :showArchive="true"
+                        :showArchive="false"
+                        :showUnarchive="true"
                         @action-event="handleTableAction"
                     />
                 </div>

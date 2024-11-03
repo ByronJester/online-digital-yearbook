@@ -12,7 +12,7 @@ use App\Http\Controllers\{
     AlbumController,
     BatchController
 };
-use App\Models\{ Logo, SuccessStory, History, SelfMessage };
+use App\Models\{ Logo, SuccessStory, History, SelfMessage, MissionStatement, VisionStatement };
 use Carbon\Carbon;
 
 /*
@@ -30,14 +30,19 @@ use Carbon\Carbon;
 //     return redirect()->route('login');
 // });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
-        'histories' => History::orderBy('created_at', 'desc')->get()
-    ]);
-})->name('landing-page');
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
+//         'histories' => History::orderBy('created_at', 'desc')->get(),
+//         'mission' => MissionStatement::where('is_used', true)->latest()->first(),
+//         'vision' => VisionStatement::where('is_used', true)->latest()->first(),
+//     ]);
+// })->name('landing-page');
+Route::get('/', [UserController::class, 'ladingPage'])->name('landing-page');
 
 Route::post('/send-otp', [UserController::class, 'sendOTP'])->name('send-otp');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,9 +62,8 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('archive')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('Dashboard');
-        })->name('archive');
+        Route::get('/', [UserController::class, 'archiveUsers'])->name('archived-users');
+        Route::post('/unarchive-user', [UserController::class, 'unarchivedUsers'])->name('unarchive-user');
     });
 
     Route::prefix('backup-and-restore')->group(function () {
@@ -98,6 +102,7 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
     Route::prefix('achievements-and-recogniations')->group(function () {
         Route::get('/', [AchievementController::class, 'index'])->name('staff-achievements-and-recogniations');
         Route::post('/save-post', [AchievementController::class, 'savePost'])->name('staff-aap-save-post');
+        Route::post('/delete-post', [AchievementController::class, 'deletePost'])->name('delete-achievement');
         Route::post('/save-like', [AchievementController::class, 'saveLike'])->name('staff-aap-save-like');
         Route::post('/save-comment', [AchievementController::class, 'saveComment'])->name('staff-aap-save-comment');
     });
@@ -105,6 +110,7 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
     Route::prefix('school-album')->group(function () {
         Route::get('/', [AlbumController::class, 'index'])->name('staff-school-album');
         Route::post('/save-post', [AlbumController::class, 'savePost'])->name('staff-album-save-post');
+        Route::post('/delete-post', [AlbumController::class, 'deletePost'])->name('delete-album');
         Route::post('/save-like', [AlbumController::class, 'saveLike'])->name('staff-album-save-like');
         Route::post('/save-comment', [AlbumController::class, 'saveComment'])->name('staff-album-save-comment');
     });

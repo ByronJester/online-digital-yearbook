@@ -106,6 +106,34 @@ const addComment = async(post, commentText) => {
         },
     });
 };
+
+const deletePost = (id) => {
+    swal({
+        title: "Are you sure to delete this achievement post?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const formData = new FormData();
+            formData.append('id', id);
+
+            Inertia.post(route('delete-achievement'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+        }
+    });
+}
 </script>
 
 <template>
@@ -145,7 +173,17 @@ const addComment = async(post, commentText) => {
         <!-- News feed posts -->
         <div class="space-y-6">
             <div v-for="post in posts" :key="post.id" class="border rounded-lg p-4 bg-white h-full">
-                <div class="font-bold">{{ post.user.fullname }}</div>
+                <div class="font-bold">
+                    <span>
+                        {{ post.user.fullname }}
+                    </span>
+                    <span class="float-right text-xs text-red-500 cursor-pointer" v-if="$page.props.auth.user.user_type == 'school_staff'"
+                        @click="deletePost(post.id)"
+                    >
+                        Delete
+                    </span>
+                </div>
+
                 <p>{{ post.content }}</p>
 
                 <!-- Display image or video if available -->

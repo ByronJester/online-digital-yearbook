@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-                    <th v-if="showView || showEdit || showDelete || showCopy">Actions</th>
+                    <th v-if="showView || showEdit || showDelete || showCopy || showArchive || showUnarchive">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@
                             {{ row[header.toLowerCase().replace(/ /g, '_')] }}
                         </template>
                     </td>
-                    <td v-if="showView || showEdit || showDelete || showCopy || showUse">
+                    <td v-if="showView || showEdit || showDelete || showCopy || showUse || showArchive || showUnarchive">
                         <button v-if="showUse && !row.is_used" @click="handleAction(row, 'use')" class="btn-use">
                             Use
                         </button>
@@ -38,6 +38,12 @@
                         </button>
                         <button v-if="showDelete" @click="handleAction(row, 'delete')" class="btn-delete">
                             Delete
+                        </button>
+                        <button v-if="showArchive" @click="handleAction(row, 'archive')" class="btn-archive">
+                            Archive
+                        </button>
+                        <button v-if="showUnarchive" @click="handleAction(row, 'unarchive')" class="btn-unarchive">
+                            Unarchive
                         </button>
                         <button v-if="showCopy" @click="handleAction(row, 'copy')" class="btn-copy">
                             Copy Password
@@ -95,6 +101,14 @@ export default {
             default: false,
         },
         showUse: {
+            type: Boolean,
+            default: false,
+        },
+        showArchive: {
+            type: Boolean,
+            default: false,
+        },
+        showUnarchive: {
             type: Boolean,
             default: false,
         },
@@ -262,7 +276,7 @@ td {
     color: black;
 }
 
-.btn-edit, .btn-copy {
+.btn-edit, .btn-copy, .btn-unarchive {
     font-size: 12px;
     margin-right: 2px;
     background-color: #33E88D;
@@ -282,4 +296,13 @@ td {
     background-color: #1ADCF7;
     color: black;
 }
+
+.btn-archive {
+    font-size: 12px;
+    margin-right: 2px;
+    background-color: #F59080;
+    color: black;
+}
+
+
 </style>

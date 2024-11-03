@@ -155,56 +155,6 @@ const sharePost = (post) => {
             <div class="w-full flex flex-col">
                 <div class="w-full border rounded-lg p-4 bg-white h-full mt-5" v-for="post in data" :key="post.id">
                     <div class="space-y-6" v-if="post.type == 'achievement'">
-                        <!-- <div class="w-full" v-if="post.share_user_names.length > 0">
-                            <div class="w-full" v-for="sun in post.share_user_names" :key="sun">
-
-                                <div class="font-bold">{{ post.user.fullname }}</div>
-                                <p>{{ post.content }}</p>
-
-
-                                <div v-if="post.image" class="my-4 flex justify-center items-center">
-                                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]">
-                                </div>
-                                <div v-if="post.video" class="my-4">
-                                    <video controls class="w-[500px] h-[300px]">
-                                        <source :src="post.video" type="video/mp4" />
-                                    </video>
-                                </div>
-
-                                <div class="w-full mt-4">
-                                    <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
-                                        ? 'Unlike'
-                                        : 'Like' )"
-                                        class="text-blue-500"
-                                    >
-                                        {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
-                                            ? 'Unlike'
-                                            : 'Like'
-                                        }}
-                                        <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
-                                    </button>
-                                    <button class="text-green-500 float-right ml-2" @click="sharePost(post)">
-                                        <i class="fa fa-share"></i> {{ post.share_user_names.length }}
-                                    </button>
-                                    <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
-                                        <i class="fa fa-comment"></i> {{ post.comments.length }}
-                                    </button>
-                                </div>
-                                <div v-if="post.showCommentInput" class="mt-4">
-                                    <input type="text" placeholder="Add a comment..."
-                                        @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''"
-                                        class="border p-1 rounded w-full mb-2">
-                                </div>
-
-                                <div v-if="post.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
-                                    <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
-                                        <p class="font-bold">{{ comment.commentor }}</p>
-                                        <p class="ml-3">{{ comment.comment }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
                         <div class="w-full">
                             <div class="font-bold">{{ post.user.fullname }}</div>
                             <p>{{ post.content }}</p>

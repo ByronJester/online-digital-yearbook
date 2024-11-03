@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Album, AlbumComment, AlbumLike };
+use App\Models\{ User, Album, AlbumComment, AlbumLike, UserShare };
 
 class AlbumController extends Controller
 {
@@ -88,6 +88,16 @@ class AlbumController extends Controller
             'user_id' => auth()->user()->id,
             'comment' => $request->comment
         ]);
+
+        return redirect()->back();
+    }
+
+    public function deletePost(Request $request)
+    {
+        UserShare::where('shared_id', $request->id)->where('type', 'album')->delete();
+        AlbumLike::where('album_id', $request->id)->delete();
+        AlbumComment::where('album_id', $request->id)->delete();
+        Album::where('id', $request->id)->delete();
 
         return redirect()->back();
     }

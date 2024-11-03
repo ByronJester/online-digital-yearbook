@@ -143,6 +143,7 @@ const saveLogo = () => {
                         // });
                         // location.reload()
                         loading.value = false
+                        formLogo.reset()
                     },
                     onError: (errors) => {
                         swal("Error saving.");
@@ -150,7 +151,7 @@ const saveLogo = () => {
                     }
                 });
 
-            }, 2000);
+            }, 1000);
         }
     });
 
@@ -174,13 +175,14 @@ const saveGreeting = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formGreeting.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
 
 
         }
@@ -206,13 +208,14 @@ const saveStory = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formStory.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
 
 
         }
@@ -236,13 +239,14 @@ const saveHistory = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formHistory.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
 
 
         }
@@ -266,13 +270,14 @@ const saveHymn = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formHymn.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
 
 
         }
@@ -296,13 +301,14 @@ const saveMission = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formMission.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
 
 
         }
@@ -326,13 +332,14 @@ const saveVision = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formVision.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
         }
     });
 
@@ -356,13 +363,14 @@ const saveProgram = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formProgram.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
         }
     });
 
@@ -385,13 +393,14 @@ const saveFaq = () => {
                     onSuccess: (page) => {
                         // location.reload()
                         loading.value = false
+                        formFaq.reset()
                     },
                     onError: (errors) => {
                         loading.value = false
                     }
                 });
 
-            }, 2000);
+            }, 1000);
         }
     });
 

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{ User, OtpMessage, SelfMessage };
+use App\Models\{
+    User, OtpMessage, SelfMessage, Logo, SuccessStory, History, MissionStatement, VisionStatement,
+    Program
+};
 use Inertia\Inertia;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -247,5 +250,31 @@ class UserController extends Controller
         }
 
         return response()->json(['success' => 'Database restored successfully.']);
+    }
+
+    public function archiveUsers()
+    {
+        return Inertia::render('User/Archive', [
+            'users' => User::onlyTrashed()->orderBy('updated_at', 'desc')->get()
+        ]);
+    }
+
+    public function unarchivedUsers(Request $request)
+    {
+        $user = User::onlyTrashed()->find($request->id);
+        $user->restore();
+
+        return redirect()->back();
+    }
+
+    public function ladingPage()
+    {
+        return Inertia::render('Welcome', [
+            'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
+            'histories' => History::orderBy('created_at', 'desc')->get(),
+            'mission' => MissionStatement::where('is_used', true)->latest()->first(),
+            'vision' => VisionStatement::where('is_used', true)->latest()->first(),
+            'programs' => Program::orderBy('program_name')->get()
+        ]);
     }
 }

@@ -2,14 +2,25 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted } from 'vue';
 
-defineProps({
+const props = defineProps({
     stories: {
         type: Array,
     },
     histories: {
         type: Array,
     },
+    mission: {
+        type: Object
+    },
+    vision: {
+        type: Object
+    },
+    programs: {
+        type: Array
+    }
 });
+
+console.log(props)
 
 const navItems = [
     { name: 'Home' },
@@ -97,7 +108,7 @@ onUnmounted(() => {
     <nav class="bg-[#0772B3] text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
             <div class="text-xl font-bold">
-                <img :src="!$page?.props?.logo ? logoUrl : $page.props.logo.file" alt="Logo" class="logo w-[100px] h-[80px]"
+                <img :src="!$page?.props?.logo ? logoUrl : $page.props.logo" alt="Logo" class="logo w-[100px] h-[80px]"
                 >
             </div>
 
@@ -159,7 +170,7 @@ onUnmounted(() => {
     <div class="p-6">
         <div v-if="activeNavItem === 'Home'" class="mt-5">
 
-            <div class="w-full carousel-container h-[400px]">
+            <div class="carousel-container">
                 <carousel :items-to-show="1" ref="carouselRef">
                     <slide v-for="i in carouseImage" :key="i">
                         <img :src="i" class="w-full h-full"/>
@@ -238,23 +249,72 @@ onUnmounted(() => {
         </div>
 
         <div v-else-if="activeNavItem === 'Hymn'">
-            <h2>Hymn</h2>
-            <p>Listen to our hymns.</p>
+            <h2 class="text-2xl font-bold">Hymn</h2>
+            <p class="text-xl">Listen to our hymns.</p>
         </div>
 
         <div v-else-if="activeNavItem === 'Mission and Vision'">
-            <h2>Mission and Vision</h2>
-            <p>Our mission and vision statements.</p>
+            <h2 class="text-2xl font-bold">Mission and Vision</h2>
+            <p class="text-xl">Our mission and vision statements.</p>
+
+
+            <div class="w-full flex flex-col md:flex-row h-[500px] max-h-screen mt-10" v-if="mission && vision">
+                <div class="w-full h-full mx-1">
+                    <p class="text-2xl text-center">Mission</p>
+                    <p class="text-justify mt-5">
+                        {{ mission.content }}
+                    </p>
+                </div>
+
+                <div class="w-full h-full flex flex-col mx-10">
+                    <div class="w-full mt-20">
+                        <img :src="mission.file" class="h-full w-full rounded-md"/>
+                    </div>
+
+                    <div class="w-full mt-10">
+                        <img :src="vision.file" class="h-full w-full rounded-md"/>
+                    </div>
+                </div>
+
+                <div class="w-full h-full mx-1">
+                    <p class="text-2xl text-center">Vision</p>
+                    <p class="text-justify mt-5">
+                        {{ vision.content }}
+                    </p>
+                </div>
+            </div>
         </div>
 
         <div v-else-if="activeNavItem === 'Programs'">
-            <h2>Programs</h2>
-            <p>Check out our programs.</p>
+            <h2 class="text-2xl font-bold">Programs</h2>
+            <p class="text-xl">Check out our programs.</p>
+
+            <div class="grid grid-cols-4 gap-4 w-full mt-10">
+                <div v-for="program in programs" :key="program.id" class="flex flex-col">
+                    <div class="w-full">
+                        <img :src="program.file" class="w-full h-[250px] rounded-md"/>
+                    </div>
+
+                    <div class="w-full mt-5">
+                        <p class="text-xl font-bold text-center">
+                            {{  program.program_name }}
+                        </p>
+                    </div>
+
+                    <div class="w-full mt-5">
+                        <p class="text-lg text-justify">
+                            {{  program.content }}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div v-else-if="activeNavItem === 'FAQs'">
-            <h2>FAQs</h2>
-            <p>Frequently Asked Questions.</p>
+            <h2 class="text-2xl font-bold">FAQs</h2>
+            <p class="text-xl">Frequently Asked Questions.</p>
+
+
         </div>
     </div>
 </template>
@@ -277,7 +337,9 @@ onUnmounted(() => {
 
 .carousel-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1600px;
   margin: 0 auto;
+  height: 100%;
+  max-height: 100px;
 }
 </style>

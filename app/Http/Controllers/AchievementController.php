@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, AchievementComment, AchievementLike };
+use App\Models\{ User, Achievement, AchievementComment, AchievementLike, UserShare };
 
 class AchievementController extends Controller
 {
@@ -74,6 +74,16 @@ class AchievementController extends Controller
             'user_id' => auth()->user()->id,
             'comment' => $request->comment
         ]);
+
+        return redirect()->back();
+    }
+
+    public function deletePost(Request $request)
+    {
+        UserShare::where('shared_id', $request->id)->where('type', 'achievement')->delete();
+        AchievementLike::where('achievement_id', $request->id)->delete();
+        AchievementComment::where('achievement_id', $request->id)->delete();
+        Achievement::where('id', $request->id)->delete();
 
         return redirect()->back();
     }
