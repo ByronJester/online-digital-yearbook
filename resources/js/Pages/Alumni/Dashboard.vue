@@ -248,6 +248,8 @@ const deleteComment = (id, type) => {
                     <div class="space-y-6" v-if="post.type == 'achievement'">
                         <div class="w-full">
                             <div class="font-bold">{{ post.user.fullname }}</div>
+                            <p class="text-xs mt-2 mb-5">{{ post.created_at }}</p>
+
                             <p>{{ post.content }}</p>
 
                             <!-- Display image or video if available -->
@@ -314,9 +316,14 @@ const deleteComment = (id, type) => {
                     </div>
 
                     <div class="w-full" v-else>
+                        <div class="font-bold">{{ post.user.fullname }}</div>
+                        <p class="text-xs mt-1 mb-10">{{ post.created_at }}</p>
+
                         <div class="w-full text-center border border-black rounded-md mt-3">
                             <p class="text-2xl p-3">{{ post.content }}</p>
                         </div>
+
+
 
                         <div class="w-full text-center border border-black rounded-md mt-3" v-if="post.description">
                             <p class="text-md p-3">{{ post.description }}</p>

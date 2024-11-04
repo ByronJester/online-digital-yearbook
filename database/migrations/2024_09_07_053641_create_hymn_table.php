@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('hymn', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->string('file')->nullable();
+            $table->json('files')->nullable();
             $table->boolean('is_used')->default(false);
 
             $table->timestamps();

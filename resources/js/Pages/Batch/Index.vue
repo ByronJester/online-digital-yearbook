@@ -94,7 +94,12 @@ const viewBatch = (id) => {
                             <label>Course</label>
                             <br>
                             <select class="rounded-md w-full" v-model="course">
-                                <option value="BSIT">BSIT</option>
+                                <option value="Bachelor of Science in Information Technology (BSIT)">Bachelor of Science in Information Technology (BSIT)</option>
+                                <option value="Bachelor of Science in Computer Engineering (BSCpE)">Bachelor of Science in Computer Engineering (BSCpE)</option>
+                                <option value="Bachelor of Science in Tourism Management (BSTM)">Bachelor of Science in Tourism Management (BSTM)</option>
+                                <option value="Bachelor of Science in Business Administration (BSBA)">Bachelor of Science in Business Administration (BSBA)</option>
+                                <option value="Bachelor of Science in Technology Livehood Education (BTLE)">Bachelor of Science in Technology Livehood Education (BTLE)</option>
+                                <option value="Bachelor of Science in Hospitality Management (BSHM)">Bachelor of Science in Hospitality Management (BSHM)</option>
                             </select>
                         </div>
 
@@ -105,6 +110,7 @@ const viewBatch = (id) => {
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
+                                <option value="3">4</option>
                             </select>
                         </div>
 
@@ -112,7 +118,31 @@ const viewBatch = (id) => {
                             <label>School Year</label>
                             <br>
                             <select class="rounded-md w-full" v-model="school_year">
+                                <option value="2001">2001</option>
+                                <option value="2002">2002</option>
+                                <option value="2003">2003</option>
+                                <option value="2004">2004</option>
+                                <option value="2005">2005</option>
+                                <option value="2006">2006</option>
+                                <option value="2007">2007</option>
+                                <option value="2008">2008</option>
+                                <option value="2009">2009</option>
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                                <option value="2012">2012</option>
+                                <option value="2013">2013</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
                                 <option value="2024">2024</option>
+                                <option value="2025">2025</option>
                             </select>
                         </div>
 
@@ -129,7 +159,7 @@ const viewBatch = (id) => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in batches" @click="viewBatch(batch.id)">
+                <div class="w-full h-[310px] border border-black rounded-md cursor-pointer" v-for="batch in batches" @click="viewBatch(batch.id)">
                     <img :src="batch.logo || logoUrl" class="w-full h-[225px]"/>
                     <p class="text-center font-bold">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Hymn extends Model
 {
@@ -12,12 +13,26 @@ class Hymn extends Model
     protected $table = 'hymn';
 
     protected $fillable = [
-        'content', 'file'
+        'content', 'files'
     ];
 
-    public function getFileAttribute($value)
+    public function getFilesAttribute($value)
     {
-        // return \LaravelCloudinary::show($value, []);
-        return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+        $response = [];
+
+        $files = json_decode($value);
+
+        if(count($files) > 0) {
+            foreach($files as $file) {
+                // array_push($response, "http://res.cloudinary.com/dcmgsini6/image/upload/" . $image);
+                if (Str::contains($file, 'video')) {
+                    array_push($response, "http://res.cloudinary.com/dcmgsini6/video/upload/" . $file);
+                } else {
+                    array_push($response, "http://res.cloudinary.com/dcmgsini6/image/upload/" . $file);
+                }
+            }
+        }
+
+        return $response;
     }
 }

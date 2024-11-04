@@ -42,7 +42,7 @@ const formatDate = (date) => {
                 <input
                     v-model="searchQuery"
                     type="text"
-                    placeholder="Search student by name"
+                    placeholder="Search alumni by name"
                     class="w-[30%] p-2 border rounded"
                 />
             </div>
@@ -50,6 +50,10 @@ const formatDate = (date) => {
             <div class="w-full flex flex-row mt-3 mb-5 text-xl">
                 <div class="w-full">
                     Alumni Name
+                </div>
+
+                <div class="w-full">
+                    Last Login
                 </div>
 
                 <div class="w-full text-right">
@@ -65,13 +69,19 @@ const formatDate = (date) => {
                         </p>
                     </div>
 
+                    <div class="w-full ">
+                        <p class="p-2">
+                            {{ user?.last_logged_in }}
+                        </p>
+                    </div>
+
                     <div class="w-full text-right mr-2 p-2">
                         <!-- {{ !!user?.last_logged_in ? formatDate(user?.last_logged_in)  : 'N/A' }} -->
                         <i class="fa-solid fa-circle text-xl text-green-600" v-if="user.last_logged_in && !user.logout_at">
 
                         </i>
 
-                        <i class="fa-solid fa-circle text-xl text-red-600" v-if="user.logout_at">
+                        <i class="fa-solid fa-circle text-xl text-red-600" v-if="!user.last_logged_in && !user.logout_at">
 
                         </i>
                     </div>

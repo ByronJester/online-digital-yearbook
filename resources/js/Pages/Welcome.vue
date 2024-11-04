@@ -3,6 +3,9 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
+    greeting: {
+        type: Object
+    },
     stories: {
         type: Array,
     },
@@ -17,10 +20,14 @@ const props = defineProps({
     },
     programs: {
         type: Array
+    },
+    hymn: {
+        type: Object
+    },
+    faqs: {
+        type: Array
     }
 });
-
-console.log(props)
 
 const navItems = [
     { name: 'Home' },
@@ -49,12 +56,17 @@ const getLogo = (imagePath) => {
 
 const logoUrl = getLogo('images/logo1.png')
 
-const carouseImage = [
-    `${window.location.origin}/carousel/c1.jpg`,
-    `${window.location.origin}/carousel/c2.jpg`,
-    `${window.location.origin}/carousel/c3.jpg`,
-    `${window.location.origin}/carousel/c4.jpg`
-]
+const carouseImage = ref([
+        `${window.location.origin}/carousel/c1.jpg`,
+        `${window.location.origin}/carousel/c2.jpg`,
+        `${window.location.origin}/carousel/c3.jpg`,
+        `${window.location.origin}/carousel/c4.jpg`
+    ])
+
+if(props.greeting) {
+    carouseImage.value = props.greeting.files
+}
+
 
 const carouselRef = ref(null);
 let intervalId = null;
@@ -83,6 +95,21 @@ onUnmounted(() => {
   stopAutoplay();
 });
 
+const isImage = (url) => {
+    if(!url) {
+        return false;
+    }
+
+    return url.includes("http://res.cloudinary.com/dcmgsini6/image/upload/") || url.includes('carousel');
+}
+
+const isVideo = (url) => {
+    if(!url) {
+        return false;
+    }
+
+    return url.includes("http://res.cloudinary.com/dcmgsini6/video/upload/");
+}
 
 </script>
 
@@ -167,18 +194,25 @@ onUnmounted(() => {
     </nav>
 
     <!-- Dynamic UI based on the selected nav item -->
-    <div class="p-6">
-        <div v-if="activeNavItem === 'Home'" class="mt-5">
+    <div class="p-3">
+        <div v-if="activeNavItem === 'Home'" class="">
 
             <div class="carousel-container">
                 <carousel :items-to-show="1" ref="carouselRef">
                     <slide v-for="i in carouseImage" :key="i">
-                        <img :src="i" class="w-full h-full"/>
+                        <div class="w-full" v-if="isImage(i)">
+                            <img :src="i" class="w-full h-full"/>
+                        </div>
+
+                        <div class="w-full" v-else-if="isVideo(i)">
+                            <video :src="i" controls class="w-full h-full"></video>
+                        </div>
+
                     </slide>
 
                     <template #addons>
-                        <navigation />
-                        <pagination />
+                        <!-- <navigation /> -->
+                        <!-- <pagination /> -->
                     </template>
                 </carousel>
              </div>
@@ -251,6 +285,50 @@ onUnmounted(() => {
         <div v-else-if="activeNavItem === 'Hymn'">
             <h2 class="text-2xl font-bold">Hymn</h2>
             <p class="text-xl">Listen to our hymns.</p>
+
+            <div class="w-full flex flex-col md:flex-row h-[500px] max-h-screen mt-10" v-if="hymn">
+                <div class="w-full h-full mx-1 flex flex-col">
+                    <div class="w-full h-[300px]" v-if="isImage(hymn.files[0])">
+                        <img :src="hymn.files[0]" class="w-full h-full"/>
+                    </div>
+
+                    <div class="w-full h-[300px]" v-if="isVideo(hymn.files[0])">
+                        <video :src="hymn.files[0]" controls class="w-full h-full"></video>
+                    </div>
+
+                    <div class="w-full h-[300px] mt-3" v-if="isImage(hymn.files[1])">
+                        <img :src="hymn.files[1]" class="w-full h-full"/>
+                    </div>
+
+                    <div class="w-full h-[300px] mt-3" v-if="isVideo(hymn.files[1])">
+                        <video :src="hymn.files[1]" controls class="w-full h-full"></video>
+                    </div>
+                </div>
+
+                <div class="w-full h-full flex flex-col mx-10">
+                    <p class="text-justify">
+                        {{ hymn.content }}
+                    </p>
+                </div>
+
+                <div class="w-full h-full mx-1 flex flex-col">
+                    <div class="w-full h-[300px]" v-if="isImage(hymn.files[2])">
+                        <img :src="hymn.files[2]" class="w-full h-full"/>
+                    </div>
+
+                    <div class="w-full h-[300px]" v-if="isVideo(hymn.files[2])">
+                        <video :src="hymn.files[2]" controls class="w-full h-full"></video>
+                    </div>
+
+                    <div class="w-full h-[300px] mt-3" v-if="isImage(hymn.files[3])">
+                        <img :src="hymn.files[3]" class="w-full h-full"/>
+                    </div>
+
+                    <div class="w-full h-[300px] mt-3" v-if="isVideo(hymn.files[3])">
+                        <video :src="hymn.files[3]" controls class="w-full h-full"></video>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div v-else-if="activeNavItem === 'Mission and Vision'">
@@ -314,6 +392,13 @@ onUnmounted(() => {
             <h2 class="text-2xl font-bold">FAQs</h2>
             <p class="text-xl">Frequently Asked Questions.</p>
 
+            <div class="w-full flex flex-col mt-10">
+                <div class="w-full border border-black rounded-md mt-3" v-for="faq in faqs" :key="faq">
+                    <p class="text-lg p-2">
+                        {{ faq.content }}
+                    </p>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -337,9 +422,7 @@ onUnmounted(() => {
 
 .carousel-container {
   width: 100%;
-  max-width: 1600px;
+  max-width: 800px;
   margin: 0 auto;
-  height: 100%;
-  max-height: 100px;
 }
 </style>

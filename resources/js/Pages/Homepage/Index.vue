@@ -42,8 +42,7 @@ const formLogo = useForm({
 
 const formGreeting = useForm({
     id: null,
-    content: '',
-    file: ''
+    files: []
 });
 
 const formStory = useForm({
@@ -62,7 +61,7 @@ const formHistory = useForm({
 const formHymn = useForm({
     id: null,
     content: '',
-    file: ''
+    files: []
 });
 
 const formMission = useForm({
@@ -119,6 +118,26 @@ const handleFileChange = (e, type) => {
             formProgram.file = file
             break;
     }
+}
+
+const handleHymnFileChange = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+
+    // Ensure the file count does not exceed 4
+    if (formHymn.files.length + selectedFiles.length > 4) {
+        alert("You can only upload a maximum of 4 files.");
+        return;
+    }
+
+    // Add files to formHymn.files while keeping the limit
+    formHymn.files.push(...selectedFiles.slice(0, 4 - formHymn.files.length));
+};
+
+const handleGreetingFileChange = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+
+    // Add files to formHymn.files while keeping the limit
+    formGreeting.files.push(...selectedFiles.slice(0, 4 - formGreeting.files.length));
 }
 
 const loading = ref(false)
@@ -481,6 +500,27 @@ const greetingsAction = ({ action, row }) => {
         formGreeting.id = row.id
         formGreeting.content = row.content
         formGreeting.file = row.file
+    } else if(action == 'use') {
+        swal({
+            title: "Are you sure to use this greeting?",
+            text: "",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((proceed) => {
+            if (proceed) {
+                Inertia.post(route('hpm-use-data'), { id: row.id, table: 'greetings'}, {
+                    onSuccess: (page) => {
+                        // location.reload()
+                    },
+                    onError: (errors) => {
+
+                    },
+                });
+
+            }
+        });
     }
 }
 
@@ -872,14 +912,10 @@ const activeTab = ref('logo');
                 <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
                         <p class="mb-5 text-2xl">
-                            Greeting Message
+                            Greetings
                         </p>
 
-                        <textarea class="w-full rounded-md" rows="4" cols="40" placeholder="Greeting"
-                            v-model="formGreeting.content"
-                        />
-
-                        <input type="file" @change="handleFileChange($event, 'greeting')"/>
+                        <input type="file" @change="handleGreetingFileChange($event)" multiple/>
 
                         <br>
                         <button class="bg-blue-500 px-5 py-2 mt-3 rounded-md text-white text-xl"
@@ -889,19 +925,26 @@ const activeTab = ref('logo');
                         </button>
                     </div>
 
+                    <div v-if="formGreeting.files.length > 0" class="my-3 ml-3">
+                        <p class="font-bold">Selected Files:</p>
+                        <ul>
+                            <li v-for="(file, index) in formGreeting.files" :key="index">{{ file.name }}</li>
+                        </ul>
+                    </div>
+
                 </div>
 
                 <div class="w-full mt-10" v-if="greetings.length > 0">
                     <Table
-                        :headers="['Content', 'File']"
+                        :headers="['Files']"
                         :rows="greetings"
                         :rows-per-page="10"
                         :showView="false"
-                        :showEdit="true"
+                        :showEdit="false"
                         :showDelete="true"
                         :showCopy="false"
                         :showSearch="false"
-                        :showUse="false"
+                        :showUse="true"
                         :table="'greeting'"
                         @action-event="greetingsAction"
                     />
@@ -1007,31 +1050,36 @@ const activeTab = ref('logo');
                     <VueSpinner size="50" color="red" />
                  </div>
 
-                <div class="w-full border border-black" v-else>
+                 <div class="w-full border border-black" v-else>
                     <div class="w-full p-3">
-                        <p class="mb-5 text-2xl">
-                            School Hymn
-                        </p>
+                        <p class="mb-5 text-2xl">School Hymn</p>
 
                         <textarea class="w-full rounded-md" rows="4" cols="40" placeholder="Hymn"
-                        v-model="formHymn.content"
-                        />
+                            v-model="formHymn.content"
+                        ></textarea>
 
-                        <input type="file" class="mb-5" @change="handleFileChange($event, 'hymn')"/>
+                        <!-- File input for multiple files with a limit of 4 files -->
+                        <input type="file" class="mb-5" @change="handleHymnFileChange" multiple />
+
+                        <!-- Display selected files -->
+                        <div v-if="formHymn.files.length > 0" class="mt-3">
+                            <p class="font-bold">Selected Files:</p>
+                            <ul>
+                                <li v-for="(file, index) in formHymn.files" :key="index">{{ file.name }}</li>
+                            </ul>
+                        </div>
 
                         <br>
-                        <button class="bg-blue-500 px-5 py-2 my-3 rounded-md text-white text-xl"
-                            @click="saveHymn()"
-                        >
+                        <button class="bg-blue-500 px-5 py-2 my-3 rounded-md text-white text-xl" @click="saveHymn">
                             Save
                         </button>
                     </div>
-
                 </div>
+
 
                 <div class="w-full mt-10" v-if="hymns.length > 0">
                     <Table
-                        :headers="['Content', 'File']"
+                        :headers="['Files', 'Content']"
                         :rows="hymns"
                         :rows-per-page="10"
                         :showView="false"
@@ -1217,7 +1265,7 @@ const activeTab = ref('logo');
                         :showDelete="true"
                         :showCopy="false"
                         :showSearch="false"
-                        :showUse="true"
+                        :showUse="false"
                         :table="'faq'"
                         @action-event="faqsAction"
                     />

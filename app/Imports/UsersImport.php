@@ -37,7 +37,10 @@ class UsersImport implements ToCollection, WithHeadingRow
                 $email = $row['email'];
                 $message = "Your email is $email and your password is $password. You can login now using this credentials.";
 
-                $this->sendSMS($row['contact'], $message);
+                if($row['contact'] != '') {
+                    $this->sendSMS($row['contact'], $message);
+                }
+
 
             } elseif ($userType === 'school_alumni') {
                 User::updateOrCreate(
@@ -61,7 +64,9 @@ class UsersImport implements ToCollection, WithHeadingRow
                 $email = $row['email_address'];
                 $message = "Your email is $email and your password is $password. You can login now using this credentials.";
 
-                $this->sendSMS($row['contact'], $message);
+                if($row['contact'] != '') {
+                    $this->sendSMS($row['contact'], $message);
+                }
             }
 
 

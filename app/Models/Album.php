@@ -80,7 +80,7 @@ class Album extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        $date = Carbon::parse($value);
+        $date = Carbon::parse($value)->setTimezone(config('app.timezone'));
 
         return $date->isoFormat('LL');
     }

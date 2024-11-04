@@ -17,13 +17,33 @@
             </thead>
             <tbody>
                 <tr v-for="(row, index) in paginatedData" :key="index">
-                    <td v-for="header in headers" :key="header" :data-label="header">
-                        <!-- Check if the data is a URL pointing to an image -->
-                        <template v-if="isImage(row[header.toLowerCase().replace(/ /g, '_')])">
+                    <td v-for="header in headers" :key="header" :data-label="header" class="w-[300px]">
+                        <!-- <template v-if="isImage(row[header.toLowerCase().replace(/ /g, '_')])">
                             <img :src="row[header.toLowerCase().replace(/ /g, '_')]" alt="Image" class="table-image" />
                         </template>
                         <template v-else>
                             {{ row[header.toLowerCase().replace(/ /g, '_')] }}
+                        </template> -->
+                        <template v-if="Array.isArray(row[header.toLowerCase().replace(/ /g, '_')])" class="">
+                            <div v-for="file in row[header.toLowerCase().replace(/ /g, '_')]" :key="file" class="file-preview flex justify-center items-center">
+                                <template v-if="isImage(file)">
+                                    <img :src="file" alt="Image" class="table-image w-[300px] h-[200px]" />
+                                </template>
+                                <template v-else-if="isVideo(file)">
+                                    <video :src="file" controls class="table-video w-[300px] h-[200px]"></video>
+                                </template>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <template v-if="isImage(row[header.toLowerCase().replace(/ /g, '_')])">
+                                <img :src="row[header.toLowerCase().replace(/ /g, '_')]" alt="Image" class="table-image" />
+                            </template>
+                            <template v-else-if="isVideo(row[header.toLowerCase().replace(/ /g, '_')])">
+                                <img :src="row[header.toLowerCase().replace(/ /g, '_')]" alt="Image" class="table-image" />
+                            </template>
+                            <template v-else class="">
+                                {{ row[header.toLowerCase().replace(/ /g, '_')] }}
+                            </template>
                         </template>
                     </td>
                     <td v-if="showView || showEdit || showDelete || showCopy || showUse || showArchive || showUnarchive">
@@ -161,6 +181,13 @@ export default {
 
             return url.includes("http://res.cloudinary.com/dcmgsini6/image/upload/");
         },
+        isVideo(url) {
+            if(!url) {
+                return false;
+            }
+
+            return url.includes("http://res.cloudinary.com/dcmgsini6/video/upload/");
+        }
     },
 };
 </script>

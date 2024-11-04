@@ -57,11 +57,7 @@ class HomepageController extends Controller
 
     public function saveGreetingMessage(Request $request)
     {
-        $request->validate([
-            'content' => 'required'
-        ]);
 
-        $filename = Str::random(10) . '_greeting';
 
         $greeting = new Greeting;
 
@@ -69,15 +65,32 @@ class HomepageController extends Controller
             $greeting = Greeting::where('id', $request->id)->first();
         }
 
-        $greeting->content = $request->content;
+        // if ($request->hasFile('file')) {
+        //     $file = $request->file('file');
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+        //     $result = $this->uploadFile($file, $filename);
 
-            $result = $this->uploadFile($file, $filename);
+        //     $greeting->file = $filename;
+        // }
+        $filesArr = [];
 
-            $greeting->file = $filename;
+        if($request->has('files') && count($request->files) > 0) {
+            foreach($request->file('files') as $key => $f) {
+                $fileExtension = strtolower($f->getClientOriginalExtension());
+                $filename = Str::random(10) . '_' . $key;
+
+                if (in_array($fileExtension, ['mp4', 'avi', 'mov', 'mkv', 'webm'])) {
+                    $filename .= "_greeting_video";
+                } else {
+                    $filename .= "_greeting_image";
+                }
+
+                $upload = $this->uploadFile($f, $filename);
+                array_push($filesArr, $upload);
+            }
         }
+
+        $greeting->files = json_encode($filesArr);
 
         $greeting->save();
 
@@ -151,8 +164,6 @@ class HomepageController extends Controller
             'content' => 'required'
         ]);
 
-        $filename = Str::random(10) . '_hymn';
-
         $hymn = new Hymn;
 
         if($request->id) {
@@ -161,13 +172,25 @@ class HomepageController extends Controller
 
         $hymn->content = $request->content;
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+        $filesArr = [];
 
-            $result = $this->uploadFile($file, $filename);
+        if($request->has('files') && count($request->files) > 0) {
+            foreach($request->file('files') as $key => $f) {
+                $fileExtension = strtolower($f->getClientOriginalExtension());
+                $filename = Str::random(10) . '_' . $key;
 
-            $hymn->file = $filename;
+                if (in_array($fileExtension, ['mp4', 'avi', 'mov', 'mkv', 'webm'])) {
+                    $filename .= "_hymn_video";
+                } else {
+                    $filename .= "_hymn_image";
+                }
+
+                $upload = $this->uploadFile($f, $filename);
+                array_push($filesArr, $upload);
+            }
         }
+
+        $hymn->files = json_encode($filesArr);
 
         $hymn->save();
 

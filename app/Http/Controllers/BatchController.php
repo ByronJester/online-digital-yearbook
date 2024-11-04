@@ -18,6 +18,7 @@ class BatchController extends Controller
 
     public function saveBatch(Request $request)
     {
+        // return $request;
         $request->validate([
             'course' => 'required',
             'section' => 'required',

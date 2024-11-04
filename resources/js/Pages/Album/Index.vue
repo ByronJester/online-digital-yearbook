@@ -14,20 +14,50 @@ defineProps({
 // Form data for new post
 const postContent = ref('');
 const postDescription = ref('');
-const postImages = ref([]); // Array to hold multiple images
-const postVideos = ref([]); // Array to hold multiple videos
+const postImages = ref([]);
+const postVideos = ref([]);
+const postImagePreviews = ref([]);
+const postVideoPreviews = ref([]);
+
+const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    postImages.value = files; // Store selected images
+    postImagePreviews.value = []; // Reset previews
+
+    files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            postImagePreviews.value.push(reader.result); // Store preview URL
+        };
+        reader.readAsDataURL(file);
+    });
+};
+
+const handleVideoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    postVideos.value = files; // Store selected videos
+    postVideoPreviews.value = []; // Reset previews
+
+    files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            postVideoPreviews.value.push(reader.result); // Store preview URL
+        };
+        reader.readAsDataURL(file);
+    });
+};
 
 // File input refs to trigger from buttons
 const imageInput = ref(null);
 const videoInput = ref(null);
 
-const handleImageUpload = (e) => {
-    postImages.value = Array.from(e.target.files); // Store all selected images
-};
+// const handleImageUpload = (e) => {
+//     postImages.value = Array.from(e.target.files); // Store all selected images
+// };
 
-const handleVideoUpload = (e) => {
-    postVideos.value = Array.from(e.target.files); // Store all selected videos
-};
+// const handleVideoUpload = (e) => {
+//     postVideos.value = Array.from(e.target.files); // Store all selected videos
+// };
 
 const loading = ref(false)
 
@@ -279,8 +309,22 @@ const deleteComment = (id) => {
 
                 <textarea v-model="postDescription" placeholder="Album Description" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
+
+                <div v-if="postImagePreviews.length" class="flex gap-2 mt-2">
+                    <div v-for="(preview, index) in postImagePreviews" :key="index" class="w-32 h-32">
+                        <img :src="preview" alt="Image preview" class="w-full h-full object-cover rounded-md" />
+                    </div>
+                </div>
+
+                <!-- Video Previews -->
+                <div v-if="postVideoPreviews.length" class="flex gap-2 mt-5">
+                    <div v-for="(preview, index) in postVideoPreviews" :key="index" class="w-32 h-32">
+                        <video :src="preview" controls class="w-full h-full object-cover rounded-md"></video>
+                    </div>
+                </div>
+
                 <!-- Upload Buttons with Hidden Inputs for Multiple Files -->
-                <div class="flex gap-4 mb-4">
+                <div class="flex gap-4 mb-4 mt-4">
                     <div class="w-full">
                         <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded mr-1">Upload Photos</button>
                         <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button>

@@ -24,6 +24,35 @@ const videoInput = ref(null);
 
 const loading = ref(false)
 
+const previewImage = ref(null);
+const previewVideo = ref(null);
+
+const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    postImage.value = file;
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            previewImage.value = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
+const handleVideoChange = (e) => {
+    const file = e.target.files[0];
+    postVideo.value = file;
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            previewVideo.value = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
 const createPost = () => {
     swal({
         title: "Are you sure to save this achievement?",
@@ -223,6 +252,16 @@ const deleteComment = (id) => {
                 <h2 class="text-xl font-bold mb-2">New Post</h2>
                 <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
+                <div class="flex flex-row">
+                    <div v-if="previewImage" class="my-4 mr-1">
+                        <img :src="previewImage" alt="Preview Image" class="w-[500px] h-[300px] rounded-lg" />
+                    </div>
+
+                    <div v-if="previewVideo" class="my-4 ml-1">
+                        <video :src="previewVideo" controls class="w-[500px] h-[300px] rounded-lg"></video>
+                    </div>
+                </div>
+
                 <!-- Upload Buttons with Hidden Inputs -->
                 <div class="flex gap-4 mb-4">
                     <div class="w-full">
@@ -234,9 +273,11 @@ const deleteComment = (id) => {
 
 
 
-                    <input ref="imageInput" type="file" @change="(e) => postImage = e.target.files[0]" accept="image/*" class="hidden" />
-                    <input ref="videoInput" type="file" @change="(e) => postVideo = e.target.files[0]" accept="video/*" class="hidden" />
+                    <input ref="imageInput" type="file" @change="handleImageChange" accept="image/*" class="hidden" />
+                    <input ref="videoInput" type="file" @change="handleVideoChange" accept="video/mp4" class="hidden" />
                 </div>
+
+
 
                 <!-- <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button> -->
              </div>
