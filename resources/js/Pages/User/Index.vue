@@ -183,6 +183,7 @@ const triggerFileUpload = () => {
                         :showDelete="false"
                         :showCopy="false"
                         :showArchive="true"
+                        :showSearch="true"
                         @action-event="handleTableAction"
                     />
                 </div>
