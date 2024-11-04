@@ -5,6 +5,7 @@ import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { VueSpinner } from 'vue3-spinners';
+import InputError from '@/Components/InputError.vue';
 
 const loading = ref(false)
 

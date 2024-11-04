@@ -203,13 +203,13 @@ const viewPassword = () => {
                             <div v-if="message" class="my-1 text-xs text-red-600"
                                 style="text-align: left"
                             >
-                                Email not found.
+                                Invalid Credentials
                             </div>
 
 
-                            <!-- <div class="forgot-password-container">
+                            <div class="forgot-password-container">
                                 <a :href="route('password.request')" class="forgot-password">Forgot Password?</a>
-                            </div> -->
+                            </div>
                         </form>
                     </div>
                 </div>
