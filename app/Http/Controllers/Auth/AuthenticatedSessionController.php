@@ -60,7 +60,8 @@ class AuthenticatedSessionController extends Controller
         }
 
         User::where('id', $auth->id)->update([
-            'last_logged_in' => Carbon::now()
+            'last_logged_in' => Carbon::now(),
+            'logout_at' => null
         ]);
 
         OtpMessage::where('email', $auth->email)->delete();
@@ -73,6 +74,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = auth()->user();
+        $user->logout_at = Carbon::now();
+        $user->save();
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

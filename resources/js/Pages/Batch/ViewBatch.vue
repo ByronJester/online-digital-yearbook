@@ -24,7 +24,7 @@ const image = ref('');
 
 const saveStudent = (id) => {
     swal({
-        title: "Are you sure to add this student to this batch?",
+        title: "Are you sure to add this alumni to this batch?",
         text: "",
         icon: "success",
         buttons: true,
@@ -96,19 +96,19 @@ const back = () => {
                     <div class="w-full" v-else>
                         <div class="w-full flex flex-col md:flex-row py-3">
                             <div class="w-full md:mr-1">
-                                <label>Student Name</label>
+                                <label>Alumni Name</label>
                                 <br>
                                 <input type="text" class="w-full rounded-md" v-model="student_name"/>
                             </div>
 
                             <div class="w-full md:mr-1">
-                                <label>Student Award</label>
+                                <label>Alumni Award</label>
                                 <br>
                                 <input type="text" class="w-full rounded-md" v-model="award"/>
                             </div>
 
                             <div class="w-full md:mr-1">
-                                <label>Student Picture</label>
+                                <label>Alumni Picture</label>
                                 <br>
                                 <input type="file" class="w-full rounded-md" @change="(e) => image = e.target.files[0]"/>
                             </div>

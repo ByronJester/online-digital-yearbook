@@ -73,34 +73,79 @@ const toggleCommentInput = (post) => {
     post.showCommentInput = !post.showCommentInput;
 };
 
+const textComment = ref(null);
+const commentId = ref(null);
 // Function to add a comment
 const addComment = async (post, commentText) => {
     if(post.type == 'album') {
-        const formData = new FormData();
-        formData.append('post_id', post.id);
-        formData.append('comment', commentText);
+        if(!commentId.value) {
+            const formData = new FormData();
+            formData.append('post_id', post.id);
+            formData.append('comment', commentText);
 
-        await Inertia.post(route('staff-album-save-comment'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+            await Inertia.post(route('staff-album-save-comment'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            textComment.value = null
+            commentId.value = null
+        } else {
+            const formData = new FormData();
+            formData.append('id', commentId.value);
+            formData.append('comment', textComment.value);
+
+            await Inertia.post(route('staff-album-edit-comment'), formData, {
+
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    textComment.value = null
+                    commentId.value = null
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+        }
+
     } else {
-        const formData = new FormData();
-        formData.append('post_id', post.id);
-        formData.append('comment', commentText);
+        if(!commentId.value) {
+            const formData = new FormData();
+            formData.append('post_id', post.id);
+            formData.append('comment', commentText);
 
-        await Inertia.post(route('staff-aap-save-comment'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            onSuccess: (page) => {
-                // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-            },
-            onError: (errors) => {
-                // alert('There was an error uploading the file.');
-            },
-        });
+            await Inertia.post(route('staff-aap-save-comment'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    textComment.value = null
+                    commentId.value = null
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+        } else {
+            const formData = new FormData();
+            formData.append('id', commentId.value);
+            formData.append('comment', textComment.value);
+
+            await Inertia.post(route('staff-aap-edit-comment'), formData, {
+
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    textComment.value = null
+                    commentId.value = null
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+        }
+
     }
 };
 
@@ -129,6 +174,52 @@ const sharePost = (post) => {
         }
     });
 }
+
+const deleteComment = (id, type) => {
+    swal({
+        title: "Are you sure to delete this comment?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            if(type == 'album') {
+                const formData = new FormData();
+                formData.append('id', id);
+
+                Inertia.post(route('staff-album-delete-comment'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    },
+                    onError: (errors) => {
+                        // alert('There was an error uploading the file.');
+                    },
+                });
+            } else {
+                const formData = new FormData();
+                formData.append('id', id);
+
+                Inertia.post(route('staff-aap-delete-comment'), formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onSuccess: (page) => {
+                        // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    },
+                    onError: (errors) => {
+                        // alert('There was an error uploading the file.');
+                    },
+                });
+            }
+
+        }
+    });
+}
 </script>
 
 <script>
@@ -148,7 +239,7 @@ const sharePost = (post) => {
 </script>
 
 <template>
-    <Head title="Alumni Records" />
+    <Head title="Dashboard" />
 
     <AuthenticatedLayout>
         <div class="w-full p-5">
@@ -164,7 +255,7 @@ const sharePost = (post) => {
                             <div v-if="post.image" class="my-4 flex justify-center items-center">
                                 <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]">
                             </div>
-                            <div v-if="post.video" class="my-4">
+                            <div v-if="post.video" class="my-4 flex justify-center items-center">
                                 <video controls class="w-[500px] h-[300px]">
                                     <source :src="post.video" type="video/mp4" />
                                 </video>
@@ -175,16 +266,16 @@ const sharePost = (post) => {
                                 <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
                                     ? 'Unlike'
                                     : 'Like' )"
-                                    class="text-blue-500"
+                                    :class="{'text-blue-500': post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0}"
                                 >
-                                    {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
+                                    <!-- {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
                                         ? 'Unlike'
                                         : 'Like'
-                                    }}
+                                    }} -->
                                     <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
                                     <!-- {{ post.likes }} -->
                                 </button>
-                                <button class="text-green-500 float-right ml-2" @click="sharePost(post)">
+                                <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
                                     <i class="fa fa-share"></i> {{ post.share_user_names.length }}
                                 </button>
                                 <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
@@ -196,6 +287,7 @@ const sharePost = (post) => {
                             <div v-if="post.showCommentInput" class="mt-4">
                                 <input type="text" placeholder="Add a comment..."
                                     @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''"
+                                    v-model="textComment"
                                     class="border p-1 rounded w-full mb-2">
                             </div>
 
@@ -203,7 +295,19 @@ const sharePost = (post) => {
                             <div v-if="post.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
                                 <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
                                     <p class="font-bold">{{ comment.commentor }}</p>
-                                    <p class="ml-3">{{ comment.comment }}</p>
+                                    <p class="ml-3">
+                                        <span>{{ comment.comment }}</span>
+
+                                        <span class="float-right text-red-500 text-xs" v-if="$page.props.auth.user.id == comment.user_id ">
+                                            <i class="fa-solid fa-trash ml-2 cursor-pointer" @click="deleteComment(comment.id, post.type)">
+                                            </i>
+                                        </span>
+                                        <span class="float-right text-green-500 text-xs" v-if="$page.props.auth.user.id == comment.user_id ">
+                                            <i class="fa-solid fa-pen-to-square cursor-pointer" @click="textComment = comment.comment; commentId = comment.id">
+
+                                            </i>
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -255,12 +359,12 @@ const sharePost = (post) => {
 
                         <!-- Likes and comments -->
                         <div class="w-full mt-20">
-                            <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )" class="text-blue-500">
-                                {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }}
+                            <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )" :class="{'text-blue-500': post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0}">
+                                <!-- {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }} -->
                                 <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
                             </button>
 
-                            <button class="text-green-500 float-right ml-2" @click="sharePost(post)">
+                            <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
                                 <i class="fa fa-share"></i>
                             </button>
                             <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
@@ -270,14 +374,28 @@ const sharePost = (post) => {
 
                         <!-- Comment input, displayed above other comments -->
                         <div v-if="post.showCommentInput" class="mt-4">
-                            <input type="text" placeholder="Add a comment..." @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''" class="border p-1 rounded w-full mb-2">
+                            <input type="text" placeholder="Add a comment..." @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''" class="border p-1 rounded w-full mb-2"
+                                v-model="textComment"
+                            >
                         </div>
 
                         <!-- Display comments -->
                         <div v-if="post.comments.length > 0 && post.showCommentInput" class="mt-4 ml-4">
                             <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
                                 <p class="font-bold">{{ comment.commentor }}</p>
-                                <p class="ml-3">{{ comment.comment }}</p>
+                                <p class="ml-3">
+                                    <span>{{ comment.comment }}</span>
+
+                                    <span class="float-right text-red-500 text-xs" v-if="$page.props.auth.user.id == comment.user_id ">
+                                        <i class="fa-solid fa-trash ml-2 cursor-pointer" @click="deleteComment(comment.id, post.type)">
+                                        </i>
+                                    </span>
+                                    <span class="float-right text-green-500 text-xs" v-if="$page.props.auth.user.id == comment.user_id ">
+                                        <i class="fa-solid fa-pen-to-square cursor-pointer" @click="textComment = comment.comment; commentId = comment.id">
+
+                                        </i>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>

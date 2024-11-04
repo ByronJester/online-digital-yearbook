@@ -39,7 +39,7 @@ class Achievement extends Model
     {
         if(!$value) return $value;
         // return \LaravelCloudinary::show($value, []);
-        return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+        return "http://res.cloudinary.com/dcmgsini6/video/upload/" . $value;
     }
 
     public function getShareUserNamesAttribute($value)

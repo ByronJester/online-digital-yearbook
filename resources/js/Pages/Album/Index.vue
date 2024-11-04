@@ -108,16 +108,40 @@ const toggleCommentInput = (post) => {
 };
 
 // Function to add a comment
-const addComment = async (post, commentText) => {
-    const formData = new FormData();
-    formData.append('post_id', post.id);
-    formData.append('comment', commentText);
+const textComment = ref(null);
+const commentId = ref(null);
 
-    await Inertia.post(route('staff-album-save-comment'), formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+const addComment = async (post, commentText) => {
+    if(!commentId.value) {
+        const formData = new FormData();
+        formData.append('post_id', post.id);
+        formData.append('comment', commentText);
+
+        await Inertia.post(route('staff-album-save-comment'), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        textComment.value = null
+        commentId.value = null
+    } else {
+        const formData = new FormData();
+        formData.append('id', commentId.value);
+        formData.append('comment', textComment.value);
+
+        await Inertia.post(route('staff-album-edit-comment'), formData, {
+
+            onSuccess: (page) => {
+                // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                textComment.value = null
+                commentId.value = null
+            },
+            onError: (errors) => {
+                // alert('There was an error uploading the file.');
+            },
+        });
+    }
+
 };
 
 const carouselRef = ref(null);
@@ -174,6 +198,53 @@ const deletePost = (id) => {
         }
     });
 }
+
+const mediaSrc = ref(null);
+const mediaType = ref(null);
+
+const openMedia = (src, type) => {
+    mediaSrc.value = src
+    mediaType.value = type
+
+    var modal = document.getElementById("defaultModal");
+    modal.style.display = "block";
+}
+
+const closeModal = () => {
+    mediaSrc.value = null
+    mediaType.value = null
+
+    var modal = document.getElementById("defaultModal");
+    modal.style.display = "none";
+}
+
+const deleteComment = (id) => {
+    swal({
+        title: "Are you sure to delete this comment?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            const formData = new FormData();
+            formData.append('id', id);
+
+            Inertia.post(route('staff-album-delete-comment'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                },
+            });
+        }
+    });
+}
 </script>
 
 <script>
@@ -211,21 +282,52 @@ const deletePost = (id) => {
                 <!-- Upload Buttons with Hidden Inputs for Multiple Files -->
                 <div class="flex gap-4 mb-4">
                     <div class="w-full">
-                        <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Photos</button>
+                        <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded mr-1">Upload Photos</button>
+                        <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button>
                     </div>
 
-                    <!-- <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Videos</button> -->
+
 
                     <!-- Hidden File Inputs -->
                     <input ref="imageInput" type="file" multiple @change="handleImageUpload" accept="image/*" class="hidden" />
-                    <!-- <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" /> -->
-                    <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md float-right">Save</button>
+                    <input ref="videoInput" type="file" multiple @change="handleVideoUpload" accept="video/*" class="hidden" />
+                    <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
                 </div>
 
 
             </div>
 
 
+        </div>
+
+        <div
+            id="defaultModal"
+            tabindex="-1"
+            aria-hidden="true"
+            style="background-color: rgba(0, 0, 0, 0.7)"
+            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+            <div class="h-screen flex justify-center items-center">
+                <div class="relative w-[50%] h-[500px] max-w-2xl max-h-full">
+
+
+
+                    <div class="relative bg-white rounded-lg shadow" v-if="mediaType == 'image'">
+                        <span class="text-xl float-right mr-2" @click="closeModal()">
+                            <i class="fa-solid fa-xmark cursor-pointer"></i>
+                        </span>
+                        <img :src="mediaSrc" class="w-full h-[500px]"/>
+                    </div>
+
+                    <div class="relative bg-white rounded-lg shadow" v-else>
+
+                        <video controls class="w-full h-full cursor-pointer">
+                            <source :src="mediaSrc" type="video/mp4" />
+                        </video>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- News feed posts -->
@@ -256,7 +358,7 @@ const deletePost = (id) => {
                     <div class="w-full carousel-container">
                         <carousel :items-to-show="2" ref="carouselRef">
                             <slide v-for="i in post.image" :key="i">
-                                <img :src="i" class="w-full h-[300px] mr-1"/>
+                                <img :src="i" class="w-full h-[300px] mr-1 cursor-pointer" @click="openMedia(i, 'image')"/>
                             </slide>
 
                             <template #addons>
@@ -272,9 +374,8 @@ const deletePost = (id) => {
                     <div class="w-full carousel-container">
                         <carousel :items-to-show="2" ref="carouselRef">
                             <slide v-for="i in post.video" :key="i">
-                                <!-- <img :src="i" class="w-full h-[200px] mr-1"/> -->
-                                <video controls class="w-full h-[300px]">
-                                    <source :src="i" type="video" />
+                                <video controls class="w-full h-[250px] cursor-pointer">
+                                    <source :src="i" type="video/mp4" />
                                 </video>
                             </slide>
 
@@ -288,10 +389,13 @@ const deletePost = (id) => {
 
                 <!-- Likes and comments -->
                 <div class="flex justify-between items-center mt-20" v-if="$page.props.auth.user.user_type == 'school_staff'">
-                    <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )" class="text-blue-500">
-                        {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }}
+                    <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )"
+                            :class="{'text-blue-500': post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0}"
+                        >
+                        <!-- {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }} -->
                         <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
                     </button>
+
                     <button @click="toggleCommentInput(post)" class="text-blue-500">
                         <i class="fa fa-comment"></i> {{ post.comments.length }}
                     </button>
@@ -299,14 +403,30 @@ const deletePost = (id) => {
 
                 <!-- Comment input, displayed above other comments -->
                 <div v-if="post.showCommentInput" class="mt-4">
-                    <input type="text" placeholder="Add a comment..." @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''" class="border p-1 rounded w-full mb-2">
+                    <input type="text" placeholder="Add a comment..." @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''" class="border p-1 rounded w-full mb-2"
+                        v-model="textComment"
+                    >
                 </div>
 
                 <!-- Display comments -->
                 <div v-if="post.comments.length > 0 && post.showCommentInput" class="mt-4 ml-4">
                     <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
                         <p class="font-bold">{{ comment.commentor }}</p>
-                        <p class="ml-3">{{ comment.comment }}</p>
+
+                        <p class="ml-3">
+                            <span>{{ comment.comment }}</span>
+
+                            <span class="float-right text-red-500 text-xs" v-if="$page.props.auth.user.id == comment.user_id ">
+                                <i class="fa-solid fa-trash ml-2 cursor-pointer" @click="deleteComment(comment.id)">
+                                </i>
+                            </span>
+                            <span class="float-right text-green-500 text-xs" v-if="$page.props.auth.user.id == comment.user_id ">
+                                <i class="fa-solid fa-pen-to-square cursor-pointer" @click="textComment = comment.comment; commentId = comment.id">
+
+                                </i>
+                            </span>
+                        </p>
+
                     </div>
                 </div>
             </div>

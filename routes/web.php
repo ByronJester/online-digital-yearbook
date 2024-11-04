@@ -74,6 +74,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
+
     Route::prefix('home-page-management')->group(function () {
         Route::get('/', [HomepageController::class, 'index'])->name('home-page-management');
         Route::post('/save-logo', [HomepageController::class, 'saveLogo'])->name('home-page-management-logo');
@@ -92,8 +93,12 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('dashboard')->group(function () {
-        Route::get('/', [HomepageController::class, 'index'])->name('staff-dashboard');
+        Route::get('/', [AlumniController::class, 'dashboard'])->name('staff-dashboard');
     });
+
+    // Route::prefix('dashboard')->group(function () {
+    //     Route::get('/', [HomepageController::class, 'index'])->name('staff-dashboard');
+    // });
 
     Route::prefix('alumni-records')->group(function () {
         Route::get('/', [AlumniController::class, 'records'])->name('staff-alumni-records');
@@ -105,6 +110,8 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
         Route::post('/delete-post', [AchievementController::class, 'deletePost'])->name('delete-achievement');
         Route::post('/save-like', [AchievementController::class, 'saveLike'])->name('staff-aap-save-like');
         Route::post('/save-comment', [AchievementController::class, 'saveComment'])->name('staff-aap-save-comment');
+        Route::post('/edit-comment', [AchievementController::class, 'editComment'])->name('staff-aap-edit-comment');
+        Route::post('/delete-comment', [AchievementController::class, 'deleteComment'])->name('staff-aap-delete-comment');
     });
 
     Route::prefix('school-album')->group(function () {
@@ -113,6 +120,8 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
         Route::post('/delete-post', [AlbumController::class, 'deletePost'])->name('delete-album');
         Route::post('/save-like', [AlbumController::class, 'saveLike'])->name('staff-album-save-like');
         Route::post('/save-comment', [AlbumController::class, 'saveComment'])->name('staff-album-save-comment');
+        Route::post('/edit-comment', [AlbumController::class, 'editComment'])->name('staff-album-edit-comment');
+        Route::post('/delete-comment', [AlbumController::class, 'deleteComment'])->name('staff-album-delete-comment');
     });
 
     Route::prefix('class-batches')->group(function () {

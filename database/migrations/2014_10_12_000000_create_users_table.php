@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->string('profile_picture')->nullable();
             $table->timestamp('last_logged_in')->nullable();
+            $table->timestamp('logout_at')->nullable();
             $table->boolean('is_deactivated')->default(false);
 
             $table->rememberToken();

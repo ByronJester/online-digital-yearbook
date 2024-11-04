@@ -52,7 +52,7 @@ class Album extends Model
 
         if(count($videos) > 0) {
             foreach($videos as $video) {
-                array_push($response, "http://res.cloudinary.com/dcmgsini6/image/upload/" . $video);
+                array_push($response, "https://res.cloudinary.com/dcmgsini6/video/upload/" . $video);
             }
         }
 

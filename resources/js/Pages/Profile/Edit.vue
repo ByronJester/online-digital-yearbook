@@ -152,7 +152,7 @@ const addComment = async (post, commentText) => {
         <div class="w-full my-3 border-b border-black">
             <img :src="profilePicturePreview" class="rounded-[50%] border border-black w-[200px] h-[200px] my-2">
             <p class="w-[18%] text-center text-xl">
-                <b>{{ user.fullname }}</b><span v-if="user.user_type == 'school_alumni'"> - {{ user.section }}</span>
+                <b>{{ user.fullname }}</b><span v-if="user.user_type == 'school_alumni'"> - {{ user.section }} ({{ user.role }})</span>
             </p>
         </div>
 

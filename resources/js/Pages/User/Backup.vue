@@ -94,6 +94,7 @@ const removeWordFromString = (originalString, wordToRemove) => {
                 </p>
 
                 <div class="w-full">
+                    <p class="text-2xl mb-5">Backup</p>
                     <select v-model="table" class="rounded-md mr-2">
                         <option :value="t" v-for="t in tables" :key="t">
                             {{ t }}
@@ -105,14 +106,15 @@ const removeWordFromString = (originalString, wordToRemove) => {
                 </div>
             </div>
 
-            <div class="w-full mt-5">
+            <div class="w-full mt-20">
+                <p class="text-2xl mb-5">Restore</p>
                 <select v-model="tableUpload" class="rounded-md mr-2">
                     <option :value="t" v-for="t in tables" :key="t">
                         {{ t }}
                     </option>
                 </select>
                 <input type="file" @change="handleFileUpload" accept=".sql" class="border border-black rounded-md mr-1 py-1"/>
-                <button @click="uploadFile" class="rounded-md bg-blue-500 p-2 px-4 text-white">Upload</button>
+                <button @click="uploadFile" class="rounded-md bg-blue-500 p-2 px-4 text-white">Restore</button>
             </div>
         </div>
 

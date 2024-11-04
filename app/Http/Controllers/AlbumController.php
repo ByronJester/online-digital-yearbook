@@ -101,4 +101,20 @@ class AlbumController extends Controller
 
         return redirect()->back();
     }
+
+    public function deleteComment(Request $request)
+    {
+        AlbumComment::where('id', $request->id)->delete();
+
+        return redirect()->back();
+    }
+
+    public function editComment(Request $request)
+    {
+        AlbumComment::where('id', $request->id)->update([
+            'comment' => $request->comment
+        ]);
+
+        return redirect()->back();
+    }
 }
