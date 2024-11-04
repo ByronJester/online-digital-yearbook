@@ -13,6 +13,7 @@ class UsersImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
+
         foreach ($rows as $row) {
             $userType = $row['user_type'];
             $password = Str::random(8);
@@ -32,6 +33,12 @@ class UsersImport implements ToCollection, WithHeadingRow
                         'password_text' => $password
                     ]
                 );
+
+                $email = $row['email'];
+                $message = "Your email is $email and your password is $password. You can login now using this credentials.";
+
+                $this->sendSMS($row['contact'], $message);
+
             } elseif ($userType === 'school_alumni') {
                 User::updateOrCreate(
                     ['email' => $row['email_address']],
@@ -50,7 +57,37 @@ class UsersImport implements ToCollection, WithHeadingRow
                         'password_text' => $password
                     ]
                 );
+
+                $email = $row['email_address'];
+                $message = "Your email is $email and your password is $password. You can login now using this credentials.";
+
+                $this->sendSMS($row['contact'], $message);
             }
+
+
         }
+    }
+
+    public function sendSMS($number, $message)
+    {
+        $apiKey = '26c01596d47766a3a5728182d39bca05';
+
+        $ch = curl_init();
+
+        $parameters = array(
+            'apikey' =>  $apiKey,
+            'number' => $number,
+            'message' => $message,
+            'sendername' => 'ODY'
+        );
+
+        curl_setopt( $ch, CURLOPT_URL,'https://semaphore.co/api/v4/messages' );
+        curl_setopt( $ch, CURLOPT_POST, 1 );
+
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
+
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        $output = curl_exec( $ch );
+        curl_close ($ch);
     }
 }
