@@ -286,8 +286,9 @@ const deleteComment = (id) => {
                         Delete
                     </span>
                 </div>
+                <p class="text-xs">{{ post.created_at }}</p>
 
-                <p>{{ post.content }}</p>
+                <p class="mt-8">{{ post.content }}</p>
 
                 <!-- Display image or video if available -->
 

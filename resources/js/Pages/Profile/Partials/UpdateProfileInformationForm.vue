@@ -33,6 +33,7 @@ const form = useForm({
     contact: user.contact,
     email: user.email,
     profile_picture: null,
+    info: user.info
 });
 
 const handleFileChange = (event) => {
@@ -122,6 +123,15 @@ const updateProfile = () => {
                 <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
+        </div>
+        <div class="w-full flex flex-col md:flex-row">
+            <div class="w-full md:mx-1">
+                <InputLabel for="info" value="Information" />
+                <TextInput id="info" type="text" class="mt-1 block w-full" v-model="form.info" required />
+                <InputError class="mt-2" :message="form.errors.info" />
+            </div>
+
+
         </div>
 
         <div class="mt-4">

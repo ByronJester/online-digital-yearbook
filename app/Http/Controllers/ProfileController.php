@@ -56,6 +56,7 @@ class ProfileController extends Controller
         $user->last_name = $request->last_name;
         $user->contact = $request->contact;
         $user->email = $request->email;
+        $user->info = $request->info;
 
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');

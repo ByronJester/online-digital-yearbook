@@ -345,7 +345,9 @@ const deleteComment = (id) => {
                     </span>
                 </div>
 
-                <div class="w-full text-center border border-black rounded-md mt-3">
+                <p class="text-xs">{{ post.created_at }}</p>
+
+                <div class="w-full text-center border border-black rounded-md mt-8">
                     <p class="text-2xl p-3">{{ post.content }}</p>
                 </div>
 

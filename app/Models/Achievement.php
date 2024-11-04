@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Achievement extends Model
 {
@@ -57,6 +58,13 @@ class Achievement extends Model
         }
 
         return $response;
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        $date = Carbon::parse($value);
+
+        return $date->isoFormat('LL');
     }
 
 
