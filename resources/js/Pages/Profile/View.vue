@@ -143,11 +143,23 @@ const addComment = async (post, commentText) => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>
         </template>
 
-        <div class="w-full my-3 border-b border-black">
-            <img :src="profilePicturePreview" class="rounded-[50%] border border-black w-[200px] h-[200px] my-2">
-            <p class="w-[18%] text-center text-xl">
-                <b>{{ user.fullname }}</b><span><br>  ({{ user.role }})</span>
-            </p>
+        <div class="w-full my-3 border-b border-black flex flex-row">
+            <div class="w-[30%] flex justify-center items-center">
+                <img :src="profilePicturePreview" class="rounded-[50%] border border-black w-[200px] h-[200px] my-2">
+
+            </div>
+
+            <div class="w-[70%] flex justify-center items-center flex-col">
+                <div class="w-full">
+                    <p class="w-full text-xl">
+                        <b>{{ user.fullname }}</b><span v-if="user.user_type == 'school_alumni'"> - {{ user.program + ' ' + user.section }} </span> <br> ({{ user.role }})
+                    </p>
+                </div>
+
+                <div class="w-full">
+                    <p class="text-xs mt-5 text-justify">{{ user.info }}</p>
+                </div>
+            </div>
         </div>
 
         <div class="mt-4">
