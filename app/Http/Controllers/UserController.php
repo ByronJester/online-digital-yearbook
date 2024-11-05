@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('User/Index', [
-            'users' => User::orderBy('updated_at', 'desc')->get()
+            'users' => User::orderBy('updated_at', 'desc')->where('user_type', '!=', 'system_admin')->get()
         ]);
     }
     // Upload user csv
