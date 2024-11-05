@@ -220,6 +220,19 @@ const deleteComment = (id, type) => {
         }
     });
 }
+
+const postData = ref([])
+postData.value = props.data
+
+const search = (event) => {
+    let search = event.target.value
+
+    if(search == '') {
+        postData.value = props.data
+    } else {
+        postData.value = props.data.filter(x => { return x.content.toLowerCase().includes(search.toLowerCase())});
+    }
+}
 </script>
 
 <script>
@@ -244,7 +257,11 @@ const deleteComment = (id, type) => {
     <AuthenticatedLayout>
         <div class="w-full p-5">
             <div class="w-full flex flex-col">
-                <div class="w-full border rounded-lg p-4 bg-white h-full mt-5" v-for="post in data" :key="post.id">
+                <div class="w-full flex justify-center items-center">
+                    <input type="text" placeholder="Search..." class="rounded-2xl w-[50%] mb-10" @keyup="search($event)"/>
+                </div>
+
+                <div class="w-full border rounded-lg p-4 bg-white h-full mt-5" v-for="post in postData" :key="post.id">
                     <div class="space-y-6" v-if="post.type == 'achievement'">
                         <div class="w-full">
                             <div class="font-bold">{{ post.user.fullname }}</div>

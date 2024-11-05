@@ -19,17 +19,17 @@ class AlumniController extends Controller
 
     public function dashboard()
     {
-        $achievements = Achievement::with(['likes', 'comments', 'user'])->orderBy('created_at')->get()->map(function ($item) {
+        $achievements = Achievement::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item->type = 'achievement';
             return $item;
         })->toArray();
 
-        $albums = Album::with(['likes', 'comments', 'user'])->orderBy('created_at')->get()->map(function ($item) {
+        $albums = Album::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item->type = 'album';
             return $item;
         })->toArray();
 
-        $mixArr = collect(array_merge($achievements, $albums))->sortBy('created_at')->values();
+        $mixArr = collect(array_merge($achievements, $albums))->sortByDesc('created_at')->values();
 
         return Inertia::render('Alumni/Dashboard', [
             'data' => $mixArr
