@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\User;
 use Illuminate\Support\Str;
-use App\Models\{ UserShare };
+use App\Models\{ UserShare, User, Achievement, Album };
 
 class ProfileController extends Controller
 {
@@ -91,5 +90,49 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function viewProfile($id)
+    {
+        $user = User::where('id', $id)->first();
+
+        $shareArr = [];
+
+
+
+        if($user->user_type == 'school_alumni') {
+
+            $shares = UserShare::orderBy('created_at', 'desc')->where('user_id', $user->id)->get();
+
+            foreach($shares as $share) {
+                $s = $share->shared_content;
+                $s['type'] = $share->type;
+                array_push($shareArr, $s);
+            }
+        } else {
+            $achievements = Achievement::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->where('user_id', $id)->get();
+
+            foreach($achievements as $achievement) {
+                $s = $achievement;
+                $s['type'] = 'achievement';
+                array_push($shareArr, $s);
+            }
+
+            $albums = Album::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->where('user_id', $id)->get();
+
+            foreach($albums as $album) {
+                $s = $album;
+                $s['type'] = 'album';
+                array_push($shareArr, $s);
+            }
+        }
+
+        // return $shareArr;
+
+        return Inertia::render('Profile/View', [
+            'shares' => $shareArr,
+            'user' => $user
+        ]);
+
     }
 }

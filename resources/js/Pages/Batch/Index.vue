@@ -9,7 +9,7 @@ import InputError from '@/Components/InputError.vue';
 
 const loading = ref(false)
 
-defineProps({
+const props = defineProps({
     batches: {
         type: Array,
     },
@@ -76,6 +76,24 @@ const logoUrl = getLogo('images/logo1.png')
 
 const viewBatch = (id) => {
     Inertia.get(route('staff-view-batch', id))
+}
+
+const batchData = ref(props.batches)
+
+const search = (event) => {
+    var search = event.target.value
+    console.log(search)
+
+    if(search != ''){
+        batchData.value = props.batches.filter(x => {
+            console.log(x)
+            return x.course.toLowerCase().includes(search.toLowerCase()) || x.section.toLowerCase().includes(search.toLowerCase()) || x.school_year.toLowerCase().includes(search.toLowerCase());
+        })
+    } else {
+        batchData.value = props.batches
+    }
+
+
 }
 </script>
 
@@ -159,8 +177,14 @@ const viewBatch = (id) => {
 
             </div>
 
+            <div class="w-full mt-3 mb-10">
+                <input type="text" placeholder="Search..." @keyup="search($event)"
+                    class="w-[50%] rounded-xl"
+                />
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                <div class="w-full h-[310px] border border-black rounded-md cursor-pointer" v-for="batch in batches" @click="viewBatch(batch.id)">
+                <div class="w-full h-[310px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" @click="viewBatch(batch.id)">
                     <img :src="batch.logo || logoUrl" class="w-full h-[225px]"/>
                     <p class="text-center font-bold">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
                 </div>

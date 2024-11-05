@@ -275,6 +275,10 @@ const deleteComment = (id) => {
         }
     });
 }
+
+const viewProfile = (id) => {
+    Inertia.get(route('profile.view', id))
+}
 </script>
 
 <script>
@@ -379,7 +383,7 @@ const deleteComment = (id) => {
             <div v-for="post in posts" :key="post.id" class="border rounded-lg p-4 bg-white h-[100%]">
                 <!-- <div class="font-bold">{{ post.user.fullname }}</div> -->
                 <div class="font-bold">
-                    <span>
+                    <span class="cursor-pointer" @click="viewProfile(post.user.id)">
                         {{ post.user.fullname }}
                     </span>
                     <span class="float-right text-xs text-red-500 cursor-pointer" v-if="$page.props.auth.user.user_type == 'school_staff'"

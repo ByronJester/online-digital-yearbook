@@ -50,6 +50,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::prefix('user')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
+});
+
 Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::prefix('user-management')->group(function () {
         // Route::get('/', function () {

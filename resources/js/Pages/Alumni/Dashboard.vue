@@ -235,6 +235,10 @@ const search = (event) => {
         postData.value = props.data.filter(x => { return x.content.toLowerCase().includes(search.toLowerCase()) || x.user.fullname.toLowerCase().includes(search.toLowerCase())});
     }
 }
+
+const viewProfile = (id) => {
+    Inertia.get(route('profile.view', id))
+}
 </script>
 
 <script>
@@ -266,7 +270,9 @@ const search = (event) => {
                 <div class="w-full border rounded-lg p-4 bg-white h-full mt-5" v-for="post in postData" :key="post.id">
                     <div class="space-y-6" v-if="post.type == 'achievement'">
                         <div class="w-full">
-                            <div class="font-bold">{{ post.user.fullname }}</div>
+                            <div class="font-bold cursor-pointer" @click="viewProfile(post.user.id)">
+                                {{ post.user.fullname }}
+                            </div>
                             <p class="text-xs mt-2 mb-5">{{ post.created_at }}</p>
 
                             <p>{{ post.content }}</p>
@@ -335,14 +341,14 @@ const search = (event) => {
                     </div>
 
                     <div class="w-full" v-else>
-                        <div class="font-bold">{{ post.user.fullname }}</div>
+                        <div class="font-bold cursor-pointer" @click="viewProfile(post.user.id)">
+                            {{ post.user.fullname }}
+                        </div>
                         <p class="text-xs mt-1 mb-10">{{ post.created_at }}</p>
 
                         <div class="w-full text-center border border-black rounded-md mt-3">
                             <p class="text-2xl p-3">{{ post.content }}</p>
                         </div>
-
-
 
                         <div class="w-full text-center border border-black rounded-md mt-3" v-if="post.description">
                             <p class="text-md p-3">{{ post.description }}</p>
