@@ -135,4 +135,22 @@ class ProfileController extends Controller
         ]);
 
     }
+
+    public function viewAlbum($id) {
+
+        $album = Album::with(['likes', 'comments', 'user'])->where('id', $id)->get();
+
+        return Inertia::render('Notification/Album', [
+            'posts' => $album
+        ]);
+    }
+
+    public function viewAchievement($id)
+    {
+        $achievement = Achievement::with(['likes', 'comments', 'user'])->where('id', $id)->get();
+
+        return Inertia::render('Notification/Achievement', [
+            'posts' => $achievement
+        ]);
+    }
 }

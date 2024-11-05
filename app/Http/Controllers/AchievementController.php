@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, AchievementComment, AchievementLike, UserShare };
+use App\Models\{ User, Achievement, AchievementComment, AchievementLike, UserShare, UserNotification };
 
 class AchievementController extends Controller
 {
@@ -59,6 +59,23 @@ class AchievementController extends Controller
             ]);
         }
 
+        $post = Achievement::where('id', $request->post_id)->first();
+
+        if($status != 'Unlike') {
+            $auth = auth()->user();
+            $user_id = $post->user_id;
+            $redirect_id = $post->id;
+            $type = 'achievement';
+            $message = $auth->fullname . ' ' . strtolower($status) . " your post.";
+
+            UserNotification::create([
+                'user_id' => $user_id,
+                'redirect_id' => $redirect_id,
+                'type' => $type,
+                'message' => $message
+            ]);
+        }
+
 
         return redirect()->back();
     }
@@ -73,6 +90,21 @@ class AchievementController extends Controller
             'achievement_id' => $request->post_id,
             'user_id' => auth()->user()->id,
             'comment' => $request->comment
+        ]);
+
+        $post = Achievement::where('id', $request->post_id)->first();
+
+        $auth = auth()->user();
+        $user_id = $post->user_id;
+        $redirect_id = $post->id;
+        $type = 'achievement';
+        $message = $auth->fullname . " commented on your post.";
+
+        UserNotification::create([
+            'user_id' => $user_id,
+            'redirect_id' => $redirect_id,
+            'type' => $type,
+            'message' => $message
         ]);
 
         return redirect()->back();

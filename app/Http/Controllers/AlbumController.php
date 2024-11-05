@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Album, AlbumComment, AlbumLike, UserShare };
+use App\Models\{ User, Album, AlbumComment, AlbumLike, UserShare, UserNotification };
 
 class AlbumController extends Controller
 {
@@ -73,6 +73,23 @@ class AlbumController extends Controller
             ]);
         }
 
+        $post = Album::where('id', $request->post_id)->first();
+
+        if($status != 'Unlike') {
+            $auth = auth()->user();
+            $user_id = $post->user_id;
+            $redirect_id = $post->id;
+            $type = 'album';
+            $message = $auth->fullname . ' ' . strtolower($status) . " your post.";
+
+            UserNotification::create([
+                'user_id' => $user_id,
+                'redirect_id' => $redirect_id,
+                'type' => $type,
+                'message' => $message
+            ]);
+        }
+
 
         return redirect()->back();
     }
@@ -87,6 +104,21 @@ class AlbumController extends Controller
             'album_id' => $request->post_id,
             'user_id' => auth()->user()->id,
             'comment' => $request->comment
+        ]);
+
+        $post = Album::where('id', $request->post_id)->first();
+
+        $auth = auth()->user();
+        $user_id = $post->user_id;
+        $redirect_id = $post->id;
+        $type = 'album';
+        $message = $auth->fullname . " commented on your post.";
+
+        UserNotification::create([
+            'user_id' => $user_id,
+            'redirect_id' => $redirect_id,
+            'type' => $type,
+            'message' => $message
         ]);
 
         return redirect()->back();

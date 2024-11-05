@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, Album, UserShare };
+use App\Models\{ User, Achievement, Album, UserShare, UserNotification };
 
 
 class AlumniController extends Controller
@@ -31,8 +31,11 @@ class AlumniController extends Controller
 
         $mixArr = collect(array_merge($achievements, $albums))->sortByDesc('created_at')->values();
 
+        $notifications = UserNotification::where('user_id', auth()->user()->id)->get();
+
         return Inertia::render('Alumni/Dashboard', [
-            'data' => $mixArr
+            'data' => $mixArr,
+            'notifications' => $notifications
         ]);
     }
 
@@ -71,6 +74,25 @@ class AlumniController extends Controller
                 array_push($shareUserNames, $name);
             }
         }
+
+        $post = null;
+        if($type == 'album') {
+            $post = Album::where('id', $request->post_id)->first();
+        } else {
+            $post = Achievement::where('id', $request->post_id)->first();
+        }
+
+        $auth = auth()->user();
+        $user_id = $post->user_id;
+        $redirect_id = $post->id;
+        $message = $auth->fullname . " shared your post.";
+
+        UserNotification::create([
+            'user_id' => $user_id,
+            'redirect_id' => $redirect_id,
+            'type' => $type,
+            'message' => $message
+        ]);
 
         return redirect()->back();
     }

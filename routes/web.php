@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('user')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
+    Route::get('/album/{id}', [ProfileController::class, 'viewAlbum'])->name('album.view');
+    Route::get('/achievement/{id}', [ProfileController::class, 'viewAchievement'])->name('achievement.view');
 });
 
 Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {

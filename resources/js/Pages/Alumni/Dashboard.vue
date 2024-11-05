@@ -8,6 +8,9 @@ const props = defineProps({
     data: {
         type: Array,
     },
+    notifications: {
+        type: Array
+    }
 });
 
 const carouselRef = ref(null);
@@ -239,6 +242,27 @@ const search = (event) => {
 const viewProfile = (id) => {
     Inertia.get(route('profile.view', id))
 }
+
+const notificationModalVisible = ref(false);
+
+const openNotificationModal = () => {
+    notificationModalVisible.value = true;
+};
+
+const closeNotificationModal = () => {
+    notificationModalVisible.value = false;
+};
+
+const openNotification = (n) => {
+    console.log(n)
+
+    if(n.type =='album') {
+        Inertia.get(route('album.view', n.redirect_id))
+    } else {
+        Inertia.get(route('achievement.view', n.redirect_id))
+    }
+}
+
 </script>
 
 <script>
@@ -263,6 +287,36 @@ const viewProfile = (id) => {
     <AuthenticatedLayout>
         <div class="w-full p-5">
             <div class="w-full flex flex-col">
+                <div class="w-full mb-10">
+                    <span class="float-right text-2xl text-blue-500 cursor-pointer" @click="openNotificationModal">
+                        <i class="fa-solid fa-earth-americas"></i>
+                    </span>
+                </div>
+
+                <div v-if="notificationModalVisible" class="notification-modal bg-white shadow-lg rounded-lg">
+                    <div class="bg-white rounded-lg w-full">
+                        <div class="w-full mb-5 p-5">
+                            <span class="float-right cursor-pointer" @click="closeNotificationModal">
+                                <i class="fa-solid fa-xmark"></i>
+                            </span>
+                        </div>
+
+                        <div class="w-full p-3 text-center text-xl mb-5" v-if="notifications.length == 0">
+                            You have no notification(s).
+                        </div>
+
+                        <div class="w-full flex flex-col p-2" v-else>
+                            <div class="w-full border-b border-black mb-3 cursor-pointer" v-for="n in notifications" :key="n.id"
+                                @click="openNotification(n)"
+                            >
+                                {{ n.message }}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
                 <div class="w-full flex justify-center items-center">
                     <input type="text" placeholder="Search..." class="rounded-2xl w-[50%] mb-10" @keyup="search($event)"/>
                 </div>
@@ -454,5 +508,12 @@ const viewProfile = (id) => {
 /* Hides the scrollbar in WebKit-based browsers (Chrome, Safari) */
 .scroll-container::-webkit-scrollbar {
     display: none;
+}
+
+.notification-modal {
+    position: absolute;
+    right: 60px;
+    top: 150px;
+    width: 350px;
 }
 </style>
