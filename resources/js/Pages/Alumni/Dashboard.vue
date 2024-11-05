@@ -226,11 +226,13 @@ postData.value = props.data
 
 const search = (event) => {
     let search = event.target.value
+    console.log(search)
+    console.log(props.data)
 
     if(search == '') {
         postData.value = props.data
     } else {
-        postData.value = props.data.filter(x => { return x.content.toLowerCase().includes(search.toLowerCase())});
+        postData.value = props.data.filter(x => { return x.content.toLowerCase().includes(search.toLowerCase()) || x.user.fullname.toLowerCase().includes(search.toLowerCase())});
     }
 }
 </script>
