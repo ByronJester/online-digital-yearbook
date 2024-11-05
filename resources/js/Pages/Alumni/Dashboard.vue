@@ -254,8 +254,6 @@ const closeNotificationModal = () => {
 };
 
 const openNotification = (n) => {
-    console.log(n)
-
     if(n.type =='album') {
         Inertia.get(route('album.view', n.redirect_id))
     } else {

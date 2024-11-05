@@ -100,6 +100,12 @@ class AlbumController extends Controller
             'comment' => 'required',
         ]);
 
+        $keywords = $this->getBadWords();
+
+        if (Str::contains($request->comment, $keywords)) {
+            return redirect()->back();
+        }
+
         AlbumComment::create([
             'album_id' => $request->post_id,
             'user_id' => auth()->user()->id,

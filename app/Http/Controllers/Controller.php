@@ -68,4 +68,12 @@ class Controller extends BaseController
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
+    public function getBadWords()
+    {
+        return [
+            'putangina', 'tangina', 'gago', 'tanga', 'bobo', 'bulok', 'ulol', 'leche', 'bakla',
+            'bading', 'tomboy', 'bansot', 'payatot', 'panget'
+        ];
+    }
 }
