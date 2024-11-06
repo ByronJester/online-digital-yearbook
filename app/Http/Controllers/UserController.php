@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{
     User, OtpMessage, SelfMessage, Logo, SuccessStory, History, MissionStatement, VisionStatement,
-    Program, Greeting, Hymn, Faq
+    Program, Greeting, Hymn, Faq, Course
 };
 use Inertia\Inertia;
 use App\Imports\UsersImport;
@@ -295,5 +295,29 @@ class UserController extends Controller
             'hymn' => Hymn::where('is_used', true)->latest()->first(),
             'faqs' => Faq::orderBy('created_at', 'desc')->get()
         ]);
+    }
+
+    public function courses()
+    {
+        return Inertia::render('User/Course', [
+            'courses' => Course::get()
+        ]);
+
+    }
+
+    public function saveCourse(Request $request)
+    {
+        Course::create([
+            'name' => $request->course
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function deleteCourse(Request $request)
+    {
+        Course::where('id', $request->id)->delete();
+
+        return redirect()->back();
     }
 }

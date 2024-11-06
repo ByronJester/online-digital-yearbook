@@ -42,8 +42,6 @@ Route::get('/', [UserController::class, 'ladingPage'])->name('landing-page');
 
 Route::post('/send-otp', [UserController::class, 'sendOTP'])->name('send-otp');
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -65,6 +63,12 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user-management');
         Route::post('/bulk-upload', [UserController::class, 'uploadUsers'])->name('upload-users');
         Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('delete-user');
+    });
+
+    Route::prefix('course-management')->group(function () {
+        Route::get('/', [UserController::class, 'courses'])->name('course-management');
+        Route::post('/save-course', [UserController::class, 'saveCourse'])->name('user-save-course');
+        Route::post('/delete-course', [UserController::class, 'deleteCourse'])->name('user-delete-course');
     });
 
     Route::prefix('archive')->group(function () {
@@ -134,7 +138,9 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [BatchController::class, 'index'])->name('staff-class-batches');
         Route::get('/{id}', [BatchController::class, 'viewBatch'])->name('staff-view-batch');
         Route::post('/save-batch', [BatchController::class, 'saveBatch'])->name('staff-save-batch');
+        Route::post('/delete-batch', [BatchController::class, 'deleteBatch'])->name('staff-delete-batch');
         Route::post('/save-batch-student', [BatchController::class, 'saveBatchStudent'])->name('staff-save-batch-student');
+        Route::post('/delete-batch-student', [BatchController::class, 'deleteAlumni'])->name('staff-delete-batch-student');
 
     });
 });

@@ -13,6 +13,9 @@ const props = defineProps({
     batches: {
         type: Array,
     },
+    courses: {
+        type: Array,
+    },
 });
 
 // Form data for new post
@@ -95,6 +98,41 @@ const search = (event) => {
 
 
 }
+
+const deleteBatch = (id) => {
+    swal({
+        title: "Are you sure to delete this batch?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            loading.value = true
+
+            const formData = new FormData();
+            formData.append('id', id);
+
+            Inertia.post(route('staff-delete-batch'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // location.reload()
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    loading.value = false
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                    loading.value = false
+                },
+            });
+
+
+        }
+    });
+}
 </script>
 
 <template>
@@ -113,12 +151,7 @@ const search = (event) => {
                             <label>Course</label>
                             <br>
                             <select class="rounded-md w-full" v-model="course">
-                                <option value="Bachelor of Science in Information Technology (BSIT)">Bachelor of Science in Information Technology (BSIT)</option>
-                                <option value="Bachelor of Science in Computer Engineering (BSCpE)">Bachelor of Science in Computer Engineering (BSCpE)</option>
-                                <option value="Bachelor of Science in Tourism Management (BSTM)">Bachelor of Science in Tourism Management (BSTM)</option>
-                                <option value="Bachelor of Science in Business Administration (BSBA)">Bachelor of Science in Business Administration (BSBA)</option>
-                                <option value="Bachelor of Science in Technology Livehood Education (BTLE)">Bachelor of Science in Technology Livehood Education (BTLE)</option>
-                                <option value="Bachelor of Science in Hospitality Management (BSHM)">Bachelor of Science in Hospitality Management (BSHM)</option>
+                                <option v-for="c in courses" :key="c.id" :value="c.name"> {{ c.name }}</option>
                             </select>
                         </div>
 
@@ -184,9 +217,16 @@ const search = (event) => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                <div class="w-full h-[310px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" @click="viewBatch(batch.id)">
-                    <img :src="batch.logo || logoUrl" class="w-full h-[225px]"/>
-                    <p class="text-center font-bold">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
+                <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" >
+                    <p>
+                        <span class="float-right text-red-400 m-2 text-xs"
+                            @click="deleteBatch(batch.id)"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                        </span>
+                    </p>
+                    <img :src="batch.logo || logoUrl" class="w-full h-[225px]" @click="viewBatch(batch.id)"/>
+                    <p class="text-center font-bold" @click="viewBatch(batch.id)">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
                 </div>
             </div>
         </div>

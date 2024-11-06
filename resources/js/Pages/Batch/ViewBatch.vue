@@ -74,6 +74,41 @@ const back = () => {
     Inertia.get(route('alumni-class-batches'))
 }
 
+const deleteAlumni = (id) => {
+    swal({
+        title: "Are you sure to delete this alumni?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            loading.value = true
+
+            const formData = new FormData();
+            formData.append('id', id);
+
+            Inertia.post(route('staff-delete-batch-student'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onSuccess: (page) => {
+                    // location.reload()
+                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+                    loading.value = false
+                },
+                onError: (errors) => {
+                    // alert('There was an error uploading the file.');
+                    loading.value = false
+                },
+            });
+
+
+        }
+    });
+}
+
 </script>
 
 <template>
@@ -120,7 +155,14 @@ const back = () => {
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                    <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="student in students">
+                    <div class="w-full h-[300px] border border-black rounded-md cursor-pointer" v-for="student in students">
+                        <p>
+                            <span class="float-right text-red-400 m-2 text-xs"
+                                @click="deleteAlumni(student.id)"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        </p>
                         <img :src="student.image || logoUrl" class="w-full h-[200px]"/>
                         <p class="text-center font-bold">{{ student.student_name }}</p>
                         <p class="text-center text-xs">{{ student.award }}</p>

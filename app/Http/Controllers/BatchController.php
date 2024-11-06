@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ Batch, BatchStudent };
+use App\Models\{ Batch, BatchStudent, Course };
 
 class BatchController extends Controller
 {
     public function index()
     {
         return Inertia::render('Batch/Index', [
-            'batches' => Batch::orderBy('created_at', 'desc')->get()
+            'batches' => Batch::orderBy('created_at', 'desc')->get(),
+            'courses' => Course::get()
         ]);
     }
 
@@ -71,6 +72,20 @@ class BatchController extends Controller
             'award' => $request->award,
             'image' => $imageUpload
         ]);
+
+        return redirect()->back();
+    }
+
+    public function deleteBatch(Request $request)
+    {
+        Batch::where('id', $request->id)->delete();
+
+        return redirect()->back();
+    }
+
+    public function deleteAlumni(Request $request)
+    {
+        BatchStudent::where('id', $request->id)->delete();
 
         return redirect()->back();
     }

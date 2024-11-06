@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\{ User, OtpMessage };
+use App\Models\{ User, OtpMessage, Course };
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -54,6 +54,31 @@ class UserSeeder extends Seeder
         OtpMessage::create([
             'email' => 'alumni@gmail.com',
             'code' => '4433'
+        ]);
+
+        Course::create([
+            'name' => "Bachelor of Science in Information Technology (BSIT)"
+        ]);
+
+
+        Course::create([
+            'name' => "Bachelor of Science in Computer Engineering (BSCpE)"
+        ]);
+
+        Course::create([
+            'name' => "Bachelor of Science in Tourism Management (BSTM)"
+        ]);
+
+        Course::create([
+            'name' => "Bachelor of Science in Business Administration (BSBA)"
+        ]);
+
+        Course::create([
+            'name' => "Bachelor of Science in Technology Livehood Education (BTLE)"
+        ]);
+
+        Course::create([
+            'name' => "Bachelor of Science in Hospitality Management (BSHM)"
         ]);
     }
 }

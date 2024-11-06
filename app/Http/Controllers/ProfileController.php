@@ -21,13 +21,37 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $shareArr = [];
-        $shares = UserShare::where('user_id', auth()->user()->id)->get();
+        $user = auth()->user();
 
-        foreach($shares as $share) {
-            $s = $share->shared_content;
-            $s['type'] = $share->type;
-            array_push($shareArr, $s);
+        if($user->user_type == 'school_staff'){
+            $achievements = Achievement::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->where('user_id', $user->id)->get();
+
+            foreach($achievements as $achievement) {
+                $s = $achievement;
+                $s['type'] = 'achievement';
+                array_push($shareArr, $s);
+            }
+
+            $albums = Album::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->where('user_id', $user->id)->get();
+
+            foreach($albums as $album) {
+                $s = $album;
+                $s['type'] = 'album';
+                array_push($shareArr, $s);
+            }
+
+        } else {
+            $shares = UserShare::where('user_id', $user->id)->get();
+
+            foreach($shares as $share) {
+                $s = $share->shared_content;
+                $s['type'] = $share->type;
+                array_push($shareArr, $s);
+            }
         }
+
+
+
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,

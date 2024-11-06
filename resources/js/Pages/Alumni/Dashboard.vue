@@ -285,7 +285,7 @@ const openNotification = (n) => {
     <AuthenticatedLayout>
         <div class="w-full p-5">
             <div class="w-full flex flex-col">
-                <div class="w-full mb-10">
+                <div class="w-full mb-10" v-if="$page.props.auth.user.user_type != 'school_alumni'">
                     <span class="float-right text-2xl text-blue-500 cursor-pointer" @click="openNotificationModal">
                         <i class="fa-solid fa-earth-americas"></i>
                     </span>

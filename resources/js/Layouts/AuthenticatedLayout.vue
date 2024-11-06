@@ -43,6 +43,10 @@ const logoUrl = getLogo('images/logo1.png');
                     <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">User Management</span>
                 </NavLink>
+                <NavLink :href="route('course-management')" :active="route().current('course-management')">
+                    <i class="fa-solid fa-folder text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Course Management</span>
+                </NavLink>
                 <NavLink :href="route('archived-users')" :active="route().current('archived-users')">
                     <i class="fa fa-file text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Archive</span>

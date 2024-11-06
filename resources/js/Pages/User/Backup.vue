@@ -55,10 +55,12 @@ const uploadFile = async () => {
     // Replace '/upload-endpoint' with your actual endpoint
     const response = await axios.post(route('bar-upload'), formData)
         .then(function (response) {
-            console.log(response);
+            // console.log(response);
+            alert('Restored successfully.')
+            location.reload()
         })
         .catch(function (error) {
-            console.log(error);
+            // console.log(error);
         });
 
     if (response.ok) {
