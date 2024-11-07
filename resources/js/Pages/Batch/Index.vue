@@ -218,7 +218,7 @@ const deleteBatch = (id) => {
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
                 <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" >
-                    <p>
+                    <p v-if="$page.props.auth.user.user_type == 'school_staff'">
                         <span class="float-right text-red-400 m-2 text-xs"
                             @click="deleteBatch(batch.id)"
                         >

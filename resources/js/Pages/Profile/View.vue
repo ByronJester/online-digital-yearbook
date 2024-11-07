@@ -117,6 +117,25 @@ const addComment = async (post, commentText) => {
         });
     }
 };
+
+const mediaSrc = ref(null);
+const mediaType = ref(null);
+
+const openMedia = (src, type) => {
+    mediaSrc.value = src
+    mediaType.value = type
+
+    var modal = document.getElementById("defaultModal");
+    modal.style.display = "block";
+}
+
+const closeModal = () => {
+    mediaSrc.value = null
+    mediaType.value = null
+
+    var modal = document.getElementById("defaultModal");
+    modal.style.display = "none";
+}
 </script>
 
 <script>
@@ -162,6 +181,36 @@ const addComment = async (post, commentText) => {
             </div>
         </div>
 
+        <div
+            id="defaultModal"
+            tabindex="-1"
+            aria-hidden="true"
+            style="background-color: rgba(0, 0, 0, 0.7)"
+            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+            <div class="h-screen flex justify-center items-center">
+                <div class="relative w-[50%] h-[500px] max-w-2xl max-h-full">
+
+
+
+                    <div class="relative bg-white rounded-lg shadow" v-if="mediaType == 'image'">
+                        <span class="text-xl float-right mr-2" @click="closeModal()">
+                            <i class="fa-solid fa-xmark cursor-pointer"></i>
+                        </span>
+                        <img :src="mediaSrc" class="w-full h-[500px]"/>
+                    </div>
+
+                    <div class="relative bg-white rounded-lg shadow" v-else>
+
+                        <video controls class="w-full h-full cursor-pointer">
+                            <source :src="mediaSrc" type="video/mp4" />
+                        </video>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="mt-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="w-full flex flex-col">
@@ -174,7 +223,7 @@ const addComment = async (post, commentText) => {
                                 <!-- Display image or video if available -->
 
                                 <div v-if="post.image" class="my-4 flex justify-center items-center">
-                                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]">
+                                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.image, 'image')">
                                 </div>
                                 <div v-if="post.video" class="my-4">
                                     <video controls class="w-[500px] h-[300px]">
@@ -232,7 +281,7 @@ const addComment = async (post, commentText) => {
                                 <div class="w-full carousel-container">
                                     <carousel :items-to-show="2" ref="carouselRef">
                                         <slide v-for="i in post.image" :key="i">
-                                            <img :src="i" class="w-full h-[300px] mr-1"/>
+                                            <img :src="i" class="w-full h-[300px] mr-1" @click="openMedia(i, 'image')"/>
                                         </slide>
 
                                         <template #addons>
