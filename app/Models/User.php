@@ -29,7 +29,7 @@ class User extends Authenticatable
         'school_id_no',
         'class_batch',
         'section',
-        'password',
+        'program',
         'password_text',
         'position'
     ];
