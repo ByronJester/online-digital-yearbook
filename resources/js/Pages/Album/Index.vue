@@ -18,6 +18,7 @@ const postImages = ref([]);
 const postVideos = ref([]);
 const postImagePreviews = ref([]);
 const postVideoPreviews = ref([]);
+const archiveDate = ref(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0])
 
 const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -77,6 +78,7 @@ const createPost = () => {
             const formData = new FormData();
             formData.append('content', postContent.value);
             formData.append('description', postDescription.value)
+            formData.append('archive_at', archiveDate.value);
 
             // Append all images to FormData
             postImages.value.forEach((image, index) => {
@@ -302,17 +304,21 @@ const viewProfile = (id) => {
 
     <AuthenticatedLayout>
         <!-- Create new post form -->
-        <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
+        <div class="mb-5  p-5" :class="{'border-2 border-black rounded-md':  !loading && $page.props.auth.user.user_type == 'shool_staff'}" >
             <div class="w-full flex justify-center items-center" v-if="loading">
                 <VueSpinner size="50" color="red" />
             </div>
 
-            <div leave-class="w-full" v-else>
+            <div class="w-full border-2 border-black p-5 rounded-md" v-if="$page.props.auth.user.user_type == 'school_staff'">
                 <h2 class="text-xl font-bold mb-2">New Albums</h2>
                 <textarea v-model="postContent" placeholder="Album Name" class="w-full p-2 border mb-4 rounded-lg" rows="1"></textarea>
 
                 <textarea v-model="postDescription" placeholder="Album Description" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
+                <div class="w-full">
+                    <label>Archive Date:</label><br>
+                    <input type="date" class="rounded-md mb-5" v-model="archiveDate"/>
+                </div>
 
                 <div v-if="postImagePreviews.length" class="flex gap-2 mt-2">
                     <div v-for="(preview, index) in postImagePreviews" :key="index" class="w-32 h-32">

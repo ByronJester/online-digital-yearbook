@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Album extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'content', 'image', 'video', 'user_id', 'description', 'share_user_names'
+        'content', 'image', 'video', 'user_id', 'description', 'share_user_names', 'archive_at'
     ];
 
 

@@ -1,11 +1,13 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, provide } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import Dashboard from '../Pages/Alumni/Dashboard.vue';
+import { Inertia } from '@inertiajs/inertia';
 
 const showingNavigationDropdown = ref(false);
 const sidebarOpen = ref(true);
@@ -15,6 +17,63 @@ const getLogo = (imagePath) => {
 }
 
 const logoUrl = getLogo('images/logo1.png');
+
+const notificationModalVisible = ref(false);
+
+const openNotificationModal = () => {
+    notificationModalVisible.value = true;
+};
+
+const closeNotificationModal = () => {
+    notificationModalVisible.value = false;
+};
+
+const openNotification = (n) => {
+    if(n.type =='album') {
+        Inertia.get(route('album.view', n.redirect_id))
+    } else {
+        Inertia.get(route('achievement.view', n.redirect_id))
+    }
+}
+
+const searchQuery = ref("");
+
+let timeoutId;
+
+const auth = usePage().props.auth.user;
+const search = usePage().props.search
+
+
+if(search != '') {
+    searchQuery.value = search
+}
+
+const updateSearchQuery = (event) => {
+    clearTimeout(timeoutId);
+
+    searchQuery.value = event.target.value;
+
+    // if(searchQuery.value == '') {
+    //     searchQuery.value = 'search'
+    // }
+
+    timeoutId = setTimeout(() => {
+
+        if(auth.user_type == "school_staff") {
+            Inertia.get(route('staff-dashboard'), {search : searchQuery.value})
+        }
+
+        if(auth.user_type == "school_alumni") {
+            Inertia.get(route('alumni-dashboard'), {search : searchQuery.value})
+        }
+    }, 3000);
+};
+
+
+
+
+
+////
 </script>
 
 <template>
@@ -126,12 +185,27 @@ const logoUrl = getLogo('images/logo1.png');
                     <!-- Other left-aligned items (if any) -->
                 </div>
 
+
                 <!-- Right Section -->
                 <div class="flex items-center space-x-4">
+                    <input type="text" placeholder="Search..." class="rounded-2xl w-[70%] mr-5"
+                        @keyup="updateSearchQuery($event)"
+                        v-if="(route().current('staff-dashboard') || route().current('alumni-dashboard')) &&
+                            $page.props.auth.user.user_type != 'system_admin'
+                        "
+                        v-model="searchQuery"
+                    />
+
                     <!-- User Dropdown -->
+                    <span class="float-right text-xl text-white cursor-pointer mr-5 mt-1" @click="openNotificationModal"
+                        v-if="$page.props.auth.user.user_type != 'school_alumni'"
+                    >
+                        <i class="fa-solid fa-earth-americas"> </i>
+                    </span>
                     <Dropdown align="right" width="48">
                         <template #trigger>
                             <span class="inline-flex rounded-md">
+
                                 <button
                                     type="button"
                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-[#04549C] focus:outline-none transition ease-in-out duration-150"
@@ -148,6 +222,30 @@ const logoUrl = getLogo('images/logo1.png');
                             <DropdownLink :href="route('logout')" method="post" as="button">Log Out</DropdownLink>
                         </template>
                     </Dropdown>
+                </div>
+
+                <div v-if="notificationModalVisible" class="notification-modal bg-white shadow-lg rounded-lg">
+                    <div class="bg-white rounded-lg w-full">
+                        <div class="w-full mb-5 p-5">
+                            <span class="float-right cursor-pointer" @click="closeNotificationModal">
+                                <i class="fa-solid fa-xmark"></i>
+                            </span>
+                        </div>
+
+                        <div class="w-full p-3 text-center text-xl mb-5" v-if="$page.props.notifications.length == 0">
+                            You have no notification(s).
+                        </div>
+
+                        <div class="w-full flex flex-col p-2" v-else>
+                            <div class="w-full border-b border-black mb-3 cursor-pointer" v-for="n in $page.props.notifications" :key="n.id"
+                                @click="openNotification(n)"
+                            >
+                                {{ n.message }}
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
 
                 <!-- Hamburger for responsive view -->
@@ -181,8 +279,11 @@ const logoUrl = getLogo('images/logo1.png');
             </nav>
 
             <!-- Page Content -->
+            <!-- <Dashboard :searchQuery="searchQuery" /> -->
             <main class="mt-16 p-4 sm:p-6 lg:p-8">
-                <slot />
+
+                <slot/>
+
             </main>
         </div>
     </div>
@@ -195,5 +296,12 @@ nav.left-64 {
 
 nav.left-14 {
     left: 3.5rem;
+}
+
+.notification-modal {
+    position: absolute;
+    right: 200px;
+    top: 50px;
+    width: 350px;
 }
 </style>

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->bigInteger('achievement_id')->unsigned()->comment('Foreign key from table achievements');
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
 
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

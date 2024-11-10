@@ -17,6 +17,8 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->text('comment');
 
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

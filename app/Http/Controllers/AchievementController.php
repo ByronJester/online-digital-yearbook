@@ -39,6 +39,7 @@ class AchievementController extends Controller
             'content' => $request->content,
             'image' => $imageUpload,
             'video' => $videoUpload,
+            'archive_at' => $request->archive_at,
             'user_id' => auth()->user()->id
         ]);
 
@@ -61,10 +62,14 @@ class AchievementController extends Controller
 
         $post = Achievement::where('id', $request->post_id)->first();
 
+        // return $request->post_id;
+
+        // return auth()->user();
+
         if($status != 'Unlike') {
             $auth = auth()->user();
-            $user_id = $post->user_id;
-            $redirect_id = $post->id;
+            $user_id = $request->user_id;
+            $redirect_id = $request->post_id;
             $type = 'achievement';
             $message = $auth->fullname . ' ' . strtolower($status) . " your post.";
 

@@ -6,7 +6,7 @@ import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { VueSpinner } from 'vue3-spinners';
 
-defineProps({
+const props = defineProps({
     posts: {
         type: Array,
     },
@@ -16,6 +16,7 @@ defineProps({
 const postContent = ref('');
 const postImage = ref(null);
 const postVideo = ref(null);
+const archiveDate = ref(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0])
 const seeComment = ref(false)
 
 // File input refs to trigger from buttons
@@ -69,6 +70,7 @@ const createPost = () => {
             formData.append('content', postContent.value);
             formData.append('image', postImage.value);
             formData.append('video', postVideo.value);
+            formData.append('archive_at', archiveDate.value);
 
             setTimeout(() => {
                 Inertia.post(route('staff-aap-save-post'), formData, {
@@ -247,47 +249,6 @@ const viewProfile = (id) => {
     <AuthenticatedLayout>
         <!-- Create new post form -->
 
-        <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
-            <div class="w-full flex justify-center items-center" v-if="loading">
-                <VueSpinner size="50" color="red" />
-             </div>
-
-             <div class="w-full" v-else>
-                <h2 class="text-xl font-bold mb-2">New Post</h2>
-                <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
-
-                <div class="flex flex-row">
-                    <div v-if="previewImage" class="my-4 mr-1">
-                        <img :src="previewImage" alt="Preview Image" class="w-[500px] h-[300px] rounded-lg" />
-                    </div>
-
-                    <div v-if="previewVideo" class="my-4 ml-1">
-                        <video :src="previewVideo" controls class="w-[500px] h-[300px] rounded-lg"></video>
-                    </div>
-                </div>
-
-                <!-- Upload Buttons with Hidden Inputs -->
-                <div class="flex gap-4 mb-4">
-                    <div class="w-full">
-                        <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded mr-1">Upload Photo</button>
-                        <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button>
-
-                        <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
-                    </div>
-
-
-
-                    <input ref="imageInput" type="file" @change="handleImageChange" accept="image/*" class="hidden" />
-                    <input ref="videoInput" type="file" @change="handleVideoChange" accept="video/mp4" class="hidden" />
-                </div>
-
-
-
-                <!-- <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button> -->
-             </div>
-
-        </div>
-
         <div
             id="defaultModal"
             tabindex="-1"
@@ -316,6 +277,53 @@ const viewProfile = (id) => {
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="mb-5  p-5" :class="{' rounded-md':  !loading && $page.props.auth.user.user_type == 'shool_staff'}" >
+            <div leave-class="w-full" v-if="loading">
+                <VueSpinner size="50" color="red" />
+             </div>
+
+             <div class="w-full border-2 border-black p-5 rounded-md" v-if="$page.props.auth.user.user_type == 'school_staff'">
+                <h2 class="text-xl font-bold mb-2">New Post</h2>
+                <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+
+                <div class="w-full">
+                    <label>Archive Date:</label><br>
+                    <input type="date" class="rounded-md mb-5" v-model="archiveDate"/>
+                </div>
+
+                <div class="flex flex-row">
+                    <div v-if="previewImage" class="my-4 mr-1">
+                        <img :src="previewImage" alt="Preview Image" class="w-[500px] h-[300px] rounded-lg" />
+                    </div>
+
+                    <div v-if="previewVideo" class="my-4 ml-1">
+                        <video :src="previewVideo" controls class="w-[500px] h-[300px] rounded-lg"></video>
+                    </div>
+                </div>
+
+                <!-- Upload Buttons with Hidden Inputs -->
+                <div class="flex gap-4 mb-4">
+                    <div class="w-full">
+                        <button @click="imageInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded mr-1">Upload Photo</button>
+                        <button @click="videoInput.click()" class="bg-blue-500 text-white px-4 py-2 rounded">Upload Video</button>
+
+
+                        <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button>
+                    </div>
+
+
+
+                    <input ref="imageInput" type="file" @change="handleImageChange" accept="image/*" class="hidden" />
+                    <input ref="videoInput" type="file" @change="handleVideoChange" accept="video/mp4" class="hidden" />
+                </div>
+
+
+
+                <!-- <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Post</button> -->
+             </div>
+
         </div>
 
         <!-- News feed posts -->

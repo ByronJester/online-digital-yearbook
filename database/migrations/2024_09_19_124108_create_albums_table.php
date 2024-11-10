@@ -16,9 +16,12 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->json('share_user_names')->nullable();
             $table->text('content');
+            $table->date('archive_at');
             $table->text('description')->nullable();
             $table->json('image')->nullable();
             $table->json('video')->nullable();
+
+            $table->softDeletes();
 
             $table->timestamps();
         });

@@ -62,6 +62,25 @@ const getImage = (imagePath) => {
 
 const imageURL = getImage('images/message.jpg');
 
+
+const viewMessage = ref(false);
+const viewNessageId = ref();
+
+const message = ref(null)
+
+const view = (post) => {
+    console.log(post)
+
+    message.value = post.message
+    viewNessageId.value = post.id
+
+    viewMessage.value = true
+}
+
+const closeMessage = () => {
+    viewMessage.value = false
+}
+
 </script>
 
 <template>
@@ -69,24 +88,43 @@ const imageURL = getImage('images/message.jpg');
 
     <AuthenticatedLayout>
         <!-- Create new post form -->
-         <div class="w-full flex justify-center items-center" v-if="loading">
-            <VueSpinner size="50" color="red" />
+         <div class="w-full">
+            <div class="w-full flex justify-center items-center" v-if="loading">
+                <VueSpinner size="50" color="red" />
+             </div>
+
+
+
+            <div class="mb-10 border-2 border-black rounded-md p-5" v-else>
+                <h2 class="text-xl font-bold mb-8">Message To Future Self</h2>
+                <input type="date" class="rounded-md mb-3" v-model="postDate"/>
+                <textarea v-model="postMessage" placeholder="Type a message...." class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+
+                <button @click="createMessage" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4 mt-10">
+                <div class="rounded-md border border-black" :class="{'h-[280px]': !viewMessage, 'h-500px': viewMessage }" v-for="message in messages" :key="message.id"
+                >
+                    <p>
+                        <span v-if="!viewMessage" class="text-xs float-right text-green-400 m-2 cursor-pointer" @click="view(message)">
+                            View
+                        </span>
+
+                        <span v-else class="text-xs float-right text-red-400 m-2 cursor-pointer" @click="closeMessage()">
+                            Hide
+                        </span>
+                    </p>
+                    <p class="text-xs mt-10 p-2" v-if="viewMessage && viewNessageId == message.id"> {{message.message}} </p>
+                    <img :src="imageURL" class="h-[220px] w-full rounded-md" v-else/>
+
+                    <p class="text-center font-bold text-md"> {{message.formatted_date}}</p>
+                </div>
+              </div>
          </div>
 
-        <div class="mb-10 border-2 border-black rounded-md p-5" v-else>
-            <h2 class="text-xl font-bold mb-8">Message To Future Self</h2>
-            <input type="date" class="rounded-md mb-3" v-model="postDate"/>
-            <textarea v-model="postMessage" placeholder="Type a message...." class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
-            <button @click="createMessage" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4 mt-10">
-            <div class="rounded-md border border-black h-[250px]" v-for="message in messages" :key="message.id">
-                <img :src="imageURL" class="h-[220px] w-full rounded-md"/>
-                <p class="text-center font-bold text-md"> {{message.formatted_date}}</p>
-            </div>
-          </div>
 
     </AuthenticatedLayout>
 </template>

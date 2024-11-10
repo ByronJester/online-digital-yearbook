@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Achievement extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'content', 'image', 'video', 'user_id', 'share_user_names'
+        'content', 'image', 'video', 'user_id', 'share_user_names', 'archive_at'
     ];
 
     public function likes()

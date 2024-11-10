@@ -164,6 +164,7 @@ class ProfileController extends Controller
 
         $album = Album::with(['likes', 'comments', 'user'])->where('id', $id)->get();
 
+
         return Inertia::render('Notification/Album', [
             'posts' => $album
         ]);

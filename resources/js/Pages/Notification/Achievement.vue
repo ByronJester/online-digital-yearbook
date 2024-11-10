@@ -6,7 +6,7 @@ import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { VueSpinner } from 'vue3-spinners';
 
-defineProps({
+const props = defineProps({
     posts: {
         type: Array,
     },

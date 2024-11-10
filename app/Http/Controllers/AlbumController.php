@@ -51,6 +51,7 @@ class AlbumController extends Controller
 
         Album::create([
             'content' => $request->content,
+            'archive_at' => $request->archive_at,
             'description' => $request->description,
             'image' => json_encode($imagesArr),
             'video' => json_encode($videosArr),
@@ -77,8 +78,8 @@ class AlbumController extends Controller
 
         if($status != 'Unlike') {
             $auth = auth()->user();
-            $user_id = $post->user_id;
-            $redirect_id = $post->id;
+            $user_id = $request->user_id;
+            $redirect_id = $request->post_id;
             $type = 'album';
             $message = $auth->fullname . ' ' . strtolower($status) . " your post.";
 

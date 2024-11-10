@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, Album, UserShare, UserNotification };
+use App\Models\{ User, Achievement, Album, UserShare, UserNotification, SuccessStory };
 
 
 class AlumniController extends Controller
@@ -17,17 +17,47 @@ class AlumniController extends Controller
         ]);
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        $achievements = Achievement::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $search = $request->search;
+
+        if($search == 'search') {
+            $search = '';
+        };
+
+        $achievements = Achievement::with(['likes', 'comments', 'user'])
+            ->orderBy('achievements.created_at', 'desc')
+            ->leftJoin('users', 'users.id', '=', 'achievements.user_id') // Join the users table on the user_id column in achievements
+            ->select('achievements.*', 'users.first_name', 'users.middle_name', 'users.last_name')
+            ->where(function($q) use ($search) {
+                $q->where('content', 'like', "%$search%") // Make sure to use 'like' for partial matching
+                    ->orWhere('users.first_name', 'like', "%$search%") // Use 'users' instead of 'user' for column reference
+                    ->orWhere('users.middle_name', 'like', "%$search%")
+                    ->orWhere('users.last_name', 'like', "%$search%");
+            })->get()->map(function ($item) {
             $item->type = 'achievement';
             return $item;
         })->toArray();
 
-        $albums = Album::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->get()->map(function ($item) {
-            $item->type = 'album';
-            return $item;
-        })->toArray();
+        $albums = Album::with(['likes', 'comments', 'user'])
+            ->orderBy('albums.created_at', 'desc')
+            ->leftJoin('users', 'users.id', '=', 'albums.user_id') // Join the users table on the user_id column in albums
+            ->where(function($q) use ($search) {
+                // First condition: Search for content and description in albums
+                $q->where('content', 'like', "%$search%")
+                ->orWhere('description', 'like', "%$search%"); // Move the description condition to orWhere
+
+                // Second condition: Search for user details (first name, middle name, last name)
+                $q->orWhere('users.first_name', 'like', "%$search%")
+                ->orWhere('users.middle_name', 'like', "%$search%")
+                ->orWhere('users.last_name', 'like', "%$search%");
+            })
+            ->get()
+            ->map(function ($item) {
+                $item->type = 'album';
+                return $item;
+            })
+            ->toArray();
 
         $mixArr = collect(array_merge($achievements, $albums))->sortByDesc('created_at')->values();
 
@@ -35,7 +65,9 @@ class AlumniController extends Controller
 
         return Inertia::render('Alumni/Dashboard', [
             'data' => $mixArr,
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
+            'search' => $search == 'search' ? '' : $search
         ]);
     }
 

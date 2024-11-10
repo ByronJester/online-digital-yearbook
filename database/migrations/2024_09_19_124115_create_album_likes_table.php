@@ -16,6 +16,8 @@ return new class extends Migration
             $table->bigInteger('album_id')->unsigned()->comment('Foreign key from table albums');
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
 
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }
