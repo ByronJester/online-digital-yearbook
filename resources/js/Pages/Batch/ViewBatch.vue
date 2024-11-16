@@ -123,7 +123,7 @@ const deleteAlumni = (id) => {
                 <p class="text-2xl font-bold">{{batch.course}} - {{batch.school_year}} (Section {{ batch.section }})</p>
             </div>
             <div class="w-full h-[80vh] ">
-                <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
+                <!-- <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
                     <div class="w-full flex justify-center items-center" v-if="loading">
                         <VueSpinner size="50" color="red" />
                     </div>
@@ -152,7 +152,7 @@ const deleteAlumni = (id) => {
                         <button @click="saveStudent(batch.id)" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
                     </div>
 
-                </div>
+                </div> -->
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
                     <div class="w-full h-[300px] border border-black rounded-md cursor-pointer" v-for="student in students">
@@ -164,7 +164,7 @@ const deleteAlumni = (id) => {
                             </span>
                         </p>
                         <img :src="student.image || logoUrl" class="w-full h-[200px]"/>
-                        <p class="text-center font-bold">{{ student.student_name }}</p>
+                        <p class="text-center font-bold">{{ student.user.fullname }}</p>
                         <p class="text-center text-xs">{{ student.award }}</p>
                     </div>
                 </div>

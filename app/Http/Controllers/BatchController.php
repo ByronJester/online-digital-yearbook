@@ -47,7 +47,7 @@ class BatchController extends Controller
     {
         return Inertia::render('Batch/ViewBatch', [
             'batch' => Batch::where('id', $id)->first(),
-            'students' => BatchStudent::orderBy('student_name')->where('batch_id', $id)->get()
+            'students' => BatchStudent::where('batch_id', $id)->get()
         ]);
     }
 

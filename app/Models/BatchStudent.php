@@ -10,7 +10,7 @@ class BatchStudent extends Model
     use HasFactory;
 
     protected $fillable = [
-        'batch_id', 'student_name', 'award', 'image'
+        'batch_id', 'user_id', 'award'
     ];
 
     public function getImageAttribute($value)
@@ -18,5 +18,14 @@ class BatchStudent extends Model
         if(!$value) return $value;
         // return \LaravelCloudinary::show($value, []);
         return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+    }
+
+    protected $with = [
+        'user'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

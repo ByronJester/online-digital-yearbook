@@ -63,6 +63,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user-management');
         Route::post('/bulk-upload', [UserController::class, 'uploadUsers'])->name('upload-users');
         Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('delete-user');
+        Route::post('/save-user', [UserController::class, 'saveUser'])->name('save-user');
     });
 
     Route::prefix('course-management')->group(function () {

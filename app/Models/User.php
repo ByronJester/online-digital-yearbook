@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -31,7 +32,8 @@ class User extends Authenticatable
         'section',
         'program',
         'password_text',
-        'position'
+        'position',
+        'alumni_picture'
     ];
 
     /**
@@ -80,5 +82,16 @@ class User extends Authenticatable
         if(!$value) return $value;
         // return \LaravelCloudinary::show($value, []);
         return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+    }
+
+    public function getAlumniPictureAttribute($value)
+    {
+        if(!$value) return $value;
+
+        if (Str::contains($value, 'http')) {
+            return $value;
+        } else {
+            return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+        }
     }
 }

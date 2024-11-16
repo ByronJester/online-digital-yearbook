@@ -346,6 +346,7 @@ const viewProfile = (id) => {
                 <!-- Display image or video if available -->
 
                 <div v-if="post.image" class="my-4 flex justify-center items-center">
+                    <!-- <img src="https://drive.google.com/uc?export=view&id=1EmNXckoFEUuZbZxnTHk5zkZ2h-lvnUTz" alt="Image from Google Drive"> -->
                     <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.image, 'image')">
                 </div>
                 <div v-if="post.video" class="my-4 flex justify-center items-center">

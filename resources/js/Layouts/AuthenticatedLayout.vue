@@ -122,6 +122,11 @@ const updateSearchQuery = (event) => {
                     <span v-if="sidebarOpen" class="text-md pl-5">Homepage Management</span>
                 </NavLink>
 
+                <NavLink :href="route('user-management')" :active="route().current('user-management')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">User Management</span>
+                </NavLink>
+
                 <NavLink :href="route('staff-dashboard')" :active="route().current('staff-dashboard')">
                     <i class="fa-solid fa-chart-line text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Dashboard</span>

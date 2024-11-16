@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{
     User, OtpMessage, SelfMessage, Logo, SuccessStory, History, MissionStatement, VisionStatement,
-    Program, Greeting, Hymn, Faq, Course
+    Program, Greeting, Hymn, Faq, Course, Batch, BatchStudent
 };
 use Inertia\Inertia;
 use App\Imports\UsersImport;
@@ -15,13 +15,23 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
+        $auth = auth()->user();
+
+        $user_type = 'school_alumni';
+        if($auth->user_type == 'system_admin') {
+            $user_type = 'school_staff';
+        }
+
         return Inertia::render('User/Index', [
-            'users' => User::orderBy('updated_at', 'desc')->where('user_type', '!=', 'system_admin')->get()
+            'users' => User::orderBy('updated_at', 'desc')->where('user_type', $user_type)->get(),
+            'courses' => Course::get()
         ]);
     }
     // Upload user csv
@@ -317,6 +327,46 @@ class UserController extends Controller
     public function deleteCourse(Request $request)
     {
         Course::where('id', $request->id)->delete();
+
+        return redirect()->back();
+    }
+
+    public function saveUser(Request $request)
+    {
+        $user = User::updateOrCreate(
+            ['email' => $request->email],
+            $request->toArray()
+        );
+
+        if ($request->hasFile('alumni_picture') && $request->user_type == 'school_alumni') {
+            $alumniPicture = Str::random(10) . '_alumni';
+            $imageUpload = $this->uploadFile($request->file('alumni_picture'), $alumniPicture);
+            $user->alumni_picture = $imageUpload;
+        }
+
+        $defPass = Str::random(8);
+        $user->password = Hash::make($defPass);
+        $user->password_text = $defPass;
+
+        $user->save();
+
+        $email = $request->email;
+        $message = "Your email is $email and your password is $defPass. You can login now using this credentials.";
+
+        $this->sendSMS($user->contact, $message);
+
+        if($request->user_type == 'school_alumni') {
+            $batch = Batch::updateOrCreate(
+                ['school_year' => $request->class_batch, 'course' => $request->program, 'section' => $request->section],
+                ['school_year' => $request->class_batch, 'course' => $request->program, 'section' => $request->section]
+            );
+
+            BatchStudent::updateOrCreate(
+                ['batch_id' => $batch->id, 'user_id' => $user->id],
+                ['batch_id' => $batch->id, 'user_id' => $user->id, 'award' => $request->award]
+            );
+        }
+
 
         return redirect()->back();
     }

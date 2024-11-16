@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm} from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
@@ -12,6 +12,9 @@ defineProps({
     users: {
         type: Array,
     },
+    courses: {
+        type: Array
+    }
 });
 
 // console.log(users)
@@ -145,6 +148,76 @@ const handleFileUpload  = (event) => {
 const triggerFileUpload = () => {
     fileInput.value.click();
 }
+
+const alumniForm = useForm({
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    contact: '',
+    email: '',
+    school_id_no: '',
+    class_batch: '',
+    program: '',
+    section: '',
+    user_type: 'school_alumni',
+    alumni_picture: ''
+});
+
+const saveUser = () => {
+    swal({
+        title: "Are you sure to add this user?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            alumniForm.post(route('save-user'), {
+                onSuccess: (page) => {
+                    location.reload()
+                },
+                onError: (errors) => {
+                    swal("Error saving.");
+                }
+            });
+
+        }
+    });
+}
+
+const staffForm = useForm({
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    contact: '',
+    email: '',
+    user_type: 'school_staff'
+});
+
+const saveStaff = () => {
+    swal({
+        title: "Are you sure to add this user?",
+        text: "",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((proceed) => {
+        if (proceed) {
+            staffForm.post(route('save-user'), {
+                onSuccess: (page) => {
+                    location.reload()
+                },
+                onError: (errors) => {
+                    swal("Error saving.");
+                }
+            });
+
+        }
+    });
+}
+
 </script>
 
 <template>
@@ -159,13 +232,145 @@ const triggerFileUpload = () => {
                     Upload Users
                 </button>
 
-                <button class="download-btn" @click="downloadFile('alumni_format.xlsx')">
+                <button class="download-btn" @click="downloadFile('alumni_format.xlsx')" v-if="$page.props.auth.user.user_type == 'school_staff'">
                     Download Alumni Format
                 </button>
 
-                <button class="download-btn" @click="downloadFile('staff_format.xlsx')">
+                <button class="download-btn" @click="downloadFile('staff_format.xlsx')" v-if="$page.props.auth.user.user_type == 'system_admin'">
                     Download Staff Format
                 </button>
+            </div>
+
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'school_staff'">
+                <div class="w-full p-2">
+                    <label>First Name</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.first_name" placeholder="First Name"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Middle Name</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.middle_name" placeholder="Middle Name (Optional)"/>
+                </div>
+
+
+                <div class="w-full p-2">
+                    <label>Last Name</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.last_name" placeholder="Last Name"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Contact</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.contact" placeholder="Contact"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Email</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.email" placeholder="Email"/>
+                </div>
+
+
+                <div class="w-full p-2">
+                    <label>School ID No.</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.school_id_no" placeholder="School ID No."/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Course</label>
+                    <br>
+                    <select class="rounded-md w-full" v-model="alumniForm.program">
+                        <option v-for="c in courses" :key="c.id" :value="c.name"> {{ c.name }}</option>
+                    </select>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Section</label>
+                    <br>
+                    <select class="rounded-md w-full" v-model="alumniForm.section">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="3">4</option>
+                    </select>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>School Year</label>
+                    <br>
+                    <select class="rounded-md w-full" v-model="alumniForm.class_batch">
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Award</label>
+                    <br>
+                    <input type="text" v-model="alumniForm.award" class="w-full rounded-md" />
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Alumni Picture</label>
+                    <br>
+                    <input type="file" @change="(e) => alumniForm.alumni_picture = e.target.files[0]" class="w-full rounded-md border border-black" />
+                </div>
+
+                <div class="w-full p-2">
+                    <button class="w-full py-2 px-4 bg-blue-500 rounded-md text-white mt-5"
+                        @click="saveUser"
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
+
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'system_admin'">
+                <div class="w-full p-2">
+                    <label>First Name</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="staffForm.first_name"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Middle Name</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="staffForm.middle_name"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Last Name</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="staffForm.last_name"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Contact</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="staffForm.contact"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Email</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="staffForm.email"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <button class="w-full py-2 px-4 bg-blue-500 rounded-md text-white mt-5"
+                        @click="saveStaff"
+                    >
+                        Save
+                    </button>
+                </div>
             </div>
 
             <div class="w-full">
@@ -182,7 +387,7 @@ const triggerFileUpload = () => {
                         :showEdit="false"
                         :showDelete="false"
                         :showCopy="false"
-                        :showArchive="true"
+                        :showArchive="$page.props.auth.user.user_type == 'system_admin'"
                         :showSearch="true"
                         @action-event="handleTableAction"
                     />

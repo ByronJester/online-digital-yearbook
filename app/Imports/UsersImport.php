@@ -19,7 +19,7 @@ class UsersImport implements ToCollection, WithHeadingRow
             $password = Str::random(8);
 
             if ($userType === 'school_staff') {
-                $exist = User::where('email', $row['email_address'])->first();
+                $exist = User::where('email', $row['email'])->first();
                 if($exist) {
                     User::updateOrCreate(
                         ['email' => $row['email']],
@@ -58,8 +58,9 @@ class UsersImport implements ToCollection, WithHeadingRow
             } elseif ($userType === 'school_alumni') {
                 $exist = User::where('email', $row['email_address'])->first();
 
+                $user = null;
                 if($exist) {
-                    User::updateOrCreate(
+                    $user = User::updateOrCreate(
                         ['email' => $row['email_address']],
                         [
                             'first_name' => $row['first_name'],
@@ -71,11 +72,12 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'user_type' => $row['user_type'],
                             'class_batch' => $row['class_batch'],
                             'program' => $row['program'],
-                            'section' => $row['section']
+                            'section' => $row['section'],
+                            // 'alumni_picture' => $row['alumni_image']
                         ]
                     );
                 } else {
-                    User::updateOrCreate(
+                   $user = User::updateOrCreate(
                         ['email' => $row['email_address']],
                         [
                             'first_name' => $row['first_name'],
@@ -89,15 +91,30 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'program' => $row['program'],
                             'section' => $row['section'],
                             'password' => Hash::make($password),
-                            'password_text' => $password
+                            'password_text' => $password,
+                            // 'alumni_picture' => $row['alumni_image']
                         ]
                     );
 
-                    $email = $row['email_address'];
-                    $message = "Your email is $email and your password is $password. You can login now using this credentials.";
+                    if($row['payment'] == 'paid') {
+                        $email = $row['email_address'];
+                        $message = "Your email is $email and your password is $password. You can login now using this credentials.";
 
-                    $this->sendSMS($row['contact'], $message);
+                        $this->sendSMS($row['contact'], $message);
+                    }
+
+
                 }
+
+                $batch = Batch::updateOrCreate(
+                    ['school_year' => $row['class_batch'], 'course' => $row['program'], 'section' => $row['section']],
+                    ['school_year' => $row['class_batch'], 'course' => $row['program'], 'section' => $row['section']]
+                );
+
+                BatchStudent::updateOrCreate(
+                    ['batch_id' => $batch->id, 'user_id' => $user->id],
+                    ['batch_id' => $batch->id, 'user_id' => $user->id, 'award' => $row['award']]
+                );
 
 
 

@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('batch_students', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('batch_id')->unsigned()->comment('Foreign key from table batches');
-            $table->string('student_name');
+            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->text('award')->nullable();
-            $table->text('image');
 
             $table->timestamps();
         });
