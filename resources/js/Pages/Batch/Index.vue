@@ -88,15 +88,13 @@ const search = (event) => {
     console.log(search)
 
     if(search != ''){
-        batchData.value = props.batches.filter(x => {
+        classBatchesArr.value = classBatchesArr.value.filter(x => {
             console.log(x)
             return x.course.toLowerCase().includes(search.toLowerCase()) || x.section.toLowerCase().includes(search.toLowerCase()) || x.school_year.toLowerCase().includes(search.toLowerCase());
         })
     } else {
-        batchData.value = props.batches
+        classBatchesArr.value = props.batches.filter(x => {return x.school_year == bYear.value && x.section == bSection.value })
     }
-
-
 }
 
 const deleteBatch = (id) => {
@@ -132,6 +130,24 @@ const deleteBatch = (id) => {
 
         }
     });
+}
+
+const classBatchesArr = ref([]);
+const viewClassBatch = ref(false)
+const bYear = ref(null)
+const selectBatch = (batch) => {
+    viewClassBatch.value = true
+    classBatchesArr.value = props.batches.filter(x => { return x.school_year == batch})
+    bYear.value = batch
+}
+
+const viewClassSection = ref(false)
+const bSection = ref(null)
+const selectSection = (section) => {
+    viewClassBatch.value = false
+    viewClassSection.value = true
+    classBatchesArr.value = classBatchesArr.value.filter(x => { return x.section == section})
+    bSection.value = section
 }
 </script>
 
@@ -191,14 +207,47 @@ const deleteBatch = (id) => {
 
             </div>
 
-            <div class="w-full mt-3 mb-10">
+            <div class="w-full mt-3 mb-10" v-if="!viewClassBatch && viewClassSection">
                 <input type="text" placeholder="Search..." @keyup="search($event)"
                     class="w-[50%] rounded-xl"
                 />
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" >
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="!viewClassBatch && !viewClassSection">
+                <!-- <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" >
+                    <p v-if="$page.props.auth.user.user_type == 'school_staff'">
+                        <span class="float-right text-red-400 m-2 text-xs"
+                            @click="deleteBatch(batch.id)"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                        </span>
+                    </p>
+                    <img :src="batch.logo || logoUrl" class="w-full h-[225px]" @click="viewBatch(batch.id)"/>
+                    <p class="text-center font-bold" @click="viewBatch(batch.id)">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
+                </div> -->
+
+                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in ['2020', '2021', '2022', '2023', '2024', '2025']" >
+                    <img :src="logoUrl" class="w-full h-[225px]" @click="selectBatch(batch)"/>
+                    <p class="text-center font-bold" @click="selectBatch(batch)"> Class Batch {{ batch }}</p>
+                </div>
+            </div>
+
+            <div class="w-full mb-5" v-if="viewClassBatch && !viewClassSection">
+                <button class="rounded-md bg-blue-500 px-5 py-1 text-white text-xl" @click="viewClassBatch = false"> Back</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="viewClassBatch && !viewClassSection">
+                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="sec in ['1', '2', '3', '4']" >
+                    <img :src="logoUrl" class="w-full h-[225px]" @click="selectSection(sec)"/>
+                    <p class="text-center font-bold" @click="selectSection(sec)"> Section {{ sec }}</p>
+                </div>
+            </div>
+
+            <div class="w-full mb-5" v-if="!viewClassBatch && viewClassSection">
+                <button class="rounded-md bg-blue-500 px-5 py-1 text-white text-xl" @click="viewClassBatch = true; viewClassSection = false"> Back</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="!viewClassBatch && viewClassSection">
+                <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in classBatchesArr" >
                     <p v-if="$page.props.auth.user.user_type == 'school_staff'">
                         <span class="float-right text-red-400 m-2 text-xs"
                             @click="deleteBatch(batch.id)"

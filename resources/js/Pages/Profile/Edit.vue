@@ -186,9 +186,17 @@ const closeModal = () => {
 
             <div class="w-[70%] flex justify-center items-center flex-col">
                 <div class="w-full">
-                    <p class="w-full text-xl">
-                        <b>{{ user.fullname }}</b><span v-if="user.user_type == 'school_alumni'"> - {{ user.program + ' ' + user.section }} </span> <br> ({{ user.role }})
+                    <p class="w-full text-xl" v-if="user.user_type == 'school_staff'">
+                        <b> {{ user.role }} </b> <br>
+                        <span v-if="user.position"> ({{ user.position }})</span>
                     </p>
+
+                    <div class="w-full" v-if="user.user_type == 'school_alumni'">
+                        <p class="text-xl font-bold"> {{ user.role }} </p>
+                        <p class="text-md"> {{ user.program }} </p>
+                        <p class="text-xs">Secion {{ user.section }} (Class Batch {{ user.class_batch }}) </p>
+                        <p class="text-xs">Studen ID No.: {{ user.school_id_no }} </p><br>
+                    </div>
                 </div>
 
                 <div class="w-full">

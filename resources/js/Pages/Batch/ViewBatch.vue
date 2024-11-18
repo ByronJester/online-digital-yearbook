@@ -163,7 +163,7 @@ const deleteAlumni = (id) => {
                                 <i class="fa-solid fa-trash"></i>
                             </span>
                         </p>
-                        <img :src="student.image || logoUrl" class="w-full h-[200px]"/>
+                        <img :src="student.user.alumni_picture || logoUrl" class="w-full h-[200px]"/>
                         <p class="text-center font-bold">{{ student.user.fullname }}</p>
                         <p class="text-center text-xs">{{ student.award }}</p>
                     </div>
