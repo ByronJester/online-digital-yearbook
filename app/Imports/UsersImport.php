@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\User;
+use App\Models\{User, Batch, BatchStudent};
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -59,6 +59,14 @@ class UsersImport implements ToCollection, WithHeadingRow
                 $exist = User::where('email', $row['email_address'])->first();
 
                 $user = null;
+
+                $imageUpload = null;
+
+                if ($request->hasFile('alumni_image')) {
+                    $alumniImage = Str::random(10) . '_alumni_image';
+                    $imageUpload = $this->uploadFile($request->file('alumni_image'), $alumniImage);
+                }
+
                 if($exist) {
                     $user = User::updateOrCreate(
                         ['email' => $row['email_address']],
@@ -66,14 +74,14 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'first_name' => $row['first_name'],
                             'middle_name' => $row['middle_name'],
                             'last_name' => $row['last_name'],
-                            'school_id_no' => $row['school_id_number'],
+                            'school_id_no' => $row['alumni_id_number'],
                             'email' => $row['email_address'],
                             'contact' => $row['contact'],
                             'user_type' => $row['user_type'],
                             'class_batch' => $row['class_batch'],
                             'program' => $row['program'],
                             'section' => $row['section'],
-                            // 'alumni_picture' => $row['alumni_image']
+                            'alumni_picture' => $row['alumni_image']
                         ]
                     );
                 } else {
@@ -83,7 +91,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'first_name' => $row['first_name'],
                             'middle_name' => $row['middle_name'],
                             'last_name' => $row['last_name'],
-                            'school_id_no' => $row['school_id_number'],
+                            'school_id_no' => $row['alumni_id_number'],
                             'email' => $row['email_address'],
                             'contact' => $row['contact'],
                             'user_type' => $row['user_type'],
@@ -92,7 +100,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'section' => $row['section'],
                             'password' => Hash::make($password),
                             'password_text' => $password,
-                            // 'alumni_picture' => $row['alumni_image']
+                            'alumni_picture' => $row['alumni_image']
                         ]
                     );
 

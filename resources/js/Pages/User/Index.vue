@@ -218,6 +218,9 @@ const saveStaff = () => {
     });
 }
 
+const addAlumni = ref(false)
+const addStaff = ref(false)
+
 </script>
 
 <template>
@@ -239,9 +242,17 @@ const saveStaff = () => {
                 <button class="download-btn" @click="downloadFile('staff_format.xlsx')" v-if="$page.props.auth.user.user_type == 'system_admin'">
                     Download Staff Format
                 </button>
+
+                <button class="download-btn" @click="addAlumni = !addAlumni" v-if="$page.props.auth.user.user_type == 'school_staff'">
+                    {{!addAlumni ? 'Add Alumni' : 'Close'}}
+                </button>
+
+                <button class="download-btn" @click="addStaff = !addStaff" v-if="$page.props.auth.user.user_type == 'system_admin'">
+                    {{!addStaff ? 'Add Account' : 'Close'}}
+                </button>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'school_staff'">
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'school_staff' && addAlumni">
                 <div class="w-full p-2">
                     <label>First Name</label>
                     <br>
@@ -275,13 +286,13 @@ const saveStaff = () => {
 
 
                 <div class="w-full p-2">
-                    <label>School ID No.</label>
+                    <label>Alumni ID No.</label>
                     <br>
                     <input type="text" class="w-full rounded-md" v-model="alumniForm.school_id_no" placeholder="School ID No."/>
                 </div>
 
                 <div class="w-full p-2">
-                    <label>Course</label>
+                    <label>Program</label>
                     <br>
                     <select class="rounded-md w-full" v-model="alumniForm.program">
                         <option v-for="c in courses" :key="c.id" :value="c.name"> {{ c.name }}</option>
@@ -300,7 +311,7 @@ const saveStaff = () => {
                 </div>
 
                 <div class="w-full p-2">
-                    <label>School Year</label>
+                    <label>Batch</label>
                     <br>
                     <select class="rounded-md w-full" v-model="alumniForm.class_batch">
                         <option value="2020">2020</option>
@@ -333,7 +344,7 @@ const saveStaff = () => {
                 </div>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'system_admin'">
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'system_admin' && addStaff">
                 <div class="w-full p-2">
                     <label>First Name</label>
                     <br>
@@ -365,6 +376,15 @@ const saveStaff = () => {
                 </div>
 
                 <div class="w-full p-2">
+                    <label>Role</label>
+                    <br>
+                    <select v-model="staffForm.user_type" class="w-full rounded-md">
+                        <option :value="'school_staff'">School Staff</option>
+                        <option :value="'system_admin'">Admin</option>
+                    </select>
+                </div>
+
+                <div class="w-full p-2">
                     <button class="w-full py-2 px-4 bg-blue-500 rounded-md text-white mt-5"
                         @click="saveStaff"
                     >
@@ -378,7 +398,7 @@ const saveStaff = () => {
                     <VueSpinner size="50" color="red" />
                 </div>
 
-                <div class="w-full" v-else>
+                <div class="w-full" v-if="!loading && $page.props.auth.user.user_type == 'system_admin'">
                     <Table
                         :headers="['First Name', 'Middle Name', 'Last Name', 'Email', 'Role']"
                         :rows="users"
@@ -388,6 +408,21 @@ const saveStaff = () => {
                         :showDelete="false"
                         :showCopy="false"
                         :showArchive="$page.props.auth.user.user_type == 'system_admin'"
+                        :showSearch="true"
+                        @action-event="handleTableAction"
+                    />
+                </div>
+
+                <div class="w-full" v-if="!loading && $page.props.auth.user.user_type == 'school_staff'">
+                    <Table
+                        :headers="['First Name', 'Middle Name', 'Last Name', 'Email', 'Program', 'Class Batch']"
+                        :rows="users"
+                        :rows-per-page="10"
+                        :showView="false"
+                        :showEdit="false"
+                        :showDelete="false"
+                        :showCopy="false"
+                        :showArchive="false"
                         :showSearch="true"
                         @action-event="handleTableAction"
                     />

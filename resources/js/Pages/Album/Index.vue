@@ -315,10 +315,10 @@ const viewProfile = (id) => {
 
                 <textarea v-model="postDescription" placeholder="Album Description" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
-                <div class="w-full">
+                <!-- <div class="w-full">
                     <label>Archive Date:</label><br>
                     <input type="date" class="rounded-md mb-5" v-model="archiveDate"/>
-                </div>
+                </div> -->
 
                 <div v-if="postImagePreviews.length" class="flex gap-2 mt-2">
                     <div v-for="(preview, index) in postImagePreviews" :key="index" class="w-32 h-32">

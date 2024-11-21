@@ -89,9 +89,17 @@ class User extends Authenticatable
         if(!$value) return $value;
 
         if (Str::contains($value, 'http')) {
-            return $value;
+            $imageData = base64_encode(file_get_contents($value));
+
+            return [
+                'image' => 'data:image/jpeg;base64,' . $imageData
+            ];
         } else {
-            return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+            // return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
+
+            return [
+                'image' => "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value
+            ];
         }
     }
 }

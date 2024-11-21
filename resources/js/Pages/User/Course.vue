@@ -20,7 +20,9 @@ const handleTableAction = ({ action, row }) => {
     if (action == 'view') {
         console.log('view')
     } else if (action == 'edit') {
-        console.log('edit')
+        courseId.value = row.id
+        courseName.value = row.name
+        console.log(row)
     } else if (action == 'delete') {
         swal({
             title: "Are you sure to delete this course?",
@@ -115,34 +117,45 @@ const triggerFileUpload = () => {
     fileInput.value.click();
 }
 
-const course = ref(null)
+const courseId = ref('')
+const courseName = ref('')
 
 const saveCourse = () => {
-    swal({
-        title: "Are you sure to save this course?",
-        text: "",
-        icon: "success",
-        buttons: true,
-        dangerMode: true,
-    })
-    .then((proceed) => {
-        if (proceed) {
+    // swal({
+    //     title: "Are you sure to save this course?",
+    //     text: "",
+    //     icon: "success",
+    //     buttons: true,
+    //     dangerMode: true,
+    // })
+    // .then((proceed) => {
+    //     if (proceed) {
 
-            try {
-                Inertia.post(route('user-save-course'), {course: course.value}, {
-                    onSuccess: (page) => {
-                        // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                        location.reload()
-                    },
-                    onError: (errors) => {
-                        // alert('There was an error uploading the file.');
-                    },
-                });
-            } catch (error) {
-                alert('There was an error uploading the file.');
-            }
+    //         try {
+    //             Inertia.post(route('user-save-course'), {id: id.value, course: course.value}, {
+    //                 onSuccess: (page) => {
+    //                     // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+    //                     location.reload()
+    //                 },
+    //                 onError: (errors) => {
+    //                     // alert('There was an error uploading the file.');
+    //                 },
+    //             });
+    //         } catch (error) {
+    //             alert('There was an error uploading the file.');
+    //         }
 
-        }
+    //     }
+    // });
+
+    Inertia.post(route('user-save-course'), {id: courseId.value, course: courseName.value}, {
+        onSuccess: (page) => {
+            // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+            location.reload()
+        },
+        onError: (errors) => {
+            // alert('There was an error uploading the file.');
+        },
     });
 }
 
@@ -155,7 +168,7 @@ const saveCourse = () => {
         <div class="w-full p-5 ">
             <div class="w-full border border-black rounded-md" style="margin-bottom: 20px;">
                 <div class="w-full p-10">
-                    <input type="text" placeholder="Course..." v-model="course" class="w-full rounded-md"/>
+                    <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
 
                     <button class="bg-blue-500 py-2 px-7 rounded-md mt-5 text-white"
                         @click="saveCourse"
@@ -179,7 +192,7 @@ const saveCourse = () => {
                         :rows="courses"
                         :rows-per-page="10"
                         :showView="false"
-                        :showEdit="false"
+                        :showEdit="true"
                         :showDelete="true"
                         :showCopy="false"
                         :showArchive="false"

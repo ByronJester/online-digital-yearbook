@@ -134,7 +134,7 @@ const updateSearchQuery = (event) => {
 
                 <NavLink :href="route('staff-alumni-records')" :active="route().current('staff-alumni-records')">
                     <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
-                    <span v-if="sidebarOpen" class="text-md pl-5">Alumni Status Reports</span>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Alumni Login Status</span>
                 </NavLink>
 
                 <NavLink :href="route('staff-achievements-and-recogniations')" :active="route().current('staff-achievements-and-recogniations')">

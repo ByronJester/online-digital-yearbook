@@ -201,6 +201,12 @@ const triggerFileUpload = () => {
                     />
                 </div>
 
+                <div class="w-full flex justify-center items-center mt-20" v-else>
+                    <p class="text-4xl">
+                        There's no archived users.
+                    </p>
+                </div>
+
             </div>
         </div>
 
