@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ Batch, BatchStudent, Course };
+use App\Models\{ Batch, BatchStudent, Course, Section, Year };
 
 class BatchController extends Controller
 {
@@ -13,7 +13,9 @@ class BatchController extends Controller
     {
         return Inertia::render('Batch/Index', [
             'batches' => Batch::orderBy('created_at', 'desc')->get(),
-            'courses' => Course::get()
+            'courses' => Course::get(),
+            'sections' => Section::get(),
+            'years' => Year::get()
         ]);
     }
 

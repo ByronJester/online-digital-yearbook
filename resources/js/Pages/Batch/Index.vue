@@ -85,16 +85,35 @@ const batchData = ref(props.batches)
 
 const search = (event) => {
     var search = event.target.value
-    console.log(search)
 
     if(search != ''){
         classBatchesArr.value = classBatchesArr.value.filter(x => {
-            console.log(x)
             return x.course.toLowerCase().includes(search.toLowerCase()) || x.section.toLowerCase().includes(search.toLowerCase()) || x.school_year.toLowerCase().includes(search.toLowerCase());
         })
     } else {
         classBatchesArr.value = props.batches.filter(x => {return x.school_year == bYear.value && x.section == bSection.value })
     }
+}
+
+let timeoutId;
+
+const yearsArr = ref(["2020", "2021", "2022", "2023", "2024", "2025"]);
+
+const searchYear = (event) => {
+    var search = event.target.value
+    if(search != ''){
+        clearTimeout(timeoutId);
+
+        timeoutId = setTimeout(() => {
+            yearsArr.value = yearsArr.value.filter(x => { return x == search })
+
+        }, 3000);
+
+    } else {
+        yearsArr.value = ["2020", "2021", "2022", "2023", "2024", "2025"]
+    }
+
+
 }
 
 const deleteBatch = (id) => {
@@ -149,20 +168,33 @@ const selectSection = (section) => {
     classBatchesArr.value = classBatchesArr.value.filter(x => { return x.section == section})
     bSection.value = section
 }
+
 </script>
 
 <template>
     <Head title="Class Batch" />
 
     <AuthenticatedLayout>
-        <div class="w-full h-[80vh] ">
-            <div class="mb-10 border-2 border-black rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
+        <div class="w-full h-[80vh] min-h-screen">
+            <p class="text-2xl w-full font-bold" v-if="!viewClassBatch && !viewClassSection">
+                Class Batches
+            </p>
+
+            <p class="text-2xl w-full font-bold" v-if="viewClassBatch && !viewClassSection">
+                Class Batch {{ bYear }}
+            </p>
+
+            <p class="w-full text-2xl" v-if="!viewClassBatch && viewClassSection">
+                <span class="font-bold mr-3">Class Batch {{ bYear }}</span> <span class="mr-3"><i class="fa-solid fa-caret-right"></i></span> Section {{ bSection }}
+            </p>
+
+            <div class="mb-10 rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
                 <div class="w-full flex justify-center items-center" v-if="loading">
                     <VueSpinner size="50" color="red" />
                 </div>
 
-                <div class="w-full" v-else>
-                    <div class="w-full flex flex-col md:flex-row py-3">
+                <div class="w-full border-2 border-black rounded-md mt-5" v-if="!viewClassBatch && viewClassSection && !loading" >
+                    <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 md:flex-row p-5">
                         <div class="w-full md:mr-1">
                             <label>Course</label>
                             <br>
@@ -178,7 +210,8 @@ const selectSection = (section) => {
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
-                                <option value="3">4</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
                             </select>
                         </div>
 
@@ -200,16 +233,26 @@ const selectSection = (section) => {
                             <br>
                             <input type="file" class="w-full rounded-md" @change="(e) => logo = e.target.files[0]"/>
                         </div>
+
+                        <div class="w-full">
+                            <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md w-full mt-3">Save</button>
+                        </div>
                     </div>
 
-                    <button @click="createPost" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+
                 </div>
 
             </div>
 
-            <div class="w-full mt-3 mb-10" v-if="!viewClassBatch && viewClassSection">
+            <div class="w-full mt-2 mb-10" v-if="!viewClassBatch && viewClassSection" :class="{'mt-16': !viewClassBatch && viewClassSection && !loading}">
                 <input type="text" placeholder="Search..." @keyup="search($event)"
                     class="w-[50%] rounded-xl"
+                />
+            </div>
+
+            <div class="w-full mt-2 mb-10" v-if="!viewClassBatch && !viewClassSection" :class="{'mt-16': !viewClassBatch && !viewClassSection && !loading}">
+                <input type="text" placeholder="Search..." @keyup="searchYear($event)"
+                    class="w-[20%] rounded-xl"
                 />
             </div>
 
@@ -226,7 +269,7 @@ const selectSection = (section) => {
                     <p class="text-center font-bold" @click="viewBatch(batch.id)">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
                 </div> -->
 
-                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in ['2020', '2021', '2022', '2023', '2024', '2025']" >
+                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in yearsArr" >
                     <img :src="logoUrl" class="w-full h-[225px]" @click="selectBatch(batch)"/>
                     <p class="text-center font-bold" @click="selectBatch(batch)"> Class Batch {{ batch }}</p>
                 </div>
@@ -237,7 +280,7 @@ const selectSection = (section) => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="viewClassBatch && !viewClassSection">
-                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="sec in ['1', '2', '3', '4']" >
+                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="sec in ['1', '2', '3', '4', '5']" >
                     <img :src="logoUrl" class="w-full h-[225px]" @click="selectSection(sec)"/>
                     <p class="text-center font-bold" @click="selectSection(sec)"> Section {{ sec }}</p>
                 </div>

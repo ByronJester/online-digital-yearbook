@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\{ User, OtpMessage, Course };
+use App\Models\{ User, OtpMessage, Course, Section, Year };
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -80,5 +80,56 @@ class UserSeeder extends Seeder
         Course::create([
             'name' => "Bachelor of Science in Hospitality Management (BSHM)"
         ]);
+
+        Course::create([
+            'name' => "Bachelor of Science in Information Technology (BSIT)"
+        ]);
+
+
+        Section::create([
+            'name' => "1"
+        ]);
+
+        Section::create([
+            'name' => "2"
+        ]);
+
+        Section::create([
+            'name' => "3"
+        ]);
+
+        Section::create([
+            'name' => "4"
+        ]);
+
+        Section::create([
+            'name' => "5"
+        ]);
+
+        Year::create([
+            'name' => "2020"
+        ]);
+
+        Year::create([
+            'name' => "2021"
+        ]);
+
+        Year::create([
+            'name' => "2022"
+        ]);
+
+        Year::create([
+            'name' => "2023"
+        ]);
+
+        Year::create([
+            'name' => "2024"
+        ]);
+
+        Year::create([
+            'name' => "2025"
+        ]);
+
+
     }
 }

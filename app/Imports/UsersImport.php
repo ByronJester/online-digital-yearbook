@@ -60,12 +60,12 @@ class UsersImport implements ToCollection, WithHeadingRow
 
                 $user = null;
 
-                $imageUpload = null;
+                // $imageUpload = null;
 
-                if ($request->hasFile('alumni_image')) {
-                    $alumniImage = Str::random(10) . '_alumni_image';
-                    $imageUpload = $this->uploadFile($request->file('alumni_image'), $alumniImage);
-                }
+                // if ($request->hasFile('alumni_image')) {
+                //     $alumniImage = Str::random(10) . '_alumni_image';
+                //     $imageUpload = $this->uploadFile($request->file('alumni_image'), $alumniImage);
+                // }
 
                 if($exist) {
                     $user = User::updateOrCreate(
