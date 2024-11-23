@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -57,7 +58,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'role', 'fullname'
+        'role', 'fullname', 'status'
     ];
 
     public function getRoleAttribute()
@@ -101,5 +102,21 @@ class User extends Authenticatable
                 'image' => "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value
             ];
         }
+    }
+
+    public function getLastLoggedInAttribute($value)
+    {
+        $date = Carbon::parse($value);
+
+        return $date->isoFormat('LLL');
+    }
+
+    public function getStatusAttribute()
+    {
+        if($this->last_logged_in && !$this->logout_at) return 'active';
+
+        if(!!$this->logout_at) return 'in_active';
+
+        return '';
     }
 }

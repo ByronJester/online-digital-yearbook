@@ -215,7 +215,13 @@ class UserController extends Controller
 
         $tableNames = array_map('current', $tables);
 
-        $excludedTables = ['migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs'];
+        $excludedTables = [
+            'migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs',
+            'achievement_comments', 'achievement_likes', 'album_comments', 'album_likes', 'courses', 'faqs',
+            'greetings', 'histories', 'hymn', 'logos', 'mission_statements', 'programs', 'user_notifications',
+            'user_shares', 'vision_statements', 'sessions'
+        ];
+
 
         $tableNames = array_filter($tableNames, function ($table) use ($excludedTables) {
             return !in_array($table, $excludedTables);
