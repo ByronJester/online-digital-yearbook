@@ -144,6 +144,11 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
         Route::post('/delete-batch-student', [BatchController::class, 'deleteAlumni'])->name('staff-delete-batch-student');
 
     });
+
+    Route::prefix('stories')->group(function () {
+        Route::get('/', [AlumniController::class, 'successStoires'])->name('staff-success-stories');
+
+    });
 });
 
 Route::prefix('alumni')->middleware(['auth', 'verified'])->group(function () {
@@ -176,6 +181,11 @@ Route::prefix('alumni')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/{id}', [BatchController::class, 'viewBatch'])->name('alumni-view-batch');
         Route::post('/save-batch', [BatchController::class, 'saveBatch'])->name('alumni-save-batch');
         Route::post('/save-batch-student', [BatchController::class, 'saveBatchStudent'])->name('alumni-save-batch-student');
+
+    });
+
+    Route::prefix('stories')->group(function () {
+        Route::get('/', [AlumniController::class, 'successStoires'])->name('alumni-success-stories');
 
     });
 });

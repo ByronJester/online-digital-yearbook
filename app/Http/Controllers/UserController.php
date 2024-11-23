@@ -161,33 +161,103 @@ class UserController extends Controller
         // $tables = DB::select('SHOW TABLES');
         // $tableNames = array_map('current', $tables);
 
-        // $excludedTables = ['migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs'];
+        // $excludedTables = [
+        //     'migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs',
+        //     'achievement_comments', 'achievement_likes', 'album_comments', 'album_likes', 'courses', 'faqs',
+        //     'greetings', 'histories', 'hymn', 'logos', 'mission_statements', 'programs', 'user_notifications',
+        //     'user_shares', 'vision_statements', 'sessions'
+        // ];
 
         // $tableNames = array_filter($tableNames, function ($table) use ($excludedTables) {
         //     return !in_array($table, $excludedTables);
         // });
 
+        // $tableArr = [];
+
+        // foreach($tableNames as $table) {
+        //     $tableDescription = '';
+
+        //     switch($table) {
+        //         case 'users':
+        //             $tableDescription = "Table of user's account.";
+        //             break;
+        //         case 'achievements':
+        //             $tableDescription = "Table of alumni achievements and recognitions.";
+        //             break;
+        //         case 'albums':
+        //             $tableDescription = "Table of school albums.";
+        //             break;
+        //         case 'batches':
+        //             $tableDescription = "Table of alumni batches.";
+        //             break;
+        //         case 'batch_students':
+        //             $tableDescription = "Table of batch alumni.";
+        //             break;
+        //         case 'self_messages':
+        //             $tableDescription = "Table of future messages of alumni to future self.";
+        //             break;
+        //         case 'success_stories':
+        //             $tableDescription = "Table of alumni success stories.";
+        //             break;
+        //     }
+
+        //     $tableArr[] = [
+        //         'table' => $table,
+        //         'description' => $tableDescription
+        //     ];
+        // }
+
         // return Inertia::render('User/Backup', [
-        //     'tables' => $tableNames
+        //     'tables' => $tableArr
         // ]);
 
-        // Get all table names from PostgreSQL
         $tables = DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
 
-        // Extract table names into an array
         $tableNames = array_map('current', $tables);
 
-        // Define excluded tables
         $excludedTables = ['migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs'];
 
-        // Filter out excluded tables
         $tableNames = array_filter($tableNames, function ($table) use ($excludedTables) {
             return !in_array($table, $excludedTables);
         });
 
-        // Now $tableNames contains only the tables you want
+        $tableArr = [];
+
+        foreach($tableNames as $table) {
+            $tableDescription = '';
+
+            switch($table) {
+                case 'users':
+                    $tableDescription = "Table of user's account.";
+                    break;
+                case 'achievements':
+                    $tableDescription = "Table of alumni achievements and recognitions.";
+                    break;
+                case 'albums':
+                    $tableDescription = "Table of school albums.";
+                    break;
+                case 'batches':
+                    $tableDescription = "Table of alumni batches.";
+                    break;
+                case 'batch_students':
+                    $tableDescription = "Table of batch alumni.";
+                    break;
+                case 'self_messages':
+                    $tableDescription = "Table of future messages of alumni to future self.";
+                    break;
+                case 'success_stories':
+                    $tableDescription = "Table of alumni success stories.";
+                    break;
+            }
+
+            $tableArr[] = [
+                'table' => $table,
+                'description' => $tableDescription
+            ];
+        }
+
         return Inertia::render('User/Backup', [
-            'tables' => $tableNames
+            'tables' => $tableArr
         ]);
 
     }
@@ -215,12 +285,11 @@ class UserController extends Controller
         foreach ($tableData as $row) {
             $columns = implode('", "', array_keys((array)$row));
             $values = implode("', '", array_map(function($value) {
-                return str_replace("'", "''", $value); // Escape single quotes for PostgreSQL
+                return str_replace("'", "''", $value);
             }, array_values((array)$row)));
             $sqlFile .= "INSERT INTO \"$table\" (\"$columns\") VALUES ('$values');\n";
         }
 
-        // Define file name and store it temporarily
         $fileName = "$table.sql";
         Storage::disk('local')->put("exports/$fileName", $sqlFile);
 
@@ -259,11 +328,9 @@ class UserController extends Controller
 
         $sql = file_get_contents($file->getRealPath());
 
-        // Split the SQL into individual statements based on semicolon
         $queries = array_filter(array_map('trim', explode(';', $sql)));
 
-        // Clear existing records in the table
-        DB::table($table)->truncate(); // safer than delete for restoring
+        DB::table($table)->truncate();
 
         foreach ($queries as $query) {
             if (!empty($query)) {

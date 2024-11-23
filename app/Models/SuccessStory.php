@@ -19,4 +19,13 @@ class SuccessStory extends Model
         // return \LaravelCloudinary::show($value, []);
         return "http://res.cloudinary.com/dcmgsini6/image/upload/" . $value;
     }
+
+    protected $appends = [
+        'alumni_name'
+    ];
+
+    public function getAlumniNameAttribute()
+    {
+        return $this->student_name;
+    }
 }

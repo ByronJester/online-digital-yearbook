@@ -151,6 +151,11 @@ const updateSearchQuery = (event) => {
                     <i class="fa-solid fa-graduation-cap text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Class Batches</span>
                 </NavLink>
+
+                <NavLink :href="route('staff-success-stories')" :active="route().current('staff-success-stories')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Alumni Success Stories</span>
+                </NavLink>
             </nav>
 
             <nav class="flex flex-col" v-if="$page.props.auth.user.user_type == 'school_alumni'">
@@ -177,6 +182,11 @@ const updateSearchQuery = (event) => {
                 <NavLink :href="route('alumni-class-batches')" :active="route().current('alumni-class-batches')">
                     <i class="fa-solid fa-graduation-cap text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Class Batches</span>
+                </NavLink>
+
+                <NavLink :href="route('alumni-success-stories')" :active="route().current('alumni-success-stories')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Alumni Success Stories</span>
                 </NavLink>
             </nav>
         </div>

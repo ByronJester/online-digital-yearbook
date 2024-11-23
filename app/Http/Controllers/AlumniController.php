@@ -129,4 +129,11 @@ class AlumniController extends Controller
 
         return redirect()->back();
     }
+
+    public function successStoires()
+    {
+        return Inertia::render('Alumni/Story', [
+            'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
+        ]);
+    }
 }

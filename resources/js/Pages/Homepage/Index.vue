@@ -962,7 +962,7 @@ const activeTab = ref('logo');
                             Alumni Success Stories
                         </p>
 
-                        <input type="text" class="w-full mb-1 rounded-md" placeholder="Student Name"
+                        <input type="text" class="w-full mb-1 rounded-md" placeholder="Alumni Name"
                             v-model="formStory.student_name"
                         />
 
@@ -984,7 +984,7 @@ const activeTab = ref('logo');
 
                 <div class="w-full mt-10" v-if="stories.length > 0">
                     <Table
-                        :headers="['Student Name','Content', 'File']"
+                        :headers="['Alumni Name','Content', 'File']"
                         :rows="stories"
                         :rows-per-page="10"
                         :showView="false"

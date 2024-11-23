@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-                    <th v-if="showView || showEdit || showDelete || showCopy || showArchive || showUnarchive">Actions</th>
+                    <th v-if="showView || showEdit || showDelete || showCopy || showArchive || showUnarchive || showBackup">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                             </template>
                         </template>
                     </td>
-                    <td v-if="showView || showEdit || showDelete || showCopy || showUse || showArchive || showUnarchive">
+                    <td v-if="showView || showEdit || showDelete || showCopy || showUse || showArchive || showUnarchive || showBackup">
                         <button v-if="showUse && !row.is_used" @click="handleAction(row, 'use')" class="btn-use">
                             Use
                         </button>
@@ -67,6 +67,9 @@
                         </button>
                         <button v-if="showCopy" @click="handleAction(row, 'copy')" class="btn-copy">
                             Copy Password
+                        </button>
+                        <button v-if="showBackup" @click="handleAction(row, 'backup')" class="btn-copy">
+                            Backup
                         </button>
 
                     </td>
@@ -129,6 +132,10 @@ export default {
             default: false,
         },
         showUnarchive: {
+            type: Boolean,
+            default: false,
+        },
+        showBackup: {
             type: Boolean,
             default: false,
         },

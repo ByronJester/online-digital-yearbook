@@ -326,7 +326,7 @@ const closeModal = () => {
 
     <AuthenticatedLayout>
         <div class="w-full p-5">
-            <div class="w-full flex flex-row">
+            <div class="w-full flex flex-col">
 
                 <div
                     id="defaultModal"
@@ -358,7 +358,7 @@ const closeModal = () => {
                     </div>
                 </div>
 
-                <div class="w-[70%]">
+                <div class="w-full">
                     <div class="w-full border rounded-lg p-4 bg-white h-auto mt-2" v-for="post in postData" :key="post.id">
                         <div class="space-y-6" v-if="post.type == 'achievement'">
                             <div class="w-full">
@@ -526,7 +526,7 @@ const closeModal = () => {
                     </div>
                 </div>
 
-                <div class="w-[25%] h-[80%] border rounded-md bg-white border-black fixed right-2 overflow-y-scroll">
+                <!-- <div class="w-[25%] h-[80%] border rounded-md bg-white border-black fixed right-2 overflow-y-scroll">
                     <div class="flex flex-col p-2">
                         <div class="w-full mt-5" v-for="story in stories" :key="story.id">
                             <p class="font-bold text-md text-center">
@@ -539,7 +539,7 @@ const closeModal = () => {
                             <img :src="story.file" class="w-full h-[250px] mt-3"/>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
         </div>

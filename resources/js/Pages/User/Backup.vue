@@ -82,6 +82,25 @@ const removeWordFromString = (originalString, wordToRemove) => {
     return originalString.replace(regex, '').trim().replace(/\s+/g, ' '); // Trim spaces and replace multiple spaces with a single space
 }
 
+const handleTableAction = ({ action, row }) => {
+    console.log(row)
+    console.log(action)
+
+    if(action == 'backup') {
+        const tableName = row.table;
+        const response = axios.get(route('bar', tableName), {
+            responseType: 'blob',
+        });
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${tableName}.sql`);
+        document.body.appendChild(link);
+        link.click();
+    }
+}
+
 
 </script>
 
@@ -90,7 +109,7 @@ const removeWordFromString = (originalString, wordToRemove) => {
 
     <AuthenticatedLayout>
         <div class="w-full p-5 ">
-            <div class="w-full">
+            <!-- <div class="w-full">
                 <p class="text-2xl mb-10">
                     Backup and Restore
                 </p>
@@ -117,6 +136,45 @@ const removeWordFromString = (originalString, wordToRemove) => {
                 </select>
                 <input type="file" @change="handleFileUpload" accept=".sql" class="border border-black rounded-md mr-1 py-1"/>
                 <button @click="uploadFile" class="rounded-md bg-blue-500 p-2 px-4 text-white">Restore</button>
+            </div> -->
+
+
+            <div class="w-full flex flex-col">
+                <p class="font-bold text-2xl">
+                    Backup
+                </p>
+                <div class="w-full mt-3">
+                    <Table
+                        :headers="['Table', 'Description']"
+                        :rows="tables"
+                        :rows-per-page="10"
+                        :showView="false"
+                        :showEdit="false"
+                        :showDelete="false"
+                        :showCopy="false"
+                        :showArchive="false"
+                        :showSearch="false"
+                        :showBackup="true"
+                        @action-event="handleTableAction"
+                    />
+                </div>
+
+            </div>
+
+            <div class="w-full mt-5">
+                <p class="font-bold text-2xl">
+                    Restore
+                </p>
+
+                <div class="w-full mt-3">
+                    <select v-model="tableUpload" class="rounded-md mr-2">
+                        <option :value="t" v-for="t in tables" :key="t">
+                            {{ t.table }}
+                        </option>
+                    </select>
+                    <input type="file" @change="handleFileUpload" accept=".sql" class="border border-black rounded-md mr-1 py-1"/>
+                    <button @click="uploadFile" class="rounded-md bg-blue-500 p-2 px-4 text-white">Restore</button>
+                </div>
             </div>
         </div>
 
