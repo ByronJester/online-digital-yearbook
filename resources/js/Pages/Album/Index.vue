@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { VueSpinner } from 'vue3-spinners';
