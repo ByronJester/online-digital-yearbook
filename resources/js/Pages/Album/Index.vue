@@ -143,22 +143,38 @@ const toggleCommentInput = (post) => {
 const textComment = ref(null);
 const commentId = ref(null);
 
-const addComment = async (post, commentText) => {
-    console.log(post)
-    alert('asdasd')
-    if(!commentId.value) {
-        const formData = new FormData();
-        formData.append('post_id', post.id);
-        formData.append('comment', commentText);
-        formData.append('user_id', post.user_id);
+const formComment = useForm({
+    post_id: '',
+    comment: '',
+});
 
-        await Inertia.post(route('staff-album-save-comment'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
+const addComment = async (post, commentText) => {
+    if(!commentId.value) {
+        formComment.post_id = post.id
+        formComment.comment = commentText
+        // const formData = new FormData();
+        // formData.append('post_id', post.id);
+        // formData.append('comment', commentText);
+        // formData.append('user_id', post.user_id);
+
+        // await Inertia.post(route('staff-album-save-comment'), formData, {
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data',
+        //     },
+        // });
+        // textComment.value = null
+        // commentId.value = null
+
+        await formComment.post(route('staff-album-save-comment'), {
+            onSuccess: (page) => {
+                location.reload()
             },
+            onError: (errors) => {
+                formComment.post_id = null
+                formComment.comment = null
+                alert('You commented a bad word');
+            }
         });
-        textComment.value = null
-        commentId.value = null
     } else {
         const formData = new FormData();
         formData.append('id', commentId.value);
@@ -168,8 +184,7 @@ const addComment = async (post, commentText) => {
 
             onSuccess: (page) => {
                 // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                textComment.value = null
-                commentId.value = null
+
             },
             onError: (errors) => {
                 // alert('There was an error uploading the file.');

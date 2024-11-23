@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use App\Models\{ User, Album, AlbumComment, AlbumLike, UserShare, UserNotification };
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AlbumController extends Controller
 {
@@ -104,7 +106,28 @@ class AlbumController extends Controller
         $keywords = $this->getBadWords();
 
         if (Str::contains($request->comment, $keywords)) {
-            return redirect()->back();
+            $user = auth()->user();
+
+            $user->bad_word_count += 1;
+            $user->save();
+
+            if($user->bad_word_count == 3) {
+                $user = auth()->user();
+                $user->logout_at = Carbon::now();
+                $user->save();
+
+                Auth::guard('web')->logout();
+
+                $request->session()->invalidate();
+
+                $request->session()->regenerateToken();
+
+                User::where('id', $user->id)->delete();
+
+                return redirect('/');
+            }
+
+            return redirect()->back()->withErrors(['error' => 'An error occurred.']);
         }
 
         AlbumComment::create([

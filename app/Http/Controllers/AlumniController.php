@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use App\Models\{ User, Achievement, Album, UserShare, UserNotification, SuccessStory };
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 
 class AlumniController extends Controller

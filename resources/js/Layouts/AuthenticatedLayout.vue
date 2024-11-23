@@ -252,8 +252,9 @@ const updateSearchQuery = (event) => {
                         </div>
 
                         <div class="w-full flex flex-col p-2" v-else>
-                            <div class="w-full border-b border-black mb-3 cursor-pointer" v-for="n in $page.props.notifications" :key="n.id"
-                                @click="openNotification(n)"
+                            <div class="w-full border-b border-black mb-3" v-for="n in $page.props.notifications" :key="n.id"
+                                @click="n.redirect_id ? openNotification(n) : ''"
+                                :class="{'cursor-pointer': n.redirect_id}"
                             >
                                 {{ n.message }}
                             </div>

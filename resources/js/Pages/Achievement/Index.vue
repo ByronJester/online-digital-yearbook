@@ -122,25 +122,50 @@ const toggleCommentInput = (post) => {
 const textComment = ref(null);
 const commentId = ref(null);
 
+const formComment = useForm({
+    post_id: '',
+    comment: '',
+});
+
 // Function to add a comment
 const addComment = async(post, commentText) => {
     if(!commentId.value) {
-        const formData = new FormData();
-        formData.append('post_id', post.id);
-        formData.append('comment', commentText);
+        formComment.post_id = post.id
+        formComment.comment = commentText
 
-        await Inertia.post(route('staff-aap-save-comment'), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+
+        // const formData = new FormData();
+        // formData.append('post_id', post.id);
+        // formData.append('comment', commentText);
+
+        // await Inertia.post(route('staff-aap-save-comment'), formData, {
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data',
+        //     },
+        //     onSuccess: (page) => {
+        //         // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+        //         textComment.value = null
+        //         commentId.value = null
+        //     },
+        //     onError: (errors) => {
+        //         console.log(errors)
+        //         if (errors.comment) {
+        //             alert(errors.comment); // Show the validation error
+        //         } else {
+        //             console.log('Unexpected error:', errors);
+        //         }
+        //     }
+        // });
+
+        await formComment.post(route('staff-aap-save-comment'), {
             onSuccess: (page) => {
-                // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                textComment.value = null
-                commentId.value = null
+                location.reload()
             },
             onError: (errors) => {
-                // alert('There was an error uploading the file.');
-            },
+                formComment.post_id = null
+                formComment.comment = null
+                alert('You commented a bad word.')
+            }
         });
     } else {
         const formData = new FormData();

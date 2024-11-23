@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{
     User, OtpMessage, SelfMessage, Logo, SuccessStory, History, MissionStatement, VisionStatement,
-    Program, Greeting, Hymn, Faq, Course, Batch, BatchStudent
+    Program, Greeting, Hymn, Faq, Course, Batch, BatchStudent, UserNotification
 };
 use Inertia\Inertia;
 use App\Imports\UsersImport;
@@ -443,7 +443,26 @@ class UserController extends Controller
                 ['batch_id' => $batch->id, 'user_id' => $user->id],
                 ['batch_id' => $batch->id, 'user_id' => $user->id, 'award' => $request->award]
             );
+
+            $users = User::where('user_type', 'system_admin')->get();
+
+            foreach($users as $u) {
+                $auth = auth()->user();
+                $user_id = $u->id;
+                $redirect_id = null;
+                $type = null;
+                $message = $auth->fullname . ' added alumni, ' . $user->fullname;
+
+                UserNotification::create([
+                    'user_id' => $user_id,
+                    'redirect_id' => $redirect_id,
+                    'type' => $type,
+                    'message' => $message
+                ]);
+            }
         }
+
+
 
 
         return redirect()->back();

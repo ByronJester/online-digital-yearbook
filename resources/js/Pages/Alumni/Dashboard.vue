@@ -86,24 +86,44 @@ const toggleCommentInput = (post) => {
 
 const textComment = ref(null);
 const commentId = ref(null);
+
+const formComment = useForm({
+    post_id: '',
+    comment: '',
+});
+
 // Function to add a comment
 const addComment = async (post, commentText) => {
     if(post.type == 'album') {
         if(!commentId.value) {
-            const formData = new FormData();
-            formData.append('post_id', post.id);
-            formData.append('comment', commentText);
-            formData.append('user_id', post.user_id);
+            formComment.post_id = post.id
+            formComment.comment = commentText
+            // const formData = new FormData();
+            // formData.append('post_id', post.id);
+            // formData.append('comment', commentText);
+            // formData.append('user_id', post.user_id);
 
-            await Inertia.post(route('staff-album-save-comment'), formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            // await Inertia.post(route('staff-album-save-comment'), formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            // });
+
+            // textComment.value = null
+            // commentId.value = null
+
+            await formComment.post(route('staff-album-save-comment'), {
+                onSuccess: (page) => {
+                    location.reload()
                 },
+                onError: (errors) => {
+                    formComment.post_id = null
+                    formComment.comment = null
+                    alert('You commented a bad word');
+                }
             });
-
-            textComment.value = null
-            commentId.value = null
         } else {
+
             const formData = new FormData();
             formData.append('id', commentId.value);
             formData.append('comment', textComment.value);
@@ -119,26 +139,43 @@ const addComment = async (post, commentText) => {
                     // alert('There was an error uploading the file.');
                 },
             });
+
         }
 
     } else {
         if(!commentId.value) {
-            const formData = new FormData();
-            formData.append('post_id', post.id);
-            formData.append('comment', commentText);
+            // const formData = new FormData();
+            // formData.append('post_id', post.id);
+            // formData.append('comment', commentText);
 
-            await Inertia.post(route('staff-aap-save-comment'), formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            // await Inertia.post(route('staff-aap-save-comment'), formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            //     onSuccess: (page) => {
+            //         // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
+            //         textComment.value = null
+            //         commentId.value = null
+            //     },
+            //     onError: (errors) => {
+            //         formComment.post_id = null
+            //         formComment.comment = null
+            //         alert('You commented a bad word');
+            //         // alert('There was an error uploading the file.');
+            //     },
+            // });
+            formComment.post_id = post.id
+            formComment.comment = commentText
+
+            await formComment.post(route('staff-aap-save-comment'), {
                 onSuccess: (page) => {
-                    // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
-                    textComment.value = null
-                    commentId.value = null
+                    location.reload()
                 },
                 onError: (errors) => {
-                    // alert('There was an error uploading the file.');
-                },
+                    formComment.post_id = null
+                    formComment.comment = null
+                    alert('You commented a bad word');
+                }
             });
         } else {
             const formData = new FormData();

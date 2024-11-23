@@ -33,6 +33,7 @@ return new class extends Migration
             $table->timestamp('last_logged_in')->nullable();
             $table->timestamp('logout_at')->nullable();
             $table->boolean('is_deactivated')->default(false);
+            $table->integer('bad_word_count')->default(0);
 
             $table->rememberToken();
 
