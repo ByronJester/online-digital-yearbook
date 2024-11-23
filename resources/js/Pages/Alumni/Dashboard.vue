@@ -93,6 +93,7 @@ const addComment = async (post, commentText) => {
             const formData = new FormData();
             formData.append('post_id', post.id);
             formData.append('comment', commentText);
+            formData.append('user_id', post.user_id);
 
             await Inertia.post(route('staff-album-save-comment'), formData, {
                 headers: {
@@ -161,6 +162,8 @@ const addComment = async (post, commentText) => {
 };
 
 const sharePost = (post) => {
+
+    console.log(post)
     swal({
         title: "Are you sure to share this feed ?",
         text: "",
@@ -173,6 +176,7 @@ const sharePost = (post) => {
             const formData = new FormData();
             formData.append('post_id', post.id);
             formData.append('post_type', post.type);
+            formData.append('user_id', post.user_id);
 
             Inertia.post(route('alumni-share-feed'), formData, {
                 onSuccess: (page) => {

@@ -275,51 +275,46 @@ const closeModal = () => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" v-if="!editProfile">
                 <div class="w-full flex flex-col">
                     <div class="w-full border rounded-lg p-4 bg-white h-full mt-5" v-for="post in shares" :key="post.id">
+
                         <div class="space-y-6" v-if="post.type == 'achievement'">
                             <div class="w-full">
-                                <div class="font-bold">{{ post.user.fullname }}</div>
-                                <p>{{ post.content }}</p>
+                                <p>{{ post.shared_content.content }}</p>
 
-                                <!-- Display image or video if available -->
 
-                                <div v-if="post.image" class="my-4 flex justify-center items-center">
+                                <div v-if="post.shared_content.image" class="my-4 flex justify-center items-center">
                                     <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.image, 'image')">
                                 </div>
-                                <div v-if="post.video" class="my-4">
+                                <div v-if="post.shared_content.video" class="my-4">
                                     <video controls class="w-[500px] h-[300px]">
                                         <source :src="post.video" type="video/mp4" />
                                     </video>
                                 </div>
 
-                                <!-- Likes and comments -->
                                 <div class="w-full mt-4">
-                                    <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
+                                    <button @click="toggleLike(post, post.shared_content.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
                                         ? 'Unlike'
                                         : 'Like' )"
                                         class="text-blue-500"
                                     >
-                                        {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
+                                        {{ post.shared_content.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
                                             ? 'Unlike'
                                             : 'Like'
                                         }}
-                                        <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
-                                        <!-- {{ post.likes }} -->
+                                        <i class="fa fa-thumbs-up"></i> {{ post.shared_content.likes.length }}
                                     </button>
                                     <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
-                                        <i class="fa fa-comment"></i> {{ post.comments.length }}
+                                        <i class="fa fa-comment"></i> {{ post.shared_content.comments.length }}
                                     </button>
                                 </div>
 
-                                <!-- Comment input, displayed above other comments -->
                                 <div v-if="post.showCommentInput" class="mt-4">
                                     <input type="text" placeholder="Add a comment..."
                                         @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''"
                                         class="border p-1 rounded w-full mb-2">
                                 </div>
 
-                                <!-- Display comments -->
-                                <div v-if="post.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
-                                    <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
+                                <div v-if="post.shared_content.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
+                                    <div v-for="comment in post.shared_content.comments" :key="comment.id" class="border-t pt-2 mt-2">
                                         <p class="font-bold">{{ comment.commentor }}</p>
                                         <p class="ml-3">{{ comment.comment }}</p>
                                     </div>
@@ -329,69 +324,61 @@ const closeModal = () => {
 
                         <div class="w-full" v-else>
                             <div class="w-full text-center border border-black rounded-md mt-3">
-                                <p class="text-2xl p-3">{{ post.content }}</p>
+                                <p class="text-2xl p-3">{{ post.shared_content.content }}</p>
                             </div>
 
-                            <div class="w-full text-center border border-black rounded-md mt-3" v-if="post.description">
-                                <p class="text-md p-3">{{ post.description }}</p>
+                            <div class="w-full text-center border border-black rounded-md mt-3" v-if="post.shared_content.description">
+                                <p class="text-md p-3">{{ post.shared_content.description }}</p>
                             </div>
 
-                            <!-- Display multiple images if available -->
-                            <div v-if="post.image.length > 0" class="my-4">
+                            <div v-if="post.shared_content.image.length > 0" class="my-4">
                                 <div class="w-full carousel-container">
                                     <carousel :items-to-show="2" ref="carouselRef">
-                                        <slide v-for="i in post.image" :key="i">
+                                        <slide v-for="i in post.shared_content.image" :key="i">
                                             <img :src="i" class="w-full h-[300px] mr-1" @click="openMedia(i, 'image')"/>
                                         </slide>
 
                                         <template #addons>
-                                            <!-- <navigation /> -->
                                             <pagination />
                                         </template>
                                     </carousel>
                                  </div>
                             </div>
 
-                            <!-- Display multiple videos if available -->
-                            <div v-if="post.video.length > 0" class="my-4">
+                            <div v-if="post.shared_content.video.length > 0" class="my-4">
                                 <div class="w-full carousel-container">
                                     <carousel :items-to-show="2" ref="carouselRef">
-                                        <slide v-for="i in post.video" :key="i">
-                                            <!-- <img :src="i" class="w-full h-[200px] mr-1"/> -->
+                                        <slide v-for="i in post.shared_content.video" :key="i">
                                             <video controls class="w-full h-[300px]">
                                                 <source :src="i" type="video" />
                                             </video>
                                         </slide>
 
                                         <template #addons>
-                                            <!-- <navigation /> -->
                                             <pagination />
                                         </template>
                                     </carousel>
                                  </div>
                             </div>
 
-                            <!-- Likes and comments -->
                             <div class="w-full mt-20">
-                                <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )" class="text-blue-500">
-                                    {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }}
-                                    <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
+                                <button @click="toggleLike(post, post.shared_content.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )" class="text-blue-500">
+                                    {{ post.shared_content.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }}
+                                    <i class="fa fa-thumbs-up"></i> {{ post.shared_content.likes.length }}
                                 </button>
 
 
                                 <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
-                                    <i class="fa fa-comment"></i> {{ post.comments.length }}
+                                    <i class="fa fa-comment"></i> {{ post.shared_content.comments.length }}
                                 </button>
                             </div>
 
-                            <!-- Comment input, displayed above other comments -->
                             <div v-if="post.showCommentInput" class="mt-4">
-                                <input type="text" placeholder="Add a comment..." @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''" class="border p-1 rounded w-full mb-2">
+                                <input type="text" placeholder="Add a comment..." @keyup.enter="addComment(post.shared_content, $event.target.value); $event.target.value = ''" class="border p-1 rounded w-full mb-2">
                             </div>
 
-                            <!-- Display comments -->
-                            <div v-if="post.comments.length > 0 && post.showCommentInput" class="mt-4 ml-4">
-                                <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
+                            <div v-if="post.shared_content.comments.length > 0 && post.showCommentInput" class="mt-4 ml-4">
+                                <div v-for="comment in post.shared_content.comments" :key="comment.id" class="border-t pt-2 mt-2">
                                     <p class="font-bold">{{ comment.commentor }}</p>
                                     <p class="ml-3">{{ comment.comment }}</p>
                                 </div>

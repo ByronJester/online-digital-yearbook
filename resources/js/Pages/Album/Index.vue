@@ -144,10 +144,13 @@ const textComment = ref(null);
 const commentId = ref(null);
 
 const addComment = async (post, commentText) => {
+    console.log(post)
+    alert('asdasd')
     if(!commentId.value) {
         const formData = new FormData();
         formData.append('post_id', post.id);
         formData.append('comment', commentText);
+        formData.append('user_id', post.user_id);
 
         await Inertia.post(route('staff-album-save-comment'), formData, {
             headers: {

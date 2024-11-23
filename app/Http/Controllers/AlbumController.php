@@ -113,11 +113,9 @@ class AlbumController extends Controller
             'comment' => $request->comment
         ]);
 
-        $post = Album::where('id', $request->post_id)->first();
-
         $auth = auth()->user();
-        $user_id = $post->user_id;
-        $redirect_id = $post->id;
+        $user_id = $request->user_id;
+        $redirect_id = $request->post_id;
         $type = 'album';
         $message = $auth->fullname . " commented on your post.";
 

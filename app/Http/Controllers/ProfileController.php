@@ -18,7 +18,7 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request)
     {
         $shareArr = [];
         $user = auth()->user();
@@ -27,30 +27,33 @@ class ProfileController extends Controller
             $achievements = Achievement::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->where('user_id', $user->id)->get();
 
             foreach($achievements as $achievement) {
-                $s = $achievement;
-                $s['type'] = 'achievement';
-                array_push($shareArr, $s);
+                $shareArr[] = [
+                    'shared_content' => $achievement,
+                    'type' => 'achievement',
+                ];
             }
 
             $albums = Album::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->where('user_id', $user->id)->get();
 
             foreach($albums as $album) {
-                $s = $album;
-                $s['type'] = 'album';
-                array_push($shareArr, $s);
+                $shareArr[] = [
+                    'shared_content' => $album,
+                    'type' => 'album',
+                ];
             }
 
         } else {
             $shares = UserShare::where('user_id', $user->id)->get();
 
             foreach($shares as $share) {
-                $s = $share->shared_content;
-                $s['type'] = $share->type;
-                array_push($shareArr, $s);
+                $shareArr[] = [
+                    'shared_content' => $share->shared_content,
+                    'type' => $share->type,
+                ];
             }
         }
 
-
+        // return $shareArr;
 
 
         return Inertia::render('Profile/Edit', [

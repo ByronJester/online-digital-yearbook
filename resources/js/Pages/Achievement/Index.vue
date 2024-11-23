@@ -288,10 +288,10 @@ const viewProfile = (id) => {
                 <h2 class="text-xl font-bold mb-2">New Post</h2>
                 <textarea v-model="postContent" placeholder="What's on your mind?" class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
 
-                <div class="w-full">
+                <!-- <div class="w-full">
                     <label>Archive Date:</label><br>
                     <input type="date" class="rounded-md mb-5" v-model="archiveDate"/>
-                </div>
+                </div> -->
 
                 <div class="flex flex-row">
                     <div v-if="previewImage" class="my-4 mr-1">

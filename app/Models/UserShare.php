@@ -19,10 +19,11 @@ class UserShare extends Model
 
     public function getSharedContentAttribute()
     {
+        // return $this->shared_id;
         if($this->type == 'album') {
-            return Album::where('id', $this->shared_id)->with(['likes', 'comments', 'user'])->first();
+            return Album::with(['likes', 'comments', 'user'])->where('id', $this->shared_id)->first();
         } else {
-            return Achievement::where('id', $this->shared_id)->with(['likes', 'comments', 'user'])->first();
+            return Achievement::with(['likes', 'comments', 'user'])->where('id', $this->shared_id)->first();
         }
     }
 }
