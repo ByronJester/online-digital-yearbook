@@ -81,7 +81,7 @@ const changeStatus = (value) => {
                 <input
                     v-model="searchQuery"
                     type="text"
-                    placeholder="Search by"
+                    placeholder="Search by>"
                     class="w-[30%] p-2 border rounded mr-2"
                 />
 
@@ -96,7 +96,7 @@ const changeStatus = (value) => {
                     <option :value="''" disabled>Status</option>
                     <option :value="'all'">All</option>
                     <option :value="'active'">Active</option>
-                    <option :value="'in_active'">In Active</option>
+                    <option :value="'in_active'">Inactive</option>
                 </select>
             </div>
 

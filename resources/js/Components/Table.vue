@@ -4,7 +4,7 @@
             v-if="showSearch"
             type="text"
             v-model="searchQuery"
-            placeholder="Search..."
+            placeholder="Search>"
             class="search-input"
         />
 

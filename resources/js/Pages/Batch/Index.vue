@@ -245,13 +245,13 @@ const selectSection = (section) => {
             </div>
 
             <div class="w-full mt-2 mb-10" v-if="!viewClassBatch && viewClassSection" :class="{'mt-16': !viewClassBatch && viewClassSection && !loading}">
-                <input type="text" placeholder="Search..." @keyup="search($event)"
+                <input type="text" placeholder="Search>" @keyup="search($event)"
                     class="w-[50%] rounded-xl"
                 />
             </div>
 
             <div class="w-full mt-2 mb-10" v-if="!viewClassBatch && !viewClassSection" :class="{'mt-16': !viewClassBatch && !viewClassSection && !loading}">
-                <input type="text" placeholder="Search..." @keyup="searchYear($event)"
+                <input type="text" placeholder="Search>" @keyup="searchYear($event)"
                     class="w-[20%] rounded-xl"
                 />
             </div>
