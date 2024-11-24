@@ -165,8 +165,8 @@ const bSection = ref(null)
 const selectSection = (section) => {
     viewClassBatch.value = false
     viewClassSection.value = true
-    classBatchesArr.value = classBatchesArr.value.filter(x => { return x.section == section})
-    bSection.value = section
+    classBatchesArr.value = classBatchesArr.value.filter(x => { return x.course == section.name})
+    bSection.value = section.name
 }
 
 </script>
@@ -185,7 +185,7 @@ const selectSection = (section) => {
             </p>
 
             <p class="w-full text-2xl" v-if="!viewClassBatch && viewClassSection">
-                <span class="font-bold mr-3">Class Batch {{ bYear }}</span> <span class="mr-3"><i class="fa-solid fa-caret-right"></i></span> Section {{ bSection }}
+                <span class="font-bold mr-3">Class Batch {{ bYear }}</span> <span class="mr-3"><i class="fa-solid fa-caret-right"></i></span> {{ bSection }}
             </p>
 
             <div class="mb-10 rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
@@ -257,18 +257,6 @@ const selectSection = (section) => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="!viewClassBatch && !viewClassSection">
-                <!-- <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in batchData" >
-                    <p v-if="$page.props.auth.user.user_type == 'school_staff'">
-                        <span class="float-right text-red-400 m-2 text-xs"
-                            @click="deleteBatch(batch.id)"
-                        >
-                            <i class="fa-solid fa-trash"></i>
-                        </span>
-                    </p>
-                    <img :src="batch.logo || logoUrl" class="w-full h-[225px]" @click="viewBatch(batch.id)"/>
-                    <p class="text-center font-bold" @click="viewBatch(batch.id)">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
-                </div> -->
-
                 <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="batch in yearsArr" >
                     <img :src="logoUrl" class="w-full h-[225px]" @click="selectBatch(batch)"/>
                     <p class="text-center font-bold" @click="selectBatch(batch)"> Class Batch {{ batch }}</p>
@@ -280,9 +268,9 @@ const selectSection = (section) => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="viewClassBatch && !viewClassSection">
-                <div class="w-full h-[250px] border border-black rounded-md cursor-pointer" v-for="sec in ['1', '2', '3', '4', '5']" >
+                <div class="w-full h-[300px] border border-black rounded-md cursor-pointer" v-for="sec in courses" >
                     <img :src="logoUrl" class="w-full h-[225px]" @click="selectSection(sec)"/>
-                    <p class="text-center font-bold" @click="selectSection(sec)"> Section {{ sec }}</p>
+                    <p class="text-center font-bold" @click="selectSection(sec)"> Section {{ sec.name }}</p>
                 </div>
             </div>
 
@@ -299,7 +287,7 @@ const selectSection = (section) => {
                         </span>
                     </p>
                     <img :src="batch.logo || logoUrl" class="w-full h-[225px]" @click="viewBatch(batch.id)"/>
-                    <p class="text-center font-bold" @click="viewBatch(batch.id)">{{ batch.course }} - {{ batch.school_year }} (Section {{ batch.section }})</p>
+                    <p class="text-center font-bold" @click="viewBatch(batch.id)"> Section {{ batch.section }}</p>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, Album, UserShare, UserNotification, SuccessStory };
+use App\Models\{ User, Achievement, Album, UserShare, UserNotification, SuccessStory, SuccessStoryLike, SuccessStoryComment };
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -135,7 +135,113 @@ class AlumniController extends Controller
     public function successStoires()
     {
         return Inertia::render('Alumni/Story', [
-            'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
+            'stories' => SuccessStory::with(['likes', 'comments', 'user'])->orderBy('created_at', 'desc')->get(),
         ]);
+    }
+
+    public function saveLike(Request $request)
+    {
+        $status = $request->status;
+
+        if($status == 'Unlike') {
+            SuccessStoryLike::where('success_story_id', $request->post_id)->where('user_id', auth()->user()->id)->delete();
+        } else {
+            SuccessStoryLike::create([
+                'success_story_id' => $request->post_id,
+                'user_id' => auth()->user()->id
+            ]);
+        }
+
+
+        // if($status != 'Unlike') {
+        //     $auth = auth()->user();
+        //     $user_id = $request->user_id;
+        //     $redirect_id = null;
+        //     $type = null;
+        //     $message = $auth->fullname . ' ' . strtolower($status) . " success story.";
+
+        //     UserNotification::create([
+        //         'user_id' => $user_id,
+        //         'redirect_id' => $redirect_id,
+        //         'type' => $type,
+        //         'message' => $message
+        //     ]);
+        // }
+
+
+        return redirect()->back();
+    }
+
+    public function saveComment(Request $request)
+    {
+        $request->validate([
+            'comment' => 'required',
+        ]);
+
+        $keywords = $this->getBadWords();
+
+        if (Str::contains($request->comment, $keywords)) {
+            $user = auth()->user();
+
+            $user->bad_word_count += 1;
+            $user->save();
+
+            if($user->bad_word_count == 3) {
+                $user = auth()->user();
+                $user->logout_at = Carbon::now();
+                $user->save();
+
+                Auth::guard('web')->logout();
+
+                $request->session()->invalidate();
+
+                $request->session()->regenerateToken();
+
+                User::where('id', $user->id)->delete();
+
+                return redirect('/');
+            }
+
+            return redirect()->back()->withErrors(['error' => 'An error occurred.']);
+        }
+
+        SuccessStoryComment::create([
+            'success_story_id' => $request->post_id,
+            'user_id' => auth()->user()->id,
+            'comment' => $request->comment
+        ]);
+
+        // $post = SuccessStory::where('id', $request->post_id)->first();
+
+        // $auth = auth()->user();
+        // $user_id = $post->user_id;
+        // $redirect_id = null;
+        // $type = null;
+        // $message = $auth->fullname . " commented on success story.";
+
+        // UserNotification::create([
+        //     'user_id' => $user_id,
+        //     'redirect_id' => $redirect_id,
+        //     'type' => $type,
+        //     'message' => $message
+        // ]);
+
+        return redirect()->back();
+    }
+
+    public function deleteComment(Request $request)
+    {
+        SuccessStoryComment::where('id', $request->id)->delete();
+
+        return redirect()->back();
+    }
+
+    public function editComment(Request $request)
+    {
+        SuccessStoryComment::where('id', $request->id)->update([
+            'comment' => $request->comment
+        ]);
+
+        return redirect()->back();
     }
 }

@@ -282,7 +282,8 @@ const closeModal = () => {
 
 
                                 <div v-if="post.shared_content.image" class="my-4 flex justify-center items-center">
-                                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.image, 'image')">
+
+                                    <img :src="post.shared_content.image" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.image, 'image')">
                                 </div>
                                 <div v-if="post.shared_content.video" class="my-4">
                                     <video controls class="w-[500px] h-[300px]">

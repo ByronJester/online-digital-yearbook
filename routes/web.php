@@ -147,6 +147,10 @@ Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('stories')->group(function () {
         Route::get('/', [AlumniController::class, 'successStoires'])->name('staff-success-stories');
+        Route::post('/save-like', [AlumniController::class, 'saveLike'])->name('staff-ss-save-like');
+        Route::post('/save-comment', [AlumniController::class, 'saveComment'])->name('staff-ss-save-comment');
+        Route::post('/edit-comment', [AlumniController::class, 'editComment'])->name('staff-ss-edit-comment');
+        Route::post('/delete-comment', [AlumniController::class, 'deleteComment'])->name('staff-ss-delete-comment');
 
     });
 });

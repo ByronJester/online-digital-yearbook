@@ -28,4 +28,19 @@ class SuccessStory extends Model
     {
         return $this->student_name;
     }
+
+    public function likes()
+    {
+        return $this->hasMany(SuccessStoryLike::class, 'success_story_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(SuccessStoryComment::class, 'success_story_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
