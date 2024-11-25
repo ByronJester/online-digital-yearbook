@@ -57,32 +57,39 @@ class UserSeeder extends Seeder
         ]);
 
         Course::create([
-            'name' => "Bachelor of Science in Information Technology (BSIT)"
+            'name' => "Bachelor of Science in Information Technology (BSIT)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
 
         Course::create([
-            'name' => "Bachelor of Science in Computer Engineering (BSCpE)"
+            'name' => "Bachelor of Science in Computer Engineering (BSCpE)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
         Course::create([
-            'name' => "Bachelor of Science in Tourism Management (BSTM)"
+            'name' => "Bachelor of Science in Tourism Management (BSTM)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
         Course::create([
-            'name' => "Bachelor of Science in Business Administration (BSBA)"
+            'name' => "Bachelor of Science in Business Administration (BSBA)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
         Course::create([
-            'name' => "Bachelor of Science in Technology Livehood Education (BTLE)"
+            'name' => "Bachelor of Science in Technology Livehood Education (BTLE)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
         Course::create([
-            'name' => "Bachelor of Science in Hospitality Management (BSHM)"
+            'name' => "Bachelor of Science in Hospitality Management (BSHM)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
         Course::create([
-            'name' => "Bachelor of Science in Information Technology (BSIT)"
+            'name' => "Bachelor of Science in Information Technology (BSIT)",
+            'batches' => "2020, 2021, 2022, 2023, 2024, 2025"
         ]);
 
 

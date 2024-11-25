@@ -10,8 +10,15 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name', 'batches'
     ];
 
+    protected $appends = [
+        'batches_array'
+    ];
 
+    public function getBatchesArrayAttribute()
+    {
+        return explode(",", $this->batches);
+    }
 }

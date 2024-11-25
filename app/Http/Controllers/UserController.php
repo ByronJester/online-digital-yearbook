@@ -391,10 +391,11 @@ class UserController extends Controller
     public function saveCourse(Request $request)
     {
         if($request->id) {
-            Course::where('id', $request->id)->update(['name' => $request->course]);
+            Course::where('id', $request->id)->update(['name' => $request->course, 'batches' => $request->batches]);
         } else {
             Course::create([
-                'name' => $request->course
+                'name' => $request->course,
+                'batches' => $request->batches
             ]);
         }
 

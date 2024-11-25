@@ -169,6 +169,14 @@ const selectSection = (section) => {
     bSection.value = section.name
 }
 
+const isYearInBatches = (batches) => {
+    // Split the batches into an array of years
+    const batchArray = batches.split(',').map(year => year.trim());
+      console.log("Checking batches:", batchArray, "for year:", bYear.value);
+
+      // Check if the selected year exists in the array
+      return batchArray.includes(bYear.value.toString());
+}
 </script>
 
 <template>
@@ -271,18 +279,24 @@ const selectSection = (section) => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="viewClassBatch && !viewClassSection">
-                <div class="w-full h-[300px] cursor-pointer" v-for="sec in courses" >
-
-                    <div class="w-full h-[340px]  cursor-pointer" v-for="batch in classBatchesArr" >
-                        <div class="w-full border border-black rounded-md">
-                            <img :src="logoUrl" class="w-full h-[225px]" @click="selectSection(sec)"/>
-                        </div>
-
-                        <p class="text-center font-bold" @click="selectSection(sec)"> {{ sec.name }}</p>
+                <div class="w-full h-[300px] cursor-pointer" v-for="sec in courses.filter(course => isYearInBatches(course.batches))"
+                    :key="sec.id"
+                >
+                    <div class="w-full border border-black rounded-md">
+                        <img
+                        :src="logoUrl"
+                        class="w-full h-[225px]"
+                        @click="selectSection(sec)"
+                        />
                     </div>
 
-
+                    <p class="text-center font-bold" @click="selectSection(sec)">
+                        {{ sec.name }}
+                    </p>
                 </div>
+
+
+
             </div>
 
             <div class="w-full mb-5" v-if="!viewClassBatch && viewClassSection">

@@ -69,7 +69,6 @@ const viewMessageId = ref(null);
 const message = ref(null)
 
 const view = (post) => {
-    console.log(post)
     if(isToday(post.date)) {
         message.value = post.message
         viewMessageId.value = post.id
@@ -106,6 +105,14 @@ const isToday = (date) => {
             <div class="w-full flex justify-center items-center" v-if="loading">
                 <VueSpinner size="50" color="red" />
              </div>
+
+             <div class="mb-10 border-2 border-black rounded-md p-5" v-else>
+                <h2 class="text-xl font-bold mb-8">Message To Future Self</h2>
+                <input type="date" class="rounded-md mb-3" v-model="postDate"/>
+                <textarea v-model="postMessage" placeholder="Type a message...." class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+
+                <button @click="createMessage" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
+            </div>
 
 
 

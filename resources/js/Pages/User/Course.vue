@@ -22,6 +22,7 @@ const handleTableAction = ({ action, row }) => {
     } else if (action == 'edit') {
         courseId.value = row.id
         courseName.value = row.name
+        courseBatches.value = row.batches
         console.log(row)
     } else if (action == 'delete') {
         swal({
@@ -119,6 +120,7 @@ const triggerFileUpload = () => {
 
 const courseId = ref('')
 const courseName = ref('')
+const courseBatches = ref('')
 
 const saveCourse = () => {
     // swal({
@@ -169,16 +171,28 @@ const batches = ref(null)
     <AuthenticatedLayout>
         <div class="w-full p-5 ">
             <div class="w-full border border-black rounded-md" style="margin-bottom: 20px;">
-                <div class="w-full p-10">
-                    <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
+                <div class="w-full p-10 flex flex-col md:flex-row">
+                    <div class="w-full mr-2">
+                        <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
+                    </div>
 
-                    <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
+                    <div class="w-full mr-2">
+                        <input type="text" placeholder="Batches" v-model="courseBatches" class="w-full rounded-md"/>
+                    </div>
 
-                    <button class="bg-blue-500 py-2 px-7 rounded-md mt-5 text-white"
-                        @click="saveCourse"
-                    >
-                        Save
-                    </button>
+                    <div class="w-full">
+                        <button class="bg-blue-500 py-2 px-7 rounded-md text-white w-full"
+                            @click="saveCourse"
+                        >
+                            Save
+                        </button>
+                    </div>
+
+
+
+
+
+
                 </div>
 
 
@@ -192,7 +206,7 @@ const batches = ref(null)
 
                 <div class="w-full" v-else>
                     <Table
-                        :headers="['Name']"
+                        :headers="['Name', 'Batches']"
                         :rows="courses"
                         :rows-per-page="10"
                         :showView="false"
