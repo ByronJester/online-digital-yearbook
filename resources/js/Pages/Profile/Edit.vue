@@ -327,7 +327,9 @@ const closeModal = () => {
 
                         <div class="w-full" v-else>
                             <div class="w-full text-center border border-black rounded-md mt-3">
-                                <p class="text-2xl p-3">{{ post.shared_content.content }}</p>
+                                <p class="font-bold text-lg">{{ post.shared_content.user.fullname }}</p>
+                                <p class="text-xs">{{ post.shared_content.created_at }}</p>
+                                <p class="mt-5">{{ post.shared_content.content }}</p>
                             </div>
 
                             <div class="w-full text-center border border-black rounded-md mt-3" v-if="post.shared_content.description">
