@@ -279,13 +279,13 @@ const selectSection = (section) => {
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="!viewClassBatch && viewClassSection">
                 <div class="w-full h-[340px] border border-black rounded-md cursor-pointer" v-for="batch in classBatchesArr" >
-                    <p v-if="$page.props.auth.user.user_type == 'school_staff'">
+                    <!-- <p v-if="$page.props.auth.user.user_type == 'school_staff'">
                         <span class="float-right text-red-400 m-2 text-xs"
                             @click="deleteBatch(batch.id)"
                         >
                             <i class="fa-solid fa-trash"></i>
                         </span>
-                    </p>
+                    </p> -->
                     <img :src="batch.logo || logoUrl" class="w-full h-[225px]" @click="viewBatch(batch.id)"/>
                     <p class="text-center font-bold" @click="viewBatch(batch.id)"> Section {{ batch.section }}</p>
                 </div>
