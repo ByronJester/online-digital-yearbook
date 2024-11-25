@@ -46,7 +46,7 @@ const handleTableAction = ({ action, row }) => {
         alumniForm.class_batch = row.class_batch
         alumniForm.program = row.program
         alumniForm.section = row.section
-        alumniForm.alumni_picture = row.alumni_picture
+        // alumniForm.alumni_picture = row.alumni_picture
 
         addAlumni.value = true
 
