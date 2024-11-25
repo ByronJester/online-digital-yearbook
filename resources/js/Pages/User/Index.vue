@@ -23,7 +23,9 @@ const handleTableAction = ({ action, row }) => {
     if (action == 'view') {
         console.log('view')
     } else if (action == 'edit') {
-        console.log('edit')
+        alumniForm = Object.assign({}, row)
+        console.log(alumniForm)
+        addAlumni.value = true
     } else if (action == 'delete') {
         swal({
             title: "Are you sure to delete this user?",
@@ -149,7 +151,8 @@ const triggerFileUpload = () => {
     fileInput.value.click();
 }
 
-const alumniForm = useForm({
+let alumniForm = useForm({
+    id: '',
     first_name: '',
     middle_name: '',
     last_name: '',
@@ -277,7 +280,7 @@ const addStaff = ref(false)
                 <div class="w-full p-2">
                     <label>Contact</label>
                     <br>
-                    <input type="text" class="w-full rounded-md" v-model="alumniForm.contact" placeholder="Contact"/>
+                    <input type="number" class="w-full rounded-md" v-model="alumniForm.contact" placeholder="Contact"/>
                 </div>
 
                 <div class="w-full p-2">
@@ -304,12 +307,13 @@ const addStaff = ref(false)
                 <div class="w-full p-2">
                     <label>Section</label>
                     <br>
-                    <select class="rounded-md w-full" v-model="alumniForm.section">
+                    <input type="number" class="w-full rounded-md" v-model="alumniForm.section" placeholder="Section"/>
+                    <!-- <select class="rounded-md w-full" v-model="alumniForm.section">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="3">4</option>
-                    </select>
+                    </select> -->
                 </div>
 
                 <div class="w-full p-2">
@@ -439,7 +443,7 @@ const addStaff = ref(false)
                         :rows="users"
                         :rows-per-page="10"
                         :showView="false"
-                        :showEdit="false"
+                        :showEdit="true"
                         :showDelete="false"
                         :showCopy="false"
                         :showArchive="false"
