@@ -104,12 +104,12 @@ class UsersImport implements ToCollection, WithHeadingRow
                         ]
                     );
 
-                    // if($row['payment'] == 'paid') {
+                    if($row['payment'] == 'paid') {
                         $email = $row['email_address'];
                         $message = "Your email is $email and your password is $password. You can login now using this credentials.";
 
                         $this->sendSMS($row['contact'], $message);
-                    // }
+                    }
 
 
                 }
