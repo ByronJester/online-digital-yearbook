@@ -70,5 +70,4 @@ class Achievement extends Model
     }
 
 
-
 }

@@ -154,7 +154,7 @@ const changeStatus = (value) => {
 
                         </i>
 
-                        <i class="fa-solid fa-circle text-xl text-red-600" v-if="user.logout_at">
+                        <i class="fa-solid fa-circle text-xl text-red-600" v-if="user.logout_at && !user.last_logged_in">
 
                         </i>
                     </div>

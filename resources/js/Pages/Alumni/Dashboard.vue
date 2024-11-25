@@ -431,8 +431,8 @@ const closeModal = () => {
                                         <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
                                         <!-- {{ post.likes }} -->
                                     </button>
-                                    <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
-                                        <i class="fa fa-share"></i> {{ post.share_user_names.length }}
+                                    <button class="text-green-500 float-right ml-2" @click="$page.props.auth.user.user_type == 'school_alumni' ? sharePost(post) : ''">
+                                        <i class="fa fa-share"></i> {{ post.shared_count }}
                                     </button>
                                     <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
                                         <i class="fa fa-comment"></i> {{ post.comments.length }}
@@ -526,7 +526,7 @@ const closeModal = () => {
                                 </button>
 
                                 <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
-                                    <i class="fa fa-share"></i>
+                                    <i class="fa fa-share"></i> {{ post.shared_count }}
                                 </button>
                                 <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
                                     <i class="fa fa-comment"></i> {{ post.comments.length }}

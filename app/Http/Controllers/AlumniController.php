@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, Album, UserShare, UserNotification, SuccessStory, SuccessStoryLike, SuccessStoryComment };
+use App\Models\{ User, Achievement, Album, UserNotification, SuccessStory, SuccessStoryLike, SuccessStoryComment, UserShare };
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class AlumniController extends Controller
@@ -64,13 +65,21 @@ class AlumniController extends Controller
 
         $mixArr = collect(array_merge($achievements, $albums))->sortByDesc('created_at')->values();
 
+        $resArr = [];
+
+        foreach($mixArr as $arr) {
+
+            $arr['shared_count'] = UserShare::where('id', $arr['id'])->where('type', $arr['type'])->count();
+            array_push($resArr, $arr);
+        }
+
         $notifications = UserNotification::where('user_id', auth()->user()->id)->get();
 
         return Inertia::render('Alumni/Dashboard', [
-            'data' => $mixArr,
+            'data' => $resArr,
             'notifications' => $notifications,
             'stories' => SuccessStory::orderBy('created_at', 'desc')->get(),
-            'search' => $search == 'search' ? '' : $search
+            'search' => $search == 'search' ? '' : $search,
         ]);
     }
 

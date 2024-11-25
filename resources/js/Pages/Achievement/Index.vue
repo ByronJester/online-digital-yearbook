@@ -13,6 +13,7 @@ const props = defineProps({
 });
 
 // Form data for new post
+const postId = ref(null);
 const postContent = ref('');
 const postImage = ref(null);
 const postVideo = ref(null);
@@ -266,6 +267,23 @@ const viewProfile = (id) => {
     Inertia.get(route('profile.view', id))
 }
 
+const editPost = (post) => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Adds a smooth scrolling effect
+    });
+
+    console.log(post)
+
+    postId.value = post.id
+    postContent.value = post.content
+    postImage.value = post.image
+    postVideo.value = post.video
+    // const postContent = ref('');
+    // const postImage = ref(null);
+    // const postVideo = ref(null);
+}
+
 </script>
 
 <template>
@@ -362,6 +380,12 @@ const viewProfile = (id) => {
                         @click="deletePost(post.id)"
                     >
                         Delete
+                    </span>
+
+                    <span class="float-right text-xs text-green-500 cursor-pointer mr-2" v-if="$page.props.auth.user.user_type == 'school_staff'"
+                        @click="editPost(post)"
+                    >
+                        Edit
                     </span>
                 </div>
                 <p class="text-xs">{{ post.created_at }}</p>

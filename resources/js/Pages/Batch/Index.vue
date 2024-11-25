@@ -193,7 +193,7 @@ const selectSection = (section) => {
                     <VueSpinner size="50" color="red" />
                 </div>
 
-                <div class="w-full border-2 border-black rounded-md mt-5" v-if="!viewClassBatch && viewClassSection && !loading" >
+                <!-- <div class="w-full border-2 border-black rounded-md mt-5" v-if="!viewClassBatch && viewClassSection && !loading" >
                     <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 md:flex-row p-5">
                         <div class="w-full md:mr-1">
                             <label>Course</label>
@@ -240,7 +240,7 @@ const selectSection = (section) => {
                     </div>
 
 
-                </div>
+                </div> -->
 
             </div>
 
@@ -270,7 +270,7 @@ const selectSection = (section) => {
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4" v-if="viewClassBatch && !viewClassSection">
                 <div class="w-full h-[300px] border border-black rounded-md cursor-pointer" v-for="sec in courses" >
                     <img :src="logoUrl" class="w-full h-[225px]" @click="selectSection(sec)"/>
-                    <p class="text-center font-bold" @click="selectSection(sec)"> Section {{ sec.name }}</p>
+                    <p class="text-center font-bold" @click="selectSection(sec)"> {{ sec.name }}</p>
                 </div>
             </div>
 
