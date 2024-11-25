@@ -150,11 +150,11 @@ const changeStatus = (value) => {
 
                     <div class="w-full text-right mr-2 p-2">
                         <!-- {{ !!user?.last_logged_in ? formatDate(user?.last_logged_in)  : 'N/A' }} -->
-                        <i class="fa-solid fa-circle text-xl text-green-600" v-if="user.last_logged_in && !user.logout_at">
+                        <i class="fa-solid fa-circle text-xl text-green-600" v-if="user.status == 'active'">
 
                         </i>
 
-                        <i class="fa-solid fa-circle text-xl text-red-600" v-if="user.logout_at && !user.last_logged_in">
+                        <i class="fa-solid fa-circle text-xl text-red-600" v-if="user.status == 'in_active'">
 
                         </i>
                     </div>
