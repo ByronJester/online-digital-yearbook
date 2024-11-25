@@ -442,6 +442,8 @@ class UserController extends Controller
                 ['school_year' => $request->class_batch, 'course' => $request->program, 'section' => $request->section]
             );
 
+            BatchStudent::where('user_id', $user->id)->delete();
+
             BatchStudent::updateOrCreate(
                 ['batch_id' => $batch->id, 'user_id' => $user->id],
                 ['batch_id' => $batch->id, 'user_id' => $user->id, 'award' => $request->award]
