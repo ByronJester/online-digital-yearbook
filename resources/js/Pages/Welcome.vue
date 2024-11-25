@@ -225,7 +225,7 @@ const isVideo = (url) => {
                 </p>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-4">
 
 
                 <div v-for="story in stories" :key="story.id"
@@ -260,7 +260,7 @@ const isVideo = (url) => {
                 </p>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div v-for="history in histories" :key="history.id"
                     class="flex flex-col mt-10 md:mt-0"
                 >

@@ -431,9 +431,12 @@ class UserController extends Controller
         $email = $request->email;
         $message = "Your email is $email and your password is $defPass. You can login now using this credentials.";
 
-        $this->sendSMS($user->contact, $message);
-
         if($request->user_type == 'school_alumni') {
+
+            if($request->has('status') &&  $request->status == 'paid') {
+                $this->sendSMS($user->contact, $message);
+            }
+
             $batch = Batch::updateOrCreate(
                 ['school_year' => $request->class_batch, 'course' => $request->program, 'section' => $request->section],
                 ['school_year' => $request->class_batch, 'course' => $request->program, 'section' => $request->section]
@@ -460,10 +463,9 @@ class UserController extends Controller
                     'message' => $message
                 ]);
             }
+        } else {
+            $this->sendSMS($user->contact, $message);
         }
-
-
-
 
         return redirect()->back();
     }

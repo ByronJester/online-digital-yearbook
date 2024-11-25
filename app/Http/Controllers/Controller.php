@@ -86,7 +86,22 @@ class Controller extends BaseController
     {
         return [
             'putangina', 'tangina', 'gago', 'tanga', 'bobo', 'bulok', 'ulol', 'leche', 'bakla',
-            'bading', 'tomboy', 'bansot', 'payatot', 'panget'
+            'bading', 'tomboy', 'bansot', 'payatot', 'panget',
+
+            'fuck', 'shit', 'asshole', 'bitch', 'dick', 'cunt', 'hell', 'bastard', 'idiot', 'moron',
+            'dumbass', 'scumbag', 'prick', 'loser', 'jerk', 'slut', 'whore', 'skank', 'piss off',
+            'shut up', 'asshat', 'douche', 'freak', 'fuckface', 'fuckwit', 'dirtbag', 'tool', 'pig',
+            'twat', 'trash', 'scum', 'motherfucker', 'assclown', 'nitwit', 'knucklehead', 'dipshit',
+            'clown', 'blockhead', 'bonehead', 'snitch', 'asswipe', 'dickwad', 'trashbag', 'wimp',
+            'fool', 'jackass', 'savage', 'crap',
+
+            // Tagalog Curse Words
+            'putang ina', 'tangina', 'gago', 'tanga', 'bobo', 'ulol', 'lintik', 'bwisit', 'putragis',
+            'tarantado', 'peste', 'hayop', 'luko-luko', 'anak ng puta', 'tangina mo', 'leche', 'yawa',
+            'demonyo', 'hudas', 'kupal', 'hayop ka', 'ahas', 'putok sa buho', 'hinayupak', 'pakshet',
+            'ugok', 'kantutero', 'buang', 'sinungaling', 'manyak', 'bakla', 'salot', 'loko', 'tarantang',
+            'unggoy', 'bastos', 'inutil', 'alipin', 'gunggong', 'batugan', 'taksil', 'tamad', 'suklam',
+            'bruha', 'walang hiya', 'walang kwenta', 'tarantado', 'busabos', 'pabebe', 'hayop ka'
         ];
     }
 }

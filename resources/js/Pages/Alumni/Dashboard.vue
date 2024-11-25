@@ -202,7 +202,7 @@ const sharePost = (post) => {
 
     console.log(post)
     swal({
-        title: "Are you sure to share this feed ?",
+        title: "Are you sure to repost this feed ?",
         text: "",
         icon: "success",
         buttons: true,

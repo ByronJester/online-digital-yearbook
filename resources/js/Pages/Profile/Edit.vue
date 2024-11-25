@@ -195,7 +195,7 @@ const closeModal = () => {
                         <p class="text-xl font-bold"> {{ user.role }} </p>
                         <p class="text-md"> {{ user.program }} </p>
                         <p class="text-xs">Secion {{ user.section }} (Class Batch {{ user.class_batch }}) </p>
-                        <p class="text-xs">Studen ID No.: {{ user.school_id_no }} </p><br>
+                        <p class="text-xs">Alumni ID No.: {{ user.school_id_no }} </p><br>
                     </div>
                 </div>
 
@@ -278,7 +278,9 @@ const closeModal = () => {
 
                         <div class="space-y-6" v-if="post.type == 'achievement'">
                             <div class="w-full">
-                                <p>{{ post.shared_content.content }}</p>
+                                <p class="font-bold text-lg">{{ post.shared_content.user.fullname }}</p>
+                                <p class="text-xs">{{ post.shared_content.created_at }}</p>
+                                <p class="mt-5">{{ post.shared_content.content }}</p>
 
 
                                 <div v-if="post.shared_content.image" class="my-4 flex justify-center items-center">

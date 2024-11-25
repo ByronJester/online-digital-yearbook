@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_notifications', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
+            $table->bigInteger('user_id')->unsigned()->nullable()->comment('Foreign key from table users');
             $table->string('redirect_id')->nullable();
             $table->string('type')->nullable();
             $table->text('message');

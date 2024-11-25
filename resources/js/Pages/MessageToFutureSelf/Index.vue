@@ -64,21 +64,35 @@ const imageURL = getImage('images/message.jpg');
 
 
 const viewMessage = ref(false);
-const viewNessageId = ref();
+const viewMessageId = ref(null);
 
 const message = ref(null)
 
 const view = (post) => {
     console.log(post)
+    if(isToday(post.date)) {
+        message.value = post.message
+        viewMessageId.value = post.id
 
-    message.value = post.message
-    viewNessageId.value = post.id
+        viewMessage.value = true
+    }
 
-    viewMessage.value = true
 }
 
 const closeMessage = () => {
     viewMessage.value = false
+    message.value = null
+    viewMessageId.value = null
+}
+
+const isToday = (date) => {
+    const today = new Date(); // Current date
+
+    // Format both dates to YYYY-MM-DD for comparison
+    const formattedToday = today.toISOString().split('T')[0];
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+
+    return formattedToday === formattedDate;
 }
 
 </script>
@@ -95,32 +109,47 @@ const closeMessage = () => {
 
 
 
-            <div class="mb-10 border-2 border-black rounded-md p-5" v-else>
-                <h2 class="text-xl font-bold mb-8">Message To Future Self</h2>
-                <input type="date" class="rounded-md mb-3" v-model="postDate"/>
-                <textarea v-model="postMessage" placeholder="Type a message...." class="w-full p-2 border mb-4 rounded-lg" rows="5"></textarea>
+             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4 mt-10">
+                <div
+                    class="rounded-md border border-black"
+                    :class="{'h-[280px]': viewMessageId !== message.id, 'h-[500px]': viewMessageId === message.id}"
+                    v-for="message in messages"
+                    :key="message.id">
 
-                <button @click="createMessage" class="bg-blue-500 text-white px-4 py-2 float-right rounded-md">Save</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4 mt-10">
-                <div class="rounded-md border border-black" :class="{'h-[280px]': !viewMessage, 'h-500px': viewMessage }" v-for="message in messages" :key="message.id"
-                >
+                    <!-- View / Hide Toggle -->
                     <p>
-                        <span v-if="!viewMessage" class="text-xs float-right text-green-400 m-2 cursor-pointer" @click="view(message)">
+                        <span
+                            v-if="viewMessageId !== message.id"
+                            class="text-xs float-right text-green-400 m-2 cursor-pointer"
+                            @click="view(message)">
                             View
                         </span>
-
-                        <span v-else class="text-xs float-right text-red-400 m-2 cursor-pointer" @click="closeMessage()">
+                        <span
+                            v-if="viewMessageId === message.id"
+                            class="text-xs float-right text-red-400 m-2 cursor-pointer"
+                            @click="closeMessage">
                             Hide
                         </span>
                     </p>
-                    <p class="text-xs mt-10 p-2" v-if="viewMessage && viewNessageId == message.id"> {{message.message}} </p>
-                    <img :src="imageURL" class="h-[220px] w-full rounded-md" v-else/>
 
-                    <p class="text-center font-bold text-md"> {{message.formatted_date}}</p>
+                    <!-- Message Content -->
+                    <p class="text-xs mt-10 p-2" v-if="viewMessageId === message.id">
+                        {{ message.message }}
+                    </p>
+
+                    <!-- Default Image -->
+                    <img
+                        :src="imageURL"
+                        class="h-[220px] w-full rounded-md"
+                        v-if="viewMessageId !== message.id" />
+
+                    <!-- Date -->
+                    <p class="text-center font-bold text-md">
+                        {{ message.formatted_date }}
+                    </p>
                 </div>
-              </div>
+            </div>
+
          </div>
 
 

@@ -160,7 +160,8 @@ const alumniForm = useForm({
     program: '',
     section: '',
     user_type: 'school_alumni',
-    alumni_picture: ''
+    alumni_picture: '',
+    status: 'paid'
 });
 
 const saveUser = () => {
@@ -192,6 +193,7 @@ const staffForm = useForm({
     last_name: '',
     contact: '',
     email: '',
+    position: '',
     user_type: 'school_staff'
 });
 
@@ -288,7 +290,7 @@ const addStaff = ref(false)
                 <div class="w-full p-2">
                     <label>Alumni ID No.</label>
                     <br>
-                    <input type="text" class="w-full rounded-md" v-model="alumniForm.school_id_no" placeholder="School ID No."/>
+                    <input type="text" class="w-full rounded-md" v-model="alumniForm.school_id_no" placeholder="Alumni ID No."/>
                 </div>
 
                 <div class="w-full p-2">
@@ -330,10 +332,22 @@ const addStaff = ref(false)
                 </div>
 
                 <div class="w-full p-2">
+                    <label>Status</label>
+                    <br>
+                    <select class="rounded-md w-full" v-model="alumniForm.status">
+                        <option value="paid">Paid</option>
+                        <option value="unpaid">Unpaid</option>
+
+                    </select>
+                </div>
+
+                <div class="w-full p-2">
                     <label>Alumni Picture</label>
                     <br>
                     <input type="file" @change="(e) => alumniForm.alumni_picture = e.target.files[0]" class="w-full rounded-md border border-black" />
                 </div>
+
+
 
                 <div class="w-full p-2">
                     <button class="w-full py-2 px-4 bg-blue-500 rounded-md text-white mt-5"
@@ -373,6 +387,12 @@ const addStaff = ref(false)
                     <label>Email</label>
                     <br>
                     <input type="text" class="w-full rounded-md" v-model="staffForm.email"/>
+                </div>
+
+                <div class="w-full p-2">
+                    <label>Position</label>
+                    <br>
+                    <input type="text" class="w-full rounded-md" v-model="staffForm.position"/>
                 </div>
 
                 <div class="w-full p-2">

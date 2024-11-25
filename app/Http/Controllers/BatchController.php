@@ -35,12 +35,19 @@ class BatchController extends Controller
             $imageUpload = $this->uploadFile($request->file('logo'), $batchImage);
         }
 
-        Batch::create([
-            'course' => $request->course,
-            'section' => $request->section,
-            'school_year' => $request->school_year,
-            'logo' => $imageUpload
-        ]);
+        Batch::updateOrCreate(
+            [
+                'course' => $request->course,
+                'section' => $request->section,
+                'school_year' => $request->school_year
+            ],
+            [
+                'course' => $request->course,
+                'section' => $request->section,
+                'school_year' => $request->school_year,
+                'logo' => $imageUpload
+            ]
+        );
 
         return redirect()->back();
     }
