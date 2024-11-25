@@ -7,6 +7,9 @@ const props = defineProps({
     users: {
         type: Array,
     },
+    courses: {
+        type: Array
+    }
 });
 
 const searchQuery = ref(''); // Search input value
@@ -25,31 +28,39 @@ const formatDate = (date) => {
 }
 
 const status = ref('')
+const program = ref('')
+const batch = ref('')
 const searchBy = ref('name')
 const statusFilter = ref(null);
+const programFilter = ref(null);
+const batchFilter = ref(null);
 
 // Computed property to filter users based on search query
 const filteredUsers = computed(() => {
     let users = props.users;
 
+    users = users.filter(user =>
+        user.fullname.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+
     // Filter by search query
-    if (searchBy.value === 'name') {
-        users = users.filter(user =>
-            user.fullname.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    } else if (searchBy.value === 'program') {
-        users = users.filter(user =>
-            user.program.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    } else if (searchBy.value === 'class_batch') {
-        users = users.filter(user =>
-            user.class_batch.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    } else if (searchBy.value === 'last_logged_in') {
-        users = users.filter(user =>
-            user.last_logged_in.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    }
+    // if (searchBy.value === 'name') {
+    //     users = users.filter(user =>
+    //         user.fullname.toLowerCase().includes(searchQuery.value.toLowerCase())
+    //     );
+    // } else if (searchBy.value === 'program') {
+    //     users = users.filter(user =>
+    //         user.program.toLowerCase().includes(searchQuery.value.toLowerCase())
+    //     );
+    // } else if (searchBy.value === 'class_batch') {
+    //     users = users.filter(user =>
+    //         user.class_batch.toLowerCase().includes(searchQuery.value.toLowerCase())
+    //     );
+    // } else if (searchBy.value === 'last_logged_in') {
+    //     users = users.filter(user =>
+    //         user.last_logged_in.toLowerCase().includes(searchQuery.value.toLowerCase())
+    //     );
+    // }
 
     // Filter by status if a filter is applied
     if (statusFilter.value !== null) {
@@ -61,12 +72,37 @@ const filteredUsers = computed(() => {
 
     }
 
+    if (programFilter.value !== null) {
+        if(programFilter.value == 'all') {
+            users = users
+        } else {
+            users = users.filter(user => user.program === programFilter.value);
+        }
+    }
+
+    if (batchFilter.value !== null) {
+        if(batchFilter.value == 'all') {
+            users = users
+        } else {
+            users = users.filter(user => user.class_batch === batchFilter.value);
+        }
+    }
+
     return users;
 });
 
 // Method to update the status filter
 const changeStatus = (value) => {
     statusFilter.value = value;
+};
+
+const changeProgram = (value) => {
+    console.log(value)
+    programFilter.value = value;
+};
+
+const changeBatch = (value) => {
+    batchFilter.value = value;
 };
 
 </script>
@@ -85,40 +121,74 @@ const changeStatus = (value) => {
                     class="w-[30%] p-2 border rounded mr-2"
                 />
 
-                <select class="rounded-md p-2 w-[20%] mr-2" v-model="searchBy">
+                <!-- <select class="rounded-md p-2 w-[20%] mr-2" v-model="searchBy">
                     <option :value="'name'">Alumni Name</option>
                     <option :value="'program'">Program</option>
                     <option :value="'class_batch'">Class Batch</option>
                     <option :value="'last_logged_in'">Last Logged In</option>
-                </select>
+                </select> -->
 
-                <select class="rounded-md p-2 w-[12%]" v-model="status" @change="changeStatus($event.target.value)">
+                <!-- <select class="rounded-md p-2 w-[12%]" v-model="status" @change="changeStatus($event.target.value)">
                     <option :value="''" disabled>Status</option>
                     <option :value="'all'">All</option>
                     <option :value="'active'">Active</option>
                     <option :value="'in_active'">Inactive</option>
-                </select>
+                </select> -->
             </div>
 
             <div class="w-full flex flex-row mt-16 mb-5 text-xl">
-                <div class="w-full">
+                <div class="w-full text-sm">
                     Alumni Name
                 </div>
 
-                <div class="w-full">
-                    Program
+                <div class="w-full text-right flex flex-row">
+                    <div class="w-full text-sm mr-1 mt-1">
+                        Program
+                    </div>
+
+                    <div class="w-full">
+                        <select class="rounded-md p-2 w-[100%] text-xs" v-model="program" @change="changeProgram($event.target.value)">
+                            <option :value="'all'">All</option>
+                            <option :value="c.name" v-for="c in courses" :key="c.id">{{ c.name }}</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="w-full">
-                    Class Batch
+                <div class="w-full text-right flex flex-row mr-2">
+                    <div class="w-full text-sm mr-1 mt-1">
+                        Class Batch
+                    </div>
+
+                    <div class="w-full">
+                        <select class="rounded-md p-2 w-[100%] text-xs" v-model="batch" @change="changeBatch($event.target.value)">
+                            <option :value="'all'">All</option>
+                            <option :value="'2020'">2020</option>
+                            <option :value="'2021'">2021</option>
+                            <option :value="'2022'">2022</option>
+                            <option :value="'2023'">2023</option>
+                            <option :value="'2024'">2024</option>
+                            <option :value="'2025'">2025</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="w-full">
+                <div class="w-full text-sm">
                     Last Login
                 </div>
 
-                <div class="w-full text-right">
-                    Active Status
+                <div class="w-full text-right flex flex-row">
+                    <div class="w-full text-sm mr-1 mt-1">
+                        Active Status
+                    </div>
+
+                    <div class="w-full">
+                        <select class="rounded-md p-2 w-[100%] text-xs" v-model="status" @change="changeStatus($event.target.value)">
+                            <option :value="''" disabled>Status</option>
+                            <option :value="'all'">All</option>
+                            <option :value="'active'">Active</option>
+                            <option :value="'in_active'">Inactive</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 

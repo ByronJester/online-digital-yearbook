@@ -192,7 +192,7 @@ const closeModal = () => {
                     </p>
 
                     <div class="w-full" v-if="user.user_type == 'school_alumni'">
-                        <p class="text-xl font-bold"> {{ user.role }} </p>
+                        <p class="text-xl font-bold"> {{ user.fullname }} </p>
                         <p class="text-md"> {{ user.program }} </p>
                         <p class="text-xs">Secion {{ user.section }} (Class Batch {{ user.class_batch }}) </p>
                         <p class="text-xs">Alumni ID No.: {{ user.school_id_no }} </p><br>

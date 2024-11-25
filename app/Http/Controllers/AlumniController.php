@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Models\{ User, Achievement, Album, UserNotification, SuccessStory, SuccessStoryLike, SuccessStoryComment, UserShare };
+use App\Models\{ User, Achievement, Album, UserNotification, SuccessStory, SuccessStoryLike, SuccessStoryComment, UserShare, Course };
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,8 @@ class AlumniController extends Controller
     public function records()
     {
         return Inertia::render('Alumni/Records', [
-            'users' => User::orderBy('created_at', 'desc')->where('user_type', 'school_alumni')->get()
+            'users' => User::orderBy('created_at', 'desc')->where('user_type', 'school_alumni')->get(),
+            'courses' => Course::get()
         ]);
     }
 

@@ -165,11 +165,10 @@ const deleteAlumni = (id) => {
                                 </span>
                             </p> -->
                             <!-- {{ student.user.alumni_picture.image }} -->
-                            <img :src="student.user.alumni_picture.image || logoUrl" class="w-full h-[200px]"/>
-                            <p class="text-center font-bold">{{ student.user.fullname }}</p>
+                            <img :src="student.user.alumni_picture.image || logoUrl" class="w-full h-[240px]"/>
                         </div>
 
-
+                        <p class="text-center font-bold">{{ student.user.fullname }}</p>
                         <p class="text-center text-xs" v-for="a in student.award">{{ a }}</p>
                     </div>
                 </div>
