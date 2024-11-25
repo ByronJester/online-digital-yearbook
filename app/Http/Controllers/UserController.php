@@ -24,13 +24,16 @@ class UserController extends Controller
     {
         $auth = auth()->user();
 
+
         $user_type = 'school_alumni';
+        $users = User::orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
         if($auth->user_type == 'system_admin') {
             $user_type = 'school_staff';
+            $users = User::orderBy('updated_at', 'desc')->get();
         }
 
         return Inertia::render('User/Index', [
-            'users' => User::orderBy('updated_at', 'desc')->where('user_type', $user_type)->get(),
+            'users' => $users,
             'courses' => Course::get()
         ]);
     }
@@ -219,7 +222,7 @@ class UserController extends Controller
             'migrations', 'otp_messages', 'password_reset_tokens', 'personal_access_tokens', 'failed_jobs',
             'achievement_comments', 'achievement_likes', 'album_comments', 'album_likes', 'courses', 'faqs',
             'greetings', 'histories', 'hymn', 'logos', 'mission_statements', 'programs', 'user_notifications',
-            'user_shares', 'vision_statements', 'sessions'
+            'user_shares', 'vision_statements', 'sessions', 'sections', 'years', 'success_story_likes', 'success_story_comments'
         ];
 
 
