@@ -150,7 +150,7 @@ const saveCourse = () => {
     //     }
     // });
 
-    Inertia.post(route('user-save-course'), {id: courseId.value, course: courseName.value}, {
+    Inertia.post(route('user-save-course'), {id: courseId.value, course: courseName.value, batches: courseBatches.value}, {
         onSuccess: (page) => {
             // alert(page.props.flash.message || 'File uploaded and data inserted successfully!');
             location.reload()
