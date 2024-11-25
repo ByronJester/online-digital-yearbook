@@ -165,7 +165,7 @@ const deleteAlumni = (id) => {
                                 </span>
                             </p> -->
                             <!-- {{ student.user.alumni_picture.image }} -->
-                            <img :src="student.user.alumni_picture.image || logoUrl" class="w-full h-[240px]"/>
+                            <img :src="student.user.alumni_picture || logoUrl" class="w-full h-[240px]"/>
                         </div>
 
                         <p class="text-center font-bold">{{ student.user.fullname }}</p>
