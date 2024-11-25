@@ -382,11 +382,11 @@ const editPost = (post) => {
                         Delete
                     </span>
 
-                    <span class="float-right text-xs text-green-500 cursor-pointer mr-2" v-if="$page.props.auth.user.user_type == 'school_staff'"
+                    <!-- <span class="float-right text-xs text-green-500 cursor-pointer mr-2" v-if="$page.props.auth.user.user_type == 'school_staff'"
                         @click="editPost(post)"
                     >
                         Edit
-                    </span>
+                    </span> -->
                 </div>
                 <p class="text-xs">{{ post.created_at }}</p>
 

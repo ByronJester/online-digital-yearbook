@@ -153,7 +153,6 @@ const changeStatus = (value) => {
                         <i class="fa-solid fa-circle text-xl text-green-600" v-if="user.status == 'active'">
 
                         </i>
-
                         <i class="fa-solid fa-circle text-xl text-red-600" v-if="user.status == 'in_active'">
 
                         </i>
