@@ -157,13 +157,13 @@ const deleteAlumni = (id) => {
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
                     <div class="w-full min-h-[300px] h-full" v-for="student in students">
                         <div class="w-full border border-black rounded-md cursor-pointer">
-                            <p v-if="$page.props.auth.user.user_type == 'school_staff'">
+                            <!-- <p v-if="$page.props.auth.user.user_type == 'school_staff'">
                                 <span class="float-right text-red-400 m-2 text-xs"
                                     @click="deleteAlumni(student.id)"
                                 >
                                     <i class="fa-solid fa-trash"></i>
                                 </span>
-                            </p>
+                            </p> -->
                             <!-- {{ student.user.alumni_picture.image }} -->
                             <img :src="student.user.alumni_picture.image || logoUrl" class="w-full h-[200px]"/>
                             <p class="text-center font-bold">{{ student.user.fullname }}</p>

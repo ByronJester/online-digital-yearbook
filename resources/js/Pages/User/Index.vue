@@ -19,13 +19,37 @@ defineProps({
 
 // console.log(users)
 
+// first_name: '',
+//     middle_name: '',
+//     last_name: '',
+//     contact: '',
+//     email: '',
+//     school_id_no: '',
+//     class_batch: '',
+//     program: '',
+//     section: '',
+//     user_type: 'school_alumni',
+//     alumni_picture: '',
+//     status: 'paid'
+
 const handleTableAction = ({ action, row }) => {
     if (action == 'view') {
         console.log('view')
     } else if (action == 'edit') {
-        alumniForm = Object.assign({}, row)
-        console.log(alumniForm)
+        // alumniForm = Object.assign({}, row)
+        alumniForm.first_name = row.first_name
+        alumniForm.middle_name = row.middle_name
+        alumniForm.last_name = row.last_name
+        alumniForm.contact = row.contact
+        alumniForm.email = row.email
+        alumniForm.school_id_no = row.school_id_no
+        alumniForm.class_batch = row.class_batch
+        alumniForm.program = row.program
+        alumniForm.section = row.section
+        alumniForm.alumni_picture = row.alumni_picture
+
         addAlumni.value = true
+
     } else if (action == 'delete') {
         swal({
             title: "Are you sure to delete this user?",

@@ -159,6 +159,8 @@ const saveCourse = () => {
     });
 }
 
+const batches = ref(null)
+
 </script>
 
 <template>
@@ -168,6 +170,8 @@ const saveCourse = () => {
         <div class="w-full p-5 ">
             <div class="w-full border border-black rounded-md" style="margin-bottom: 20px;">
                 <div class="w-full p-10">
+                    <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
+
                     <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
 
                     <button class="bg-blue-500 py-2 px-7 rounded-md mt-5 text-white"
