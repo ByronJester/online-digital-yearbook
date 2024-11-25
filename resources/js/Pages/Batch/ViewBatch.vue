@@ -170,7 +170,7 @@ const deleteAlumni = (id) => {
                         </div>
 
 
-                        <p class="text-center text-xs">{{ student.award }}</p>
+                        <p class="text-center text-xs" v-for="a in student.award">{{ a }}</p>
                     </div>
                 </div>
             </div>

@@ -28,4 +28,9 @@ class BatchStudent extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getAwardAttribute($value)
+    {
+        return explode(",", $value);
+    }
 }

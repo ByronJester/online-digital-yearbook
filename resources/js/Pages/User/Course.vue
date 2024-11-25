@@ -173,7 +173,7 @@ const batches = ref(null)
             <div class="w-full border border-black rounded-md" style="margin-bottom: 20px;">
                 <div class="w-full p-10 flex flex-col md:flex-row">
                     <div class="w-full mr-2">
-                        <input type="text" placeholder="Course..." v-model="courseName" class="w-full rounded-md"/>
+                        <input type="text" placeholder="Course" v-model="courseName" class="w-full rounded-md"/>
                     </div>
 
                     <div class="w-full mr-2">
@@ -187,16 +187,7 @@ const batches = ref(null)
                             Save
                         </button>
                     </div>
-
-
-
-
-
-
                 </div>
-
-
-
             </div>
 
             <div class="w-full">
