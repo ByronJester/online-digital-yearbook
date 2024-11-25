@@ -85,7 +85,8 @@ const closeMessage = () => {
 }
 
 const isToday = (date) => {
-    const today = new Date(); // Current date
+    var today = new Date(); // Current date
+    today = today.setDate(today.getDate() + 1);
 
     // Format both dates to YYYY-MM-DD for comparison
     const formattedToday = today.toISOString().split('T')[0];
