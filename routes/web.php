@@ -82,6 +82,15 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/export-table/{table}', [UserController::class, 'backUp'])->name('bar');
         Route::post('/upload-sql', [UserController::class, 'restore'])->name('bar-upload');
     });
+
+    Route::prefix('alumni-records')->group(function () {
+        Route::get('/', [AlumniController::class, 'records'])->name('admin-alumni-records');
+    });
+
+    Route::prefix('class-batches')->group(function () {
+        Route::get('/', [BatchController::class, 'index'])->name('admin-class-batches');
+
+    });
 });
 
 Route::prefix('staff')->middleware(['auth', 'verified'])->group(function () {

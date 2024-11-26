@@ -111,6 +111,21 @@ const updateSearchQuery = (event) => {
                     <i class="fa fa-gear text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
                     <span v-if="sidebarOpen" class="text-md pl-5">Backup and Restore</span>
                 </NavLink>
+
+                <NavLink :href="route('course-management')" :active="route().current('course-management')">
+                    <i class="fa-solid fa-folder text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Program Management</span>
+                </NavLink>
+
+                <NavLink :href="route('admin-alumni-records')" :active="route().current('admin-alumni-records')">
+                    <i class="fa fa-users text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Alumni Login Status</span>
+                </NavLink>
+
+                <NavLink :href="route('admin-class-batches')" :active="route().current('admin-class-batches')">
+                    <i class="fa-solid fa-graduation-cap text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Class Batches</span>
+                </NavLink>
             </nav>
 
             <nav class="flex flex-col" v-if="$page.props.auth.user.user_type == 'school_staff'">
@@ -126,7 +141,7 @@ const updateSearchQuery = (event) => {
 
                 <NavLink :href="route('course-management')" :active="route().current('course-management')">
                     <i class="fa-solid fa-folder text-2xl" :class="{'pl-4': !sidebarOpen, 'pl-3': sidebarOpen}"></i>
-                    <span v-if="sidebarOpen" class="text-md pl-5">Course Management</span>
+                    <span v-if="sidebarOpen" class="text-md pl-5">Program Management</span>
                 </NavLink>
 
                 <NavLink :href="route('staff-dashboard')" :active="route().current('staff-dashboard')">

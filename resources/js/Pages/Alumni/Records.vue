@@ -121,6 +121,10 @@ const changeBatch = (value) => {
                     class="w-[30%] p-2 border rounded mr-2"
                 />
 
+                <span class="float-right text-lg font-bold">
+                    {{ filteredUsers.length }} Alumni
+                </span>
+
                 <!-- <select class="rounded-md p-2 w-[20%] mr-2" v-model="searchBy">
                     <option :value="'name'">Alumni Name</option>
                     <option :value="'program'">Program</option>

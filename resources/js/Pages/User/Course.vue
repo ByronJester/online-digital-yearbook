@@ -170,7 +170,7 @@ const batches = ref(null)
 
     <AuthenticatedLayout>
         <div class="w-full p-5 ">
-            <div class="w-full border border-black rounded-md" style="margin-bottom: 20px;">
+            <div class="w-full border border-black rounded-md" style="margin-bottom: 20px;" v-if="$page.props.auth.user.user_type == 'school_staff'">
                 <div class="w-full p-10 flex flex-col md:flex-row">
                     <div class="w-full mr-2">
                         <input type="text" placeholder="Course" v-model="courseName" class="w-full rounded-md"/>

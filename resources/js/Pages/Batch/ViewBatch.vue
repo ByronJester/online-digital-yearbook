@@ -109,6 +109,10 @@ const deleteAlumni = (id) => {
     });
 }
 
+const viewProfile = (id) => {
+    Inertia.get(route('profile.view', id))
+}
+
 </script>
 
 <template>
@@ -155,7 +159,7 @@ const deleteAlumni = (id) => {
                 </div> -->
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-4">
-                    <div class="w-full min-h-[300px] h-full" v-for="student in students">
+                    <div class="w-full min-h-[300px] h-full" v-for="student in students" @click="viewProfile(student.user.id)">
                         <div class="w-full border border-black rounded-md cursor-pointer">
                             <!-- <p v-if="$page.props.auth.user.user_type == 'school_staff'">
                                 <span class="float-right text-red-400 m-2 text-xs"
