@@ -58,7 +58,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'role', 'fullname', 'status'
+        'role', 'fullname', 'status', 'fullname_format'
     ];
 
     public function getRoleAttribute()
@@ -76,6 +76,15 @@ class User extends Authenticatable
         }
 
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getFullnameFormatAttribute()
+    {
+        if($this->middle_name) {
+            return $this->last_name . ', ' . $this->first_name . ' ' . $this->middle_name;
+        }
+
+        return $this->last_name . ', ' . $this->first_name;
     }
 
     public function getProfilePictureAttribute($value)

@@ -81,7 +81,8 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'class_batch' => $row['class_batch'],
                             'program' => $row['program'],
                             'section' => $row['section'],
-                            'alumni_picture' => $row['alumni_image']
+                            'alumni_picture' => $row['alumni_image'],
+                            'payment' => $row['payment']
                         ]
                     );
                 } else {
@@ -100,7 +101,8 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'section' => $row['section'],
                             'password' => Hash::make($password),
                             'password_text' => $password,
-                            'alumni_picture' => $row['alumni_image']
+                            'alumni_picture' => $row['alumni_image'],
+                            'payment' => $row['payment']
                         ]
                     );
 

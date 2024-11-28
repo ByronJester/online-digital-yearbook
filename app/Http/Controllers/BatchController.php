@@ -12,7 +12,7 @@ class BatchController extends Controller
     public function index()
     {
         return Inertia::render('Batch/Index', [
-            'batches' => Batch::orderBy('created_at', 'desc')->get(),
+            'batches' => Batch::orderBy('section')->get(),
             'courses' => Course::get(),
             'sections' => Section::get(),
             'years' => Year::get()
@@ -56,7 +56,10 @@ class BatchController extends Controller
     {
         return Inertia::render('Batch/ViewBatch', [
             'batch' => Batch::where('id', $id)->first(),
-            'students' => BatchStudent::where('batch_id', $id)->get()
+            'students' => BatchStudent::where('batch_id', $id)
+                ->join('users', 'batch_students.user_id', '=', 'users.id')
+                ->orderBy('users.last_name', 'asc')
+                ->get()
         ]);
     }
 

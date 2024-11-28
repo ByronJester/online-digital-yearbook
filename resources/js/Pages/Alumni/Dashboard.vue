@@ -409,10 +409,10 @@ const closeModal = () => {
                                 <!-- Display image or video if available -->
 
                                 <div v-if="post.image" class="my-4 flex justify-center items-center">
-                                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px] cursor-pointer" @click="openMedia(post.image, 'image')">
+                                    <img :src="post.image" alt="Post Image" class="w-[400px] h-[300px] cursor-pointer" @click="openMedia(post.image, 'image')">
                                 </div>
                                 <div v-if="post.video" class="my-4 flex justify-center items-center">
-                                    <video controls class="w-[500px] h-[300px]">
+                                    <video controls class="w-[400px] h-[300px]">
                                         <source :src="post.video" type="video/mp4" />
                                     </video>
                                 </div>
@@ -505,7 +505,7 @@ const closeModal = () => {
                                     <carousel :items-to-show="2" ref="carouselRef">
                                         <slide v-for="i in post.video" :key="i">
                                             <!-- <img :src="i" class="w-full h-[200px] mr-1"/> -->
-                                            <video controls class="w-full h-[300px]">
+                                            <video controls class="w-full h-[250px]">
                                                 <source :src="i" type="video" />
                                             </video>
                                         </slide>

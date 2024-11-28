@@ -187,10 +187,12 @@ let alumniForm = useForm({
     section: '',
     user_type: 'school_alumni',
     alumni_picture: '',
-    status: 'paid'
+    payment: 'paid'
 });
 
 const saveUser = () => {
+
+
     swal({
         title: "Are you sure to add this user?",
         text: "",
@@ -200,15 +202,21 @@ const saveUser = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            alumniForm.post(route('save-user'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
-                    swal("Error saving.");
-                }
-            });
+            loading.value = true
 
+            setTimeout(() => {
+                alumniForm.post(route('save-user'), {
+                    onSuccess: (page) => {
+                        addAlumni.value = false
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                        swal("Error saving.");
+                    }
+                });
+
+            }, 1000);
         }
     });
 }
@@ -224,6 +232,8 @@ const staffForm = useForm({
 });
 
 const saveStaff = () => {
+
+
     swal({
         title: "Are you sure to add this user?",
         text: "",
@@ -233,15 +243,22 @@ const saveStaff = () => {
     })
     .then((proceed) => {
         if (proceed) {
-            staffForm.post(route('save-user'), {
-                onSuccess: (page) => {
-                    location.reload()
-                },
-                onError: (errors) => {
-                    swal("Error saving.");
-                }
-            });
+            loading.value = true
 
+            setTimeout(() => {
+                staffForm.post(route('save-user'), {
+                    onSuccess: (page) => {
+                        // location.reload()
+                        addStaff.value = false
+                        loading.value = false
+                    },
+                    onError: (errors) => {
+                        loading.value = false
+                        swal("Error saving.");
+                    }
+                });
+
+            }, 1000);
         }
     });
 }
@@ -280,7 +297,7 @@ const addStaff = ref(false)
                 </button>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'school_staff' && addAlumni">
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'school_staff' && addAlumni && !loading">
                 <div class="w-full p-2">
                     <label>First Name</label>
                     <br>
@@ -361,7 +378,7 @@ const addStaff = ref(false)
                 <div class="w-full p-2">
                     <label>Status</label>
                     <br>
-                    <select class="rounded-md w-full" v-model="alumniForm.status">
+                    <select class="rounded-md w-full" v-model="alumniForm.payment">
                         <option value="paid">Paid</option>
                         <option value="unpaid">Unpaid</option>
 
@@ -385,7 +402,7 @@ const addStaff = ref(false)
                 </div>
             </div>
 
-            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'system_admin' && addStaff">
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-md border border-black my-10" v-if="$page.props.auth.user.user_type == 'system_admin' && addStaff && !loading">
                 <div class="w-full p-2">
                     <label>First Name</label>
                     <br>
