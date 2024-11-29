@@ -189,11 +189,11 @@ const isYearInBatches = (batches) => {
             </p>
 
             <p class="text-2xl w-full font-bold" v-if="viewClassBatch && !viewClassSection">
-                Class Batch {{ bYear }}
+                Class of {{ bYear }}
             </p>
 
             <p class="w-full text-2xl" v-if="!viewClassBatch && viewClassSection">
-                <span class="font-bold mr-3">Class Batch {{ bYear }}</span> <span class="mr-3"><i class="fa-solid fa-caret-right"></i></span> {{ bSection }}
+                <span class="font-bold mr-3">Class of {{ bYear }}</span> <span class="mr-3"><i class="fa-solid fa-caret-right"></i></span> {{ bSection }}
             </p>
 
             <div class="mb-10 rounded-md p-5" v-if="$page.props.auth.user.user_type == 'school_staff'">
@@ -270,7 +270,7 @@ const isYearInBatches = (batches) => {
                         <img :src="logoUrl" class="w-full h-[225px]" @click="selectBatch(batch)"/>
                     </div>
 
-                    <p class="text-center font-bold" @click="selectBatch(batch)"> Class Batch {{ batch }}</p>
+                    <p class="text-center font-bold" @click="selectBatch(batch)"> Class of {{ batch }}</p>
                 </div>
             </div>
 

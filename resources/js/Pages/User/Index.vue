@@ -46,6 +46,7 @@ const handleTableAction = ({ action, row }) => {
         alumniForm.class_batch = row.class_batch
         alumniForm.program = row.program
         alumniForm.section = row.section
+        alumniForm.id = row.id
         // alumniForm.alumni_picture = row.alumni_picture
 
         addAlumni.value = true
@@ -176,6 +177,7 @@ const triggerFileUpload = () => {
 }
 
 let alumniForm = useForm({
+    id:  null,
     first_name: '',
     middle_name: '',
     last_name: '',
@@ -187,7 +189,8 @@ let alumniForm = useForm({
     section: '',
     user_type: 'school_alumni',
     alumni_picture: '',
-    payment: 'paid'
+    payment: '',
+    award: ''
 });
 
 const saveUser = () => {
@@ -378,7 +381,7 @@ const addStaff = ref(false)
                 <div class="w-full p-2">
                     <label>Status</label>
                     <br>
-                    <select class="rounded-md w-full" v-model="alumniForm.payment">
+                    <select class="rounded-md w-full" v-model="alumniForm.payment" :disabled="alumniForm.payment == 'paid' && alumniForm.id != null">
                         <option value="paid">Paid</option>
                         <option value="unpaid">Unpaid</option>
 

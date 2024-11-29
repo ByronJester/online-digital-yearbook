@@ -42,14 +42,14 @@ class UserSeeder extends Seeder
             'code' => '4432'
         ]);
 
-        User::create([
-            'first_name' => 'School',
-            'last_name' => 'Alumni',
-            'email' => 'alumni@gmail.com',
-            'password' => Hash::make('password'),
-            'user_type' => 'school_alumni',
-            'contact' => '09453917972'
-        ]);
+        // User::create([
+        //     'first_name' => 'School',
+        //     'last_name' => 'Alumni',
+        //     'email' => 'alumni@gmail.com',
+        //     'password' => Hash::make('password'),
+        //     'user_type' => 'school_alumni',
+        //     'contact' => '09453917972'
+        // ]);
 
         OtpMessage::create([
             'email' => 'alumni@gmail.com',
