@@ -437,7 +437,7 @@ class UserController extends Controller
 
         if($request->user_type == 'school_alumni') {
 
-            if($request->payment == 'paid' && $request->id != null) {
+            if($request->payment == 'paid' && ($request->id == null || $request->id == 'null')) {
                 $this->sendSMS($user->contact, $message);
             }
 
