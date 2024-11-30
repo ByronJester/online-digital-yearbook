@@ -136,7 +136,7 @@ class UsersImport implements ToCollection, WithHeadingRow
 
     public function sendSMS($number, $message)
     {
-        $apiKey = '26c01596d47766a3a5728182d39bca05';
+        $apiKey = base64_decode('MjZjMDE1OTZkNDc3NjZhM2E1NzI4MTgyZDM5YmNhMDU=');
 
         // $parameters = array(
         //     'apikey' =>  $apiKey,
