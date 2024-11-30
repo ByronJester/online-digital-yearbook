@@ -301,7 +301,7 @@ RUN apt-get clean \
     && rm /var/log/lastlog /var/log/faillog
 
 COPY . .
-# COPY --from=vendor ${ROOT}/vendor vendor
+COPY --from=vendor ${ROOT}/vendor vendor
 
 RUN rm -rf ./public/*
 COPY --from=frontend --chown=www-data:www-data /frontend/public ./public
