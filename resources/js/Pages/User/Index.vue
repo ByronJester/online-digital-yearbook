@@ -279,7 +279,7 @@ const addStaff = ref(false)
             <div class="w-full" style="margin-bottom: 20px;">
                 <input type="file" ref="fileInput" @change="handleFileUpload" accept=".xlsx" style="display: none;" />
 
-                <button class="upload-btn" @click="triggerFileUpload()">
+                <button class="upload-btn" @click="triggerFileUpload()" v-if="$page.props.auth.user.user_type != 'school_alumni'">
                     Upload Users
                 </button>
 
