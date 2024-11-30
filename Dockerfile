@@ -35,16 +35,16 @@ COPY composer* ./
 ENV COMPOSER_MEMORY_LIMIT=-1
 # RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
-# RUN composer install \
-#   --no-dev \
-#   --no-interaction \
-#   --prefer-dist \
-#   --ignore-platform-reqs \
-#   --optimize-autoloader \
-#   --apcu-autoloader \
-#   --ansi \
-#   --no-scripts \
-#   --audit
+RUN composer install \
+  --no-dev \
+  --no-interaction \
+  --prefer-dist \
+  --ignore-platform-reqs \
+  --optimize-autoloader \
+  --apcu-autoloader \
+  --ansi \
+  --no-scripts \
+  --audit
 
 ###########################################
 
@@ -301,7 +301,7 @@ RUN apt-get clean \
     && rm /var/log/lastlog /var/log/faillog
 
 COPY . .
-COPY --from=vendor ${ROOT}/vendor vendor
+# COPY --from=vendor ${ROOT}/vendor vendor
 
 RUN rm -rf ./public/*
 COPY --from=frontend --chown=www-data:www-data /frontend/public ./public
