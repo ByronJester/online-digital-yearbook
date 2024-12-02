@@ -415,6 +415,14 @@ class UserController extends Controller
 
     public function saveUser(Request $request)
     {
+        $existingUser = User::where('email', $request->email)->first();
+
+        $lastPayment = null;
+
+        if($existingUser) {
+            $lastPayment = $lastPayment->payment;
+        }
+
         $user = User::updateOrCreate(
             ['email' => $request->email],
             $request->toArray()
@@ -434,12 +442,21 @@ class UserController extends Controller
 
         if($request->user_type == 'school_alumni') {
 
-            if($request->payment == 'paid' && ($request->id == null || $request->id == 'null')) {
+            if($lastPayment != null && $lastPayment == 'unpaid' && $request->payment == 'paid') {
                 $user->password = Hash::make($defPass);
                 $user->password_text = $defPass;
 
                 $this->sendSMS($user->contact, $message);
+            } else {
+                if($request->payment == 'paid' && ($request->id == null || $request->id == 'null')) {
+                    $user->password = Hash::make($defPass);
+                    $user->password_text = $defPass;
+
+                    $this->sendSMS($user->contact, $message);
+                }
             }
+
+
 
             $batch = Batch::updateOrCreate(
                 ['school_year' => $request->class_batch, 'course' => $request->program, 'section' => $request->section],
