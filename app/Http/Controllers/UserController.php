@@ -26,7 +26,7 @@ class UserController extends Controller
 
 
         $user_type = 'school_alumni';
-        $users = User::orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
+        $users = User::with(['batch_student'])->orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
         if($auth->user_type == 'system_admin') {
             $user_type = 'school_staff';
             $users = User::orderBy('updated_at', 'desc')->get();
@@ -427,17 +427,17 @@ class UserController extends Controller
         }
 
         $defPass = Str::random(8);
-        $user->password = Hash::make($defPass);
-        $user->password_text = $defPass;
-
-        $user->save();
-
         $email = $request->email;
         $message = "Your email is $email and your password is $defPass. You can login now using this credentials.";
+
+        $user->last_logged_in = null;
 
         if($request->user_type == 'school_alumni') {
 
             if($request->payment == 'paid' && ($request->id == null || $request->id == 'null')) {
+                $user->password = Hash::make($defPass);
+                $user->password_text = $defPass;
+
                 $this->sendSMS($user->contact, $message);
             }
 
@@ -469,7 +469,13 @@ class UserController extends Controller
                     'message' => $message
                 ]);
             }
+
+            $user->save();
         } else {
+            $user->password = Hash::make($defPass);
+            $user->password_text = $defPass;
+            $user->save();
+
             $this->sendSMS($user->contact, $message);
         }
 

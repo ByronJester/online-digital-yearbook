@@ -36,6 +36,7 @@ const handleTableAction = ({ action, row }) => {
     if (action == 'view') {
         console.log('view')
     } else if (action == 'edit') {
+        console.log(row)
         // alumniForm = Object.assign({}, row)
         alumniForm.first_name = row.first_name
         alumniForm.middle_name = row.middle_name
@@ -47,6 +48,8 @@ const handleTableAction = ({ action, row }) => {
         alumniForm.program = row.program
         alumniForm.section = row.section
         alumniForm.id = row.id
+        alumniForm.award = row.batch_student.award.join(", ");
+        alumniForm.payment = row.payment == null ? 'unpaid' : row.payment
         // alumniForm.alumni_picture = row.alumni_picture
 
         addAlumni.value = true
@@ -177,7 +180,7 @@ const triggerFileUpload = () => {
 }
 
 let alumniForm = useForm({
-    id:  null,
+    id: null,
     first_name: '',
     middle_name: '',
     last_name: '',

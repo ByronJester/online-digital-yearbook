@@ -145,12 +145,12 @@ const changeBatch = (value) => {
                     Alumni Name
                 </div>
 
-                <div class="w-full text-right flex flex-row">
-                    <div class="w-full text-sm mr-1 mt-1">
+                <div class="w-full text-left flex flex-row">
+                    <div class="w-[30%] text-sm mr-1 mt-1 ">
                         Program
                     </div>
 
-                    <div class="w-full">
+                    <div class="w-[60%]">
                         <select class="rounded-md p-2 w-[100%] text-xs" v-model="program" @change="changeProgram($event.target.value)">
                             <option :value="'all'">All</option>
                             <option :value="c.name" v-for="c in courses" :key="c.id">{{ c.name }}</option>
@@ -159,11 +159,11 @@ const changeBatch = (value) => {
                 </div>
 
                 <div class="w-full text-right flex flex-row mr-2">
-                    <div class="w-full text-sm mr-1 mt-1">
+                    <div class="w-[40%] text-sm mr-1 mt-1">
                         Class Batch
                     </div>
 
-                    <div class="w-full">
+                    <div class="w-[50%]">
                         <select class="rounded-md p-2 w-[100%] text-xs" v-model="batch" @change="changeBatch($event.target.value)">
                             <option :value="'all'">All</option>
                             <option :value="'2020'">2020</option>
@@ -205,19 +205,19 @@ const changeBatch = (value) => {
                     </div>
 
                     <div class="w-full">
-                        <p class="ml-2 p-2 text-xs">
+                        <p class=" p-2 text-xs">
                             {{ user?.program }}
                         </p>
                     </div>
 
                     <div class="w-full">
-                        <p class="ml-2 p-2 text-xs">
+                        <p class="ml-4 p-2 text-xs">
                             {{ user?.class_batch }}
                         </p>
                     </div>
 
                     <div class="w-full ">
-                        <p class="p-2 text-xs">
+                        <p class="ml-3 p-2 text-xs">
                             {{ user?.last_logged_in }}
                         </p>
                     </div>

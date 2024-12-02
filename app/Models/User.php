@@ -34,7 +34,8 @@ class User extends Authenticatable
         'program',
         'password_text',
         'position',
-        'alumni_picture'
+        'alumni_picture',
+        'payment'
     ];
 
     /**
@@ -127,5 +128,10 @@ class User extends Authenticatable
         if(!!$this->logout_at) return 'in_active';
 
         return '';
+    }
+
+    public function batch_student()
+    {
+        return $this->hasOne(BatchStudent::class);
     }
 }
