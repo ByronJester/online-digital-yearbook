@@ -145,7 +145,7 @@ const handleTableAction = ({ action, row }) => {
                 </p>
                 <div class="w-full mt-3">
                     <Table
-                        :headers="['Table', 'Description']"
+                        :headers="['Entity', 'Description']"
                         :rows="tables"
                         :rows-per-page="10"
                         :showView="false"
