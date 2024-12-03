@@ -261,7 +261,7 @@ class UserController extends Controller
             }
 
             $tableArr[] = [
-                'table' => $table,
+                'entity' => $table,
                 'description' => $tableDescription
             ];
         }
