@@ -118,6 +118,23 @@ class UsersImport implements ToCollection, WithHeadingRow
 
                 }
 
+                $users = User::where('user_type', 'system_admin')->get();
+
+                foreach($users as $u) {
+                    $auth = auth()->user();
+                    $user_id = $u->id;
+                    $redirect_id = null;
+                    $type = null;
+                    $message = $auth->fullname . ' added alumni, ' . $user->fullname;
+
+                    UserNotification::create([
+                        'user_id' => $user_id,
+                        'redirect_id' => $redirect_id,
+                        'type' => $type,
+                        'message' => $message
+                    ]);
+                }
+
                 $batch = Batch::updateOrCreate(
                     ['school_year' => $row['class_batch'], 'course' => $row['program'], 'section' => $row['section']],
                     ['school_year' => $row['class_batch'], 'course' => $row['program'], 'section' => $row['section']]

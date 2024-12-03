@@ -418,20 +418,13 @@ const closeModal = () => {
                                 </div>
 
                                 <!-- Likes and comments -->
-                                <div class="w-full mt-4">
-                                    <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
-                                        ? 'Unlike'
-                                        : 'Like' )"
-                                        :class="{'text-blue-500': post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0}"
-                                    >
-                                        <!-- {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
-                                            ? 'Unlike'
-                                            : 'Like'
-                                        }} -->
+                                <div class="w-full mt-20">
+                                    <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' )" :class="{'text-blue-500': post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0}">
+                                        <!-- {{ post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0 ? 'Unlike' : 'Like' }} -->
                                         <i class="fa fa-thumbs-up"></i> {{ post.likes.length }}
-                                        <!-- {{ post.likes }} -->
                                     </button>
-                                    <button class="text-green-500 float-right ml-2" @click="$page.props.auth.user.user_type == 'school_alumni' ? sharePost(post) : ''">
+
+                                    <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
                                         <i class="fa fa-share"></i> {{ post.shared_count }}
                                     </button>
                                     <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">

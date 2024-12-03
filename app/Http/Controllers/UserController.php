@@ -26,7 +26,17 @@ class UserController extends Controller
 
 
         $user_type = 'school_alumni';
-        $users = User::with(['batch_student'])->orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
+        // $users = User::with(['batch_student'])->orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
+        $users = User::with(['batch_student'])
+            ->orderBy('updated_at', 'desc')
+            ->where('user_type', $user_type)
+            ->get()
+            ->map(function ($user) {
+                // Add the full_name attribute
+                $user->full_name = $user->fullname;
+                return $user;
+            });
+
         if($auth->user_type == 'system_admin') {
             $user_type = 'school_staff';
             $users = User::orderBy('updated_at', 'desc')->get();
@@ -420,7 +430,7 @@ class UserController extends Controller
         $lastPayment = null;
 
         if($existingUser) {
-            $lastPayment = $lastPayment->payment;
+            $lastPayment = $existingUser->payment;
         }
 
         $user = User::updateOrCreate(

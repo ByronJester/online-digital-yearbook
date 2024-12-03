@@ -500,7 +500,7 @@ const addStaff = ref(false)
 
                 <div class="w-full" v-if="!loading && $page.props.auth.user.user_type == 'school_alumni'">
                     <Table
-                        :headers="['Fullname', 'Program', 'Class Batch', 'Section']"
+                        :headers="['Full Name', 'Program', 'Class Batch', 'Section']"
                         :rows="users"
                         :rows-per-page="10"
                         :showView="false"

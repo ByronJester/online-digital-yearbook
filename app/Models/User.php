@@ -59,7 +59,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'role', 'fullname', 'status', 'fullname_format'
+        'role', 'fullname', 'status', 'fullname_format',
     ];
 
     public function getRoleAttribute()
