@@ -26,16 +26,7 @@ class UserController extends Controller
 
 
         $user_type = 'school_alumni';
-        // $users = User::with(['batch_student'])->orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
-        $users = User::with(['batch_student'])
-            ->orderBy('updated_at', 'desc')
-            ->where('user_type', $user_type)
-            ->get()
-            ->map(function ($user) {
-                // Add the full_name attribute
-                $user->full_name = $user->fullname;
-                return $user;
-            });
+        $users = User::with(['batch_student'])->orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
 
         if($auth->user_type == 'system_admin') {
             $user_type = 'school_staff';

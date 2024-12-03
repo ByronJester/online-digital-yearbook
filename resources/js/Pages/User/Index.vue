@@ -8,7 +8,7 @@ import { VueSpinner } from 'vue3-spinners';
 
 const loading = ref(false)
 
-defineProps({
+ var props = defineProps({
     users: {
         type: Array,
     },
@@ -16,6 +16,15 @@ defineProps({
         type: Array
     }
 });
+
+const alumniList = ref([])
+alumniList.value = props.user.map(x => {
+    return {
+        ...x, // Spread the existing properties of the object
+        full_name: `${x.fullname}` // Add the full_name property
+    };
+});
+
 
 // console.log(users)
 
