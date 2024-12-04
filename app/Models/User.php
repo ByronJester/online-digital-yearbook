@@ -123,11 +123,11 @@ class User extends Authenticatable
 
     public function getStatusAttribute()
     {
-        if(!$this->logout_at) return 'active';
-
-        if(!!$this->logout_at) return 'in_active';
-
-        return '';
+        if($this->last_logged_in_at && $this->logout_at) {
+            return 'in_active';
+        } else {
+            return 'active';
+        }
     }
 
     public function batch_student()
