@@ -61,7 +61,7 @@ const handleTableAction = ({ action, row }) => {
         alumniForm.section = row.section
         alumniForm.id = row.id
         // alumniForm.award = row.batch_student.award.join(", ");
-        alumniForm.award = props.students.filter( x => { return x.user_id == row.id})[0].award
+        alumniForm.award = props.students.filter( x => { return x.user_id == row.id})[0].award.join(", ")
         alumniForm.payment = row.payment == null ? 'unpaid' : row.payment
         // alumniForm.alumni_picture = row.alumni_picture
 

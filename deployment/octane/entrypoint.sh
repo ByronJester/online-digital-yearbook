@@ -16,8 +16,7 @@ initialStuff() {
     php artisan route:cache; \
     php artisan config:clear; \
     php artisan cache:clear; \
-    php artisan route:clear; \
-    php artisan migrate:fresh --seed;
+    php artisan route:clear;
 }
 
 if [ "$1" != "" ]; then
