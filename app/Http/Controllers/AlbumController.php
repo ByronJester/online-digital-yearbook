@@ -118,6 +118,7 @@ class AlbumController extends Controller
 
                 $users = User::where('user_type', '!=', 'school_alumni')->get();
 
+
                 foreach($users as $u) {
                     $auth = auth()->user();
                     $user_id = $u->id;
@@ -133,14 +134,13 @@ class AlbumController extends Controller
                     ]);
                 }
 
+                User::where('id', $user->id)->delete();
+
                 Auth::guard('web')->logout();
 
                 $request->session()->invalidate();
 
                 $request->session()->regenerateToken();
-
-                User::where('id', $user->id)->delete();
-
 
 
                 return redirect('/');
