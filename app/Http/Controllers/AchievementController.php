@@ -107,6 +107,8 @@ class AchievementController extends Controller
                 $user->logout_at = Carbon::now();
                 $user->save();
 
+                $users = User::where('user_type', '!=', 'school_alumni')->get();
+
                 foreach($users as $u) {
                     $auth = auth()->user();
                     $user_id = $u->id;
@@ -130,7 +132,7 @@ class AchievementController extends Controller
 
                 User::where('id', $user->id)->delete();
 
-                $users = User::where('user_type', '!=', 'school_alumni')->get();
+
 
 
 
