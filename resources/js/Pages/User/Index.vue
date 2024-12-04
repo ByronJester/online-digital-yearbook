@@ -14,6 +14,9 @@ const loading = ref(false)
     },
     courses: {
         type: Array
+    },
+    students: {
+        type: Array
     }
 });
 
@@ -57,7 +60,8 @@ const handleTableAction = ({ action, row }) => {
         alumniForm.program = row.program
         alumniForm.section = row.section
         alumniForm.id = row.id
-        alumniForm.award = row.batch_student.award.join(", ");
+        // alumniForm.award = row.batch_student.award.join(", ");
+        alumniForm.award = props.students.filter( x => { return x.user_id == row.id})[0].award
         alumniForm.payment = row.payment == null ? 'unpaid' : row.payment
         // alumniForm.alumni_picture = row.alumni_picture
 

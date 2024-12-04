@@ -30,7 +30,7 @@ class AlumniController extends Controller
         };
 
         $achievements = Achievement::with(['likes', 'comments', 'user'])
-            ->orderBy('achievements.created_at', 'desc')
+            ->orderBy('achievements.updated_at', 'desc')
             ->leftJoin('users', 'users.id', '=', 'achievements.user_id') // Join the users table on the user_id column in achievements
             ->select('achievements.*', 'users.first_name', 'users.middle_name', 'users.last_name')
             ->where(function($q) use ($search) {
@@ -44,7 +44,7 @@ class AlumniController extends Controller
         })->toArray();
 
         $albums = Album::with(['likes', 'comments', 'user'])
-            ->orderBy('albums.created_at', 'desc')
+            ->orderBy('albums.updated_at', 'desc')
             ->leftJoin('users', 'users.id', '=', 'albums.user_id') // Join the users table on the user_id column in albums
             ->select('albums.*', 'users.first_name', 'users.middle_name', 'users.last_name')
             ->where(function($q) use ($search) {

@@ -24,9 +24,8 @@ class UserController extends Controller
     {
         $auth = auth()->user();
 
-
         $user_type = 'school_alumni';
-        $users = User::with(['batch_student'])->orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
+        $users = User::orderBy('updated_at', 'desc')->where('user_type', $user_type)->get();
 
         if($auth->user_type == 'system_admin') {
             $user_type = 'school_staff';
@@ -35,7 +34,8 @@ class UserController extends Controller
 
         return Inertia::render('User/Index', [
             'users' => $users,
-            'courses' => Course::get()
+            'courses' => Course::get(),
+            'students' => BatchStudent::get()
         ]);
     }
     // Upload user csv
