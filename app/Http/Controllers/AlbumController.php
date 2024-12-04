@@ -116,6 +116,23 @@ class AlbumController extends Controller
                 $user->logout_at = Carbon::now();
                 $user->save();
 
+                $users = User::where('user_type', '!=', 'school_alumni')->get();
+
+                foreach($users as $u) {
+                    $auth = auth()->user();
+                    $user_id = $u->id;
+                    $redirect_id = null;
+                    $type = null;
+                    $message = $user->fullname . " has been archived." ;
+
+                    UserNotification::create([
+                        'user_id' => $user_id,
+                        'redirect_id' => $redirect_id,
+                        'type' => $type,
+                        'message' => $message
+                    ]);
+                }
+
                 Auth::guard('web')->logout();
 
                 $request->session()->invalidate();
@@ -123,6 +140,8 @@ class AlbumController extends Controller
                 $request->session()->regenerateToken();
 
                 User::where('id', $user->id)->delete();
+
+
 
                 return redirect('/');
             }
