@@ -123,7 +123,7 @@ class User extends Authenticatable
 
     public function getStatusAttribute()
     {
-        if($this->last_logged_in && !$this->logout_at) return 'active';
+        if($this->last_logged_in_at && !$this->logout_at) return 'active';
 
         if(!!$this->logout_at) return 'in_active';
 

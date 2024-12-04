@@ -68,11 +68,14 @@ class AlumniController extends Controller
 
         $resArr = [];
 
-        foreach($mixArr as $arr) {
+        foreach($mixArr as $key => $arr) {
 
-            $arr['shared_count'] = UserShare::where('id', $arr['id'])->where('type', $arr['type'])->count();
+            $arr[$key]['shared_count'] = UserShare::where('shared_id', $arr['id'])->where('type', $arr['type'])->count();
+
             array_push($resArr, $arr);
         }
+
+        // return $resArr;
 
         $notifications = UserNotification::where('user_id', auth()->user()->id)->get();
 

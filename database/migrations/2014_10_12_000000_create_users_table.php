@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('profile_picture')->nullable();
             $table->text('info')->nullable();
             $table->timestamp('last_logged_in')->nullable();
+            $table->timestamp('last_logged_in_at')->nullable();
             $table->timestamp('logout_at')->nullable();
             $table->boolean('is_deactivated')->default(false);
             $table->integer('bad_word_count')->default(0);

@@ -396,10 +396,10 @@ const editPost = (post) => {
 
                 <div v-if="post.image" class="my-4 flex justify-center items-center">
                     <!-- <img src="https://drive.google.com/uc?export=view&id=1EmNXckoFEUuZbZxnTHk5zkZ2h-lvnUTz" alt="Image from Google Drive"> -->
-                    <img :src="post.image" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.image, 'image')">
+                    <img :src="post.image" alt="Post Image" class="w-[400px] h-[300px]" @click="openMedia(post.image, 'image')">
                 </div>
                 <div v-if="post.video" class="my-4 flex justify-center items-center">
-                    <video controls class="w-[500px] h-[250px]">
+                    <video controls class="w-[400px] h-[300px]">
                         <source :src="post.video" type="video/mp4" />
                     </video>
                 </div>

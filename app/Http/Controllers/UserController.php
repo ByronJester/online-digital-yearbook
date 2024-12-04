@@ -238,25 +238,25 @@ class UserController extends Controller
 
             switch($table) {
                 case 'users':
-                    $tableDescription = "Table of user's account.";
+                    $tableDescription = "Users account.";
                     break;
                 case 'achievements':
-                    $tableDescription = "Table of alumni achievements and recognitions.";
+                    $tableDescription = "Achievements and Recognitions.";
                     break;
                 case 'albums':
-                    $tableDescription = "Table of school albums.";
+                    $tableDescription = "School Albums.";
                     break;
                 case 'batches':
-                    $tableDescription = "Table of alumni batches.";
+                    $tableDescription = "Alumni Batches.";
                     break;
                 case 'batch_students':
-                    $tableDescription = "Table of batch alumni.";
+                    $tableDescription = "Batch Alumni.";
                     break;
                 case 'self_messages':
-                    $tableDescription = "Table of future messages of alumni to future self.";
+                    $tableDescription = "Future messages of alumni to future self.";
                     break;
                 case 'success_stories':
-                    $tableDescription = "Table of alumni success stories.";
+                    $tableDescription = "Alumni success stories.";
                     break;
             }
 
@@ -473,12 +473,13 @@ class UserController extends Controller
 
             $users = User::where('user_type', 'system_admin')->get();
 
+            $action = $existingUser ? 'updated' : 'added';
             foreach($users as $u) {
                 $auth = auth()->user();
                 $user_id = $u->id;
                 $redirect_id = null;
                 $type = null;
-                $message = $auth->fullname . ' added alumni, ' . $user->fullname;
+                $message = $auth->fullname . " $action alumni, " . $user->fullname;
 
                 UserNotification::create([
                     'user_id' => $user_id,

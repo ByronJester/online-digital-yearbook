@@ -429,7 +429,7 @@ const viewProfile = (id) => {
 
                 <!-- Display multiple images if available -->
                 <div v-if="post.image.length > 0" class="my-4">
-                    <div class="w-full carousel-container">
+                    <div class="w-full carousel-container p-1">
                         <carousel :items-to-show="2" ref="carouselRef">
                             <slide v-for="i in post.image" :key="i">
                                 <img :src="i" class="w-full h-[300px] mr-1 cursor-pointer" @click="openMedia(i, 'image')"/>
@@ -445,7 +445,7 @@ const viewProfile = (id) => {
 
                 <!-- Display multiple videos if available -->
                 <div v-if="post.video.length > 0" class="my-4">
-                    <div class="w-full carousel-container">
+                    <div class="w-full carousel-container p-1">
                         <carousel :items-to-show="2" ref="carouselRef">
                             <slide v-for="i in post.video" :key="i">
                                 <video controls class="w-full h-[250px] cursor-pointer">

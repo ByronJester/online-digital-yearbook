@@ -82,8 +82,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'program' => $row['program'],
                             'section' => $row['section'],
                             'alumni_picture' => $row['alumni_image'],
-                            'payment' => $row['payment'],
-                            'last_logged_in' => null
+                            'payment' => $row['payment']
                         ]
                     );
                 } else {
@@ -103,8 +102,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                             'password' => Hash::make($password),
                             'password_text' => $password,
                             'alumni_picture' => $row['alumni_image'],
-                            'payment' => $row['payment'],
-                            'last_logged_in' => null
+                            'payment' => $row['payment']
                         ]
                     );
 

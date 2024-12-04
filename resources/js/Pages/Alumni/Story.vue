@@ -325,7 +325,7 @@ const viewProfile = (id) => {
                     <img :src="post.file" alt="Post Image" class="w-[500px] h-[300px]" @click="openMedia(post.file, 'image')">
                 </div>
 
-                <div class="flex justify-between items-center mt-4" >
+                <!-- <div class="flex justify-between items-center mt-4" >
                     <button @click="toggleLike(post, post.likes.filter( x => { return x.user_id == $page.props.auth.user.id }).length > 0
                         ? 'Unlike'
                         : 'Like' )"
@@ -339,17 +339,16 @@ const viewProfile = (id) => {
                     </button>
                 </div>
 
-                <!-- Comment input, displayed above other comments -->
                 <div v-if="post.showCommentInput" class="mt-4">
                     <input type="text" placeholder="Add a comment..."
                            @keyup.enter="addComment(post, $event.target.value); $event.target.value = ''"
                            class="border p-1 rounded w-full mb-2"
                            v-model="textComment"
                            >
-                </div>
+                </div> -->
 
                 <!-- Display comments -->
-                <div v-if="post.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
+                <!-- <div v-if="post.comments.length > 0 && post.showCommentInput  " class="mt-4 ml-4">
                     <div v-for="comment in post.comments" :key="comment.id" class="border-t pt-2 mt-2">
                         <p class="font-bold">{{ comment.commentor }}</p>
                         <p class="ml-3">
@@ -366,7 +365,7 @@ const viewProfile = (id) => {
                             </span>
                         </p>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </AuthenticatedLayout>

@@ -43,6 +43,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $auth = auth()->user();
+        $auth->last_logged_in_at = Carbon::now();
+        $auth->logout_at = null;
+        $auth->save();
 
 
         $route = null;
@@ -76,7 +79,7 @@ class AuthenticatedSessionController extends Controller
     {
         $user = auth()->user();
         $user->logout_at = Carbon::now();
-        $user->last_logged_in = null;
+        $user->last_logged_in_at = null;
         $user->save();
 
         Auth::guard('web')->logout();

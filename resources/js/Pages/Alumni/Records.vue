@@ -218,7 +218,7 @@ const changeBatch = (value) => {
 
                     <div class="w-full ">
                         <p class="ml-3 p-2 text-xs">
-                            {{ user?.last_logged_in }}
+                            {{ user?.last_logged_in_at }}
                         </p>
                     </div>
 

@@ -396,7 +396,7 @@ const closeModal = () => {
                 </div>
 
                 <div class="w-full">
-                    <div class="w-full border rounded-lg p-4 bg-white h-auto mt-2" v-for="post in postData" :key="post.id">
+                    <div class="w-full border rounded-lg p-4 bg-white h-auto mt-2" v-for="(post, key) in postData" :key="post.id">
                         <div class="space-y-6" v-if="post.type == 'achievement'">
                             <div class="w-full">
                                 <div class="font-bold cursor-pointer" @click="viewProfile(post.user.id)">
@@ -425,7 +425,7 @@ const closeModal = () => {
                                     </button>
 
                                     <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
-                                        <i class="fa fa-share"></i> {{ post.shared_count }}
+                                        <i class="fa fa-share"></i> {{ post[key].shared_count }}
                                     </button>
                                     <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
                                         <i class="fa fa-comment"></i> {{ post.comments.length }}
@@ -519,7 +519,7 @@ const closeModal = () => {
                                 </button>
 
                                 <button class="text-green-500 float-right ml-2" @click="sharePost(post)" v-if="$page.props.auth.user.user_type == 'school_alumni'">
-                                    <i class="fa fa-share"></i> {{ post.shared_count }}
+                                    <i class="fa fa-share"></i> {{ post[key].shared_count }}
                                 </button>
                                 <button @click="toggleCommentInput(post)" class="text-blue-500 float-right">
                                     <i class="fa fa-comment"></i> {{ post.comments.length }}
