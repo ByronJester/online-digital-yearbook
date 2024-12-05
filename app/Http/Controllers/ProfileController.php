@@ -43,7 +43,7 @@ class ProfileController extends Controller
             }
 
         } else {
-            $shares = UserShare::where('user_id', $user->id)->get();
+            $shares = UserShare::orderBy('created_at', 'desc')->where('user_id', $user->id)->get();
 
             foreach($shares as $share) {
                 $shareArr[] = [

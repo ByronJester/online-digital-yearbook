@@ -237,7 +237,7 @@ const updateSearchQuery = (event) => {
                     <span class="float-right text-xl text-white cursor-pointer mr-5 mt-1" @click="openNotificationModal"
                         v-if="$page.props.auth.user.user_type != 'school_alumni'"
                     >
-                        <i class="fa-solid fa-earth-americas"> </i>
+                        <i class="fa-solid fa-earth-americas mr-4"> </i>  <span>{{ $page.props.notifications.length > 0  ? $page.props.notifications.length : ''}}</span>
                     </span>
                     <Dropdown align="right" width="48">
                         <template #trigger>
