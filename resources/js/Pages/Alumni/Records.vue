@@ -189,8 +189,8 @@ const changeBatch = (value) => {
                         <select class="rounded-md p-2 w-[100%] text-xs" v-model="status" @change="changeStatus($event.target.value)">
                             <option :value="''" disabled>Status</option>
                             <option :value="'all'">All</option>
-                            <option :value="'active'">Active</option>
-                            <option :value="'in_active'">Inactive</option>
+                            <option :value="'active'">Online</option>
+                            <option :value="'in_active'">Offline</option>
                         </select>
                     </div>
                 </div>
