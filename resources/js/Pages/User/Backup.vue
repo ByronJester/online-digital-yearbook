@@ -87,7 +87,7 @@ const handleTableAction = ({ action, row }) => {
     console.log(action)
 
     if(action == 'backup') {
-        const tableName = row.table;
+        const tableName = row.entity;
         const response = axios.get(route('bar', tableName), {
             responseType: 'blob',
         });
@@ -169,7 +169,7 @@ const handleTableAction = ({ action, row }) => {
                 <div class="w-full mt-3">
                     <select v-model="tableUpload" class="rounded-md mr-2">
                         <option :value="t" v-for="t in tables" :key="t">
-                            {{ t.table }}
+                            {{ t.entity }}
                         </option>
                     </select>
                     <input type="file" @change="handleFileUpload" accept=".sql" class="border border-black rounded-md mr-1 py-1"/>
